@@ -1,0 +1,11 @@
+/target/
+
+/out/
+
+/.idea/
+
+*.class
+
+output.txt
+
+input.txt
