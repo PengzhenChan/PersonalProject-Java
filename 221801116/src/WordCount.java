@@ -9,6 +9,7 @@ public class WordCount {
         String outputPath = dir.getCanonicalPath()+args[1];
 
         int charCount = CountChar.CountChar(inputPath);
-        System.out.println(charCount);
+        //System.out.println(charCount);
+        CountWord.CountWord(inputPath);
     }
 }
