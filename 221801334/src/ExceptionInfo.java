@@ -12,7 +12,9 @@ public enum ExceptionInfo {
     INPUT_FILE_NOT_EXIST(1, "输入文件不存在"),
     ILLEGAL_INPUT_FILE(1, "输入文件不是txt文件"),
     ILLEGAL_OUTPUT_FILE(1, "输出文件不是txt文件"),
-    OUTPUT_FILE_ERROR(1, "输出文件创建失败"),
+    OUTPUT_FILE_CREATE_ERROR(1, "输出文件创建失败"),
+    READ_FILE_ERROR(1, "文件读入失败"),
+    WRITE_FILE_ERROR(1, "文件写入失败"),
 
     CREATE_OUTPUT_FILE(2, "输出文件不存在，已自动创建"),
     CLEAR_OUTPUT_FILE(2, "已自动清空输出文件内容");

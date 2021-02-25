@@ -54,7 +54,7 @@ public class WordCount {
             try {
                 outputFile.createNewFile();
             } catch (IOException e) {
-                return ExceptionInfo.OUTPUT_FILE_ERROR;
+                return ExceptionInfo.OUTPUT_FILE_CREATE_ERROR;
             }
             return ExceptionInfo.CREATE_OUTPUT_FILE;
         }
