@@ -1,4 +1,8 @@
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -51,6 +55,44 @@ public class WordOperationImpl implements WordOperation {
             }
         }
         return wordNum;
+    }
+
+    /**
+     * 统计文本中top10单词及个数
+     *
+     * @return 单词列表
+     */
+    @Override
+    public List<Word> countTopTenWord() {
+        Map<String, Integer> wordIntegerMap = new HashMap<>(256);
+        String[] temp = content.split("[^a-z0-9]+");
+        for (String word : temp){
+            if (word.matches("^[a-z]{4}[a-z0-9]*$")){
+                if (wordIntegerMap.containsKey(word)){
+                    wordIntegerMap.replace(word, wordIntegerMap.get(word) + 1);
+                } else {
+                    wordIntegerMap.put(word, 1);
+                }
+            }
+        }
+
+        List<Map.Entry<String, Integer>> words = new ArrayList<>(wordIntegerMap.entrySet());
+        words.sort((o1, o2) -> {
+            if (o1.getValue().intValue() != o2.getValue().intValue()){
+                return o2.getValue() - o1.getValue();
+            }
+            return o1.getKey().compareTo(o2.getKey());
+        });
+
+        List<Word> topTen = new ArrayList<>();
+        int num = 0;
+        for (Map.Entry<String, Integer> word : words){
+            if (num < 10){
+                topTen.add(new Word(word.getKey(), word.getValue()));
+            }
+            ++num;
+        }
+        return topTen;
     }
 
     /**

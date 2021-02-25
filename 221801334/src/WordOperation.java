@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * 接口封装，将功能独立出来
  * 计算字符数、计算单词数、计算top10词频、计算全部
@@ -21,7 +23,12 @@ public interface WordOperation {
      */
     int countWord();
 
-//    List<Word> countTopTenWord();
-//
+    /**
+     * 统计文本中top10单词及个数
+     *
+     * @return 单词列表
+     */
+    List<Word> countTopTenWord();
+
 //    void countAll();
 }
