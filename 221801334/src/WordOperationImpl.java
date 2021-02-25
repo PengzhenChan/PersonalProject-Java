@@ -14,11 +14,14 @@ public class WordOperationImpl implements WordOperation {
     private AtomicInteger characterNum;
     // 有效行数
     private int lineNum;
+    // 单词数
+    private int wordNum;
 
     public WordOperationImpl(File inputFile, File outputFile){
         this.outputFile = outputFile;
         content = FileUtil.read(inputFile);
         characterNum = new AtomicInteger(0);
+        wordNum = 0;
     }
 
     /**
@@ -31,6 +34,23 @@ public class WordOperationImpl implements WordOperation {
         characterNum = new AtomicInteger(0);
         countCharacter(0, content.length());
         return characterNum.get();
+    }
+
+    /**
+     * 统计文本中单词个数
+     *
+     * @return 单词数
+     */
+    @Override
+    public int countWord() {
+        wordNum = 0;
+        String[] temp = content.split("[^a-z0-9]+");
+        for (String word : temp){
+            if (word.matches("^[a-z]{4}[a-z0-9]*$")){
+                ++wordNum;
+            }
+        }
+        return wordNum;
     }
 
     /**

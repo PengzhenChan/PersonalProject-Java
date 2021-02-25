@@ -14,8 +14,13 @@ public interface WordOperation {
      */
     int countCharacter();
 
-//    int countWord();
-//
+    /**
+     * 统计文本中单词个数
+     *
+     * @return 单词数
+     */
+    int countWord();
+
 //    List<Word> countTopTenWord();
 //
 //    void countAll();
