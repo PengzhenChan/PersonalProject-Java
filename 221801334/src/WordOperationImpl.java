@@ -12,6 +12,8 @@ public class WordOperationImpl implements WordOperation {
     private String content;
     // 字符数
     private AtomicInteger characterNum;
+    // 有效行数
+    private int lineNum;
 
     public WordOperationImpl(File inputFile, File outputFile){
         this.outputFile = outputFile;
@@ -46,5 +48,21 @@ public class WordOperationImpl implements WordOperation {
             }
         }
         characterNum.getAndAdd(count);
+    }
+
+    /**
+     * 统计文本的有效行数
+     *
+     */
+    private void countLine(){
+        lineNum = content.split("\n+").length;
+        if ('\n' == (content.charAt(0))){
+            --lineNum;
+        }
+    }
+
+    public int getLineNum() {
+        countLine();
+        return lineNum;
     }
 }
