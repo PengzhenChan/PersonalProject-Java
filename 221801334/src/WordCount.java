@@ -18,6 +18,8 @@ public class WordCount {
         if (info.getCode() == 1){
             return;
         }
+
+        new WordOperationImpl(new File(args[0]), new File(args[1]));
     }
 
     /**

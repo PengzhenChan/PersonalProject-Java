@@ -17,7 +17,7 @@ public enum ExceptionInfo {
     WRITE_FILE_ERROR(1, "文件写入失败"),
 
     CREATE_OUTPUT_FILE(2, "输出文件不存在，已自动创建"),
-    CLEAR_OUTPUT_FILE(2, "已自动清空输出文件内容");
+    CLEAR_OUTPUT_FILE(2, "已自动清空输出文件原有内容");
 
     // 异常分类标识码
     private int code;
