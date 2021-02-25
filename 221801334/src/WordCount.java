@@ -20,6 +20,12 @@ public class WordCount {
         }
     }
 
+    /**
+     * 判断参数是否合法
+     *
+     * @param args 参数
+     * @return 异常信息
+     */
     private static ExceptionInfo argsLegal(String[] args){
         // 输入参数0个
         if (args.length == 0){
