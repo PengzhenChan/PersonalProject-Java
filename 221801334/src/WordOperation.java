@@ -30,5 +30,9 @@ public interface WordOperation {
      */
     List<Word> countTopTenWord();
 
-//    void countAll();
+    /**
+     * 统计字符数、单词数、行数、top10单词并输出到文件
+     *
+     */
+    void countAll();
 }

@@ -96,6 +96,23 @@ public class WordOperationImpl implements WordOperation {
     }
 
     /**
+     * 统计字符数、单词数、行数、top10单词并输出到文件
+     */
+    @Override
+    public void countAll() {
+        StringBuilder sb = new StringBuilder();
+        countLine();
+        sb.append("characters: ").append(countCharacter()).append("\n")
+            .append("words: ").append(countWord()).append("\n")
+            .append("lines: ").append(lineNum).append("\n");
+        List<Word> topTen = countTopTenWord();
+        for (Word word : topTen){
+            sb.append(word.getSpell()).append(": ").append(word.getCount()).append("\n");
+        }
+        FileUtil.write(outputFile, sb.toString());
+    }
+
+    /**
      * 计算一段文本的字符数
      *
      * @param index 起始位置
