@@ -1,25 +1,20 @@
 import java.io.*;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CountWord {
-    public static void CountWord(String path) throws IOException {
-        Map<String,Integer> dictionary = new HashMap<>();
+    public static int countWord(String path) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
         String str = null;
-
+        int wordCount = 0;
         while((str= br.readLine())!=null){
-            String[] splitStr = str.split(" ");
+            String[] splitStr = str.split("[^0-9a-zA-Z]");
             for(int i=0;i<splitStr.length;i++){
-                if(dictionary.get(splitStr[i])==null){
-                    dictionary.put(splitStr[i],1);
-                }else{
-                    dictionary.put(splitStr[i],dictionary.get(splitStr[i])+1);
+                splitStr[i] = splitStr[i].toLowerCase();
+                if(CountWordRate.isThatWord(splitStr[i])){
+                    wordCount++;
                 }
             }
         }
         br.close();
-        System.out.println(dictionary);
+        return wordCount;
     }
 }
