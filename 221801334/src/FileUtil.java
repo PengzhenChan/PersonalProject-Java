@@ -27,6 +27,7 @@ public class FileUtil {
 //            return readBuffer(file);
 //        }
         return readMMAP(file);
+//        return readBuffer(file);
     }
 
     /**
