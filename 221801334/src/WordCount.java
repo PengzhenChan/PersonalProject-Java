@@ -13,7 +13,7 @@ public class WordCount {
     public static void main(String[] args) {
         ExceptionInfo info = argsLegal(args);
         if (info.getCode() != 0){
-            System.err.println(info.getMessage());
+            System.out.println(info.getMessage());
         }
         if (info.getCode() == 1){
             return;
