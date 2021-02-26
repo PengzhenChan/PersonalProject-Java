@@ -24,8 +24,9 @@ public class WordCount {
             String fileToStr = WordCountIO.fileToString(inputFile);
             String StrToFilterChinese = WordCountMethods.filterChinese(fileToStr);
             int chars = WordCountMethods.countChars(StrToFilterChinese);
+            int words = WordCountMethods.countWords(fileToStr);
             int lines = WordCountMethods.CountLines(inputFile);
-            WordCountIO.output(chars,lines,outputFile);
+            WordCountIO.output(chars,words,lines,outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

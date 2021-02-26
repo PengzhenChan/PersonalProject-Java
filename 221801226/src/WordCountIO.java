@@ -41,7 +41,8 @@ public class WordCountIO {
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
      */
-    public static BufferedWriter createFileWriter(String name) throws FileNotFoundException, UnsupportedEncodingException {
+    public static BufferedWriter createFileWriter(String name)
+            throws FileNotFoundException, UnsupportedEncodingException {
         FileOutputStream outputStream = new FileOutputStream(name);  
         OutputStreamWriter outputWriter = new OutputStreamWriter(outputStream, "utf-8");
         BufferedWriter writer = new BufferedWriter(outputWriter);
@@ -52,8 +53,10 @@ public class WordCountIO {
      * 输出结果到指定文件
      * @throws IOException 
      */
-    public static void output(int charsNum,int linesNum,String filePath) throws IOException {
+    public static void output(int charsNum,int wordsNum,int linesNum,String filePath) 
+            throws IOException {
         StringBuilder str = new StringBuilder("characters: " + charsNum + "\r\n"
+                + "words:" + wordsNum + "\r\n"
                 + "lines:" + linesNum + "\r\n");
         BufferedWriter writer = createFileWriter(filePath);
         
