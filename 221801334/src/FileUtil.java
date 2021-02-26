@@ -38,7 +38,7 @@ public class FileUtil {
     public static String readBuffer(File file){
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING), 8192);
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING), 16384);
             StringBuilder sb = new StringBuilder(16384);
             String oneLine = in.readLine();
             while (oneLine != null){
@@ -74,8 +74,7 @@ public class FileUtil {
             raf = new RandomAccessFile(file, "r");
             mbb = raf.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
             if (mbb != null){
-                return ENCODING.decode(mbb).toString().replaceAll("\r\n", "\n");
-                // return ENCODING.decode(mbb).toString();
+                return ENCODING.decode(mbb).toString();
             } else {
                 return "";
             }

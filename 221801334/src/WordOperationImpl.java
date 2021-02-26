@@ -3,7 +3,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 李星源
@@ -14,17 +17,22 @@ public class WordOperationImpl implements WordOperation {
     private File outputFile;
     // 文本内容
     private String content;
-    // 字符数
-    private AtomicInteger characterNum;
     // 有效行数
     private int lineNum;
     // 单词数
     private int wordNum;
 
+    // 一个线程最小处理量
+    private static final int MIN_GRANULARITY = 512 * (1 << 10);
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final ExecutorService threadPool = new ThreadPoolExecutor(
+        4, Math.max((CPU_COUNT << 1), 8), 30, TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(Integer.MAX_VALUE), r -> new Thread(null, r, "", 0),
+        new ThreadPoolExecutor.CallerRunsPolicy());
+
     public WordOperationImpl(File inputFile, File outputFile){
         this.outputFile = outputFile;
         content = FileUtil.read(inputFile);
-        characterNum = new AtomicInteger(0);
         wordNum = 0;
     }
 
@@ -35,9 +43,7 @@ public class WordOperationImpl implements WordOperation {
      */
     @Override
     public int countCharacter() {
-        characterNum = new AtomicInteger(0);
-        countCharacter(0, content.length());
-        return characterNum.get();
+        return content.length();
     }
 
     /**
@@ -100,33 +106,11 @@ public class WordOperationImpl implements WordOperation {
      */
     @Override
     public void countAll() {
-        StringBuilder sb = new StringBuilder();
-        countLine();
-        sb.append("characters: ").append(countCharacter()).append("\n")
-            .append("words: ").append(countWord()).append("\n")
-            .append("lines: ").append(lineNum).append("\n");
-        List<Word> topTen = countTopTenWord();
-        for (Word word : topTen){
-            sb.append(word.getSpell()).append(": ").append(word.getCount()).append("\n");
-        }
-        FileUtil.write(outputFile, sb.toString());
-    }
+        int len = content.length();
+        int oneLen = Math.max((len >> 4), MIN_GRANULARITY);
 
-    /**
-     * 计算一段文本的字符数
-     *
-     * @param index 起始位置
-     * @param len 长度
-     */
-    private void countCharacter(int index, int len){
-        int count = len;
-        int end = index + len;
-        for (int i = index;i < end;++i){
-            if (content.charAt(i) > 127){
-                --count;
-            }
-        }
-        characterNum.getAndAdd(count);
+        threadPool.shutdown();
+        saveResult();
     }
 
     /**
@@ -138,6 +122,23 @@ public class WordOperationImpl implements WordOperation {
         if ('\n' == (content.charAt(0))){
             --lineNum;
         }
+    }
+
+    /**
+     * 保存计算结果到文件
+     *
+     */
+    private void saveResult(){
+        StringBuilder sb = new StringBuilder();
+        countLine();
+        sb.append("characters: ").append(content.length()).append("\n")
+            .append("words: ").append(countWord()).append("\n")
+            .append("lines: ").append(lineNum).append("\n");
+        List<Word> topTen = countTopTenWord();
+        for (Word word : topTen){
+            sb.append(word.getSpell()).append(": ").append(word.getCount()).append("\n");
+        }
+        FileUtil.write(outputFile, sb.toString());
     }
 
     public int getLineNum() {
