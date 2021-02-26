@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WordCountIO {
     /**
@@ -53,11 +56,19 @@ public class WordCountIO {
      * 输出结果到指定文件
      * @throws IOException 
      */
-    public static void output(int charsNum,int wordsNum,int linesNum,String filePath) 
+    public static void output(int charsNum,int wordsNum,int linesNum,
+            List<Map.Entry<String, Integer>> highFreqList,String filePath) 
             throws IOException {
         StringBuilder str = new StringBuilder("characters: " + charsNum + "\r\n"
                 + "words:" + wordsNum + "\r\n"
                 + "lines:" + linesNum + "\r\n");
+        for (int i = 0; i < highFreqList.size(); i++) {
+            HashMap.Entry<String, Integer> temp = highFreqList.get(i);
+            str.append(temp.getKey());
+            str.append(":");
+            str.append(temp.getValue());
+            str.append("\r\n");
+        }
         BufferedWriter writer = createFileWriter(filePath);
         
         try {

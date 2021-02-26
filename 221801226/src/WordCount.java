@@ -1,5 +1,6 @@
 import java.io.IOException;
-
+import java.util.List;
+import java.util.Map;
 
 public class WordCount {
     private String inputFile;
@@ -26,7 +27,9 @@ public class WordCount {
             int chars = WordCountMethods.countChars(StrToFilterChinese);
             int words = WordCountMethods.countWords(fileToStr);
             int lines = WordCountMethods.CountLines(inputFile);
-            WordCountIO.output(chars,words,lines,outputFile);
+            List<Map.Entry<String, Integer>> wordList;
+            wordList = WordCountMethods.highFreqWord(WordCountMethods.map);
+            WordCountIO.output(chars,words,lines,wordList,outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
