@@ -23,9 +23,9 @@ public class FileUtil {
      * @return 文件内容，如果空则为""
      */
     public static String read(File file){
-        if (file.length() < 2580000){
-            return readBuffer(file);
-        }
+//        if (file.length() < 2580000){
+//            return readBuffer(file);
+//        }
         return readMMAP(file);
     }
 
