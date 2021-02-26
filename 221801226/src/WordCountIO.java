@@ -11,9 +11,9 @@ import java.io.UnsupportedEncodingException;
 
 public class WordCountIO {
     /**
-     * ¶ÁÈ¡ÎÄ¼ş×ª»¯ÎªstringĞÎÊ½
-     * @param filePath ÎÄ¼şÂ·¾¶
-     * @return ÎÄ¼şÄÚÈİ×ª³ÉµÄString
+     * è¯»å–æ–‡ä»¶è½¬åŒ–ä¸ºstringå½¢å¼
+     * @param filePath æ–‡ä»¶è·¯å¾„
+     * @return æ–‡ä»¶å†…å®¹è½¬æˆçš„String
      */
     public static String fileToString(String filePath) {
         StringBuffer strBuf = new StringBuffer();
@@ -35,9 +35,9 @@ public class WordCountIO {
     }
     
     /**
-     * ´´½¨ÒÔutf-8±àÂëµÄÎÄ¼şÊä³öÁ÷
-     * @param name ÎÄ¼şÂ·¾¶
-     * @return BufferedWriter ÒÔutf-8±àÂëµÄÎÄ¼şÊä³öÁ÷
+     * åˆ›å»ºä»¥utf-8ç¼–ç çš„æ–‡ä»¶è¾“å‡ºæµ
+     * @param name æ–‡ä»¶è·¯å¾„
+     * @return BufferedWriter ä»¥utf-8ç¼–ç çš„æ–‡ä»¶è¾“å‡ºæµ
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
      */
@@ -49,11 +49,12 @@ public class WordCountIO {
     }
     
     /**
-     * Êä³ö½á¹ûµ½Ö¸¶¨ÎÄ¼ş
+     * è¾“å‡ºç»“æœåˆ°æŒ‡å®šæ–‡ä»¶
      * @throws IOException 
      */
-    public static void output(int charsNum,String filePath) throws IOException {
-        StringBuilder str = new StringBuilder("characters: " + charsNum + "\r\n");
+    public static void output(int charsNum,int linesNum,String filePath) throws IOException {
+        StringBuilder str = new StringBuilder("characters: " + charsNum + "\r\n"
+                + "lines:" + linesNum + "\r\n");
         BufferedWriter writer = createFileWriter(filePath);
         
         try {
@@ -66,7 +67,7 @@ public class WordCountIO {
                     writer.flush();
                     writer.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("å…³é—­æ–‡ä»¶è¾“å…¥æµå¤±è´¥");
                 }
             }
         }

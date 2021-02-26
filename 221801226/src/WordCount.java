@@ -16,15 +16,16 @@ public class WordCount {
     }
     
     /**
-     * 执行WordCountMethods的wordcount功能
-     * 运用WordCountIO输入输出
+     * 鎵цWordCountMethods鐨剋ordcount鍔熻兘
+     * 杩愮敤WordCountIO杈撳叆杈撳嚭
      */
     public void work() {
         try {
             String fileToStr = WordCountIO.fileToString(inputFile);
             String StrToFilterChinese = WordCountMethods.filterChinese(fileToStr);
             int chars = WordCountMethods.countChars(StrToFilterChinese);
-            WordCountIO.output(chars, outputFile);
+            int lines = WordCountMethods.CountLines(inputFile);
+            WordCountIO.output(chars,lines,outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,28 +1,36 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WordCountMethods {
-    //Ğ£ÑéÖĞÎÄµÄÕıÔò±í´ïÊ½
-    private static String REGEX = "[\\u4e00-\\u9fa5]";
+    //æ ¡éªŒä¸­æ–‡çš„æ­£åˆ™è¡¨è¾¾å¼
+    private static String CHINESE_REGEX = "[\\u4e00-\\u9fa5]";
+    //ç©ºç™½è¡Œçš„æ­£åˆ™è¡¨è¾¾å¼
+    private static String BLANK_LINE_REGEX = "^\\s*$";
     
     /**
-     * ¹ıÂËµôÖĞÎÄ
-     * @param str ´ı¹ıÂËÖĞÎÄµÄ×Ö·û´®
-     * @return ¹ıÂËµôÖĞÎÄºó×Ö·û´®
+     * è¿‡æ»¤æ‰ä¸­æ–‡
+     * @param str å¾…è¿‡æ»¤ä¸­æ–‡çš„å­—ç¬¦ä¸²
+     * @return è¿‡æ»¤æ‰ä¸­æ–‡åå­—ç¬¦ä¸²
      */
     public static String filterChinese(String str) {
         String result = str;
-        //ÅĞ¶Ï×Ö·û´®ÖĞÊÇ·ñ°üº¬ÖĞÎÄ
-        Pattern p = Pattern.compile(REGEX);
+        //åˆ¤æ–­å­—ç¬¦ä¸²ä¸­æ˜¯å¦åŒ…å«ä¸­æ–‡
+        Pattern p = Pattern.compile(CHINESE_REGEX);
         Matcher m = p.matcher(str);
         
         if (m.find()) {
             StringBuffer sb = new StringBuffer();
-            // ÓÃÓÚĞ£ÑéÊÇ·ñÎªÖĞÎÄ
+            // ç”¨äºæ ¡éªŒæ˜¯å¦ä¸ºä¸­æ–‡
             boolean flag = false;
             char chinese = 0;
             char[] charArray = str.toCharArray();
-            // ¹ıÂËÖĞÎÄ¼°ÖĞÎÄ×Ö·û
+            // è¿‡æ»¤ä¸­æ–‡åŠä¸­æ–‡å­—ç¬¦
             for (int i = 0; i < charArray.length; i++) {
                 chinese = charArray[i];
                 flag = isChineseChar(chinese);
@@ -36,9 +44,9 @@ public class WordCountMethods {
     }
     
     /**
-     * Ğ£ÑéÒ»¸ö×Ö·ûÊÇ·ñÊÇºº×Ö
-     * @param c ±»Ğ£ÑéµÄ×Ö·û
-     * @return true´ú±íÊÇºº×Ö
+     * æ ¡éªŒä¸€ä¸ªå­—ç¬¦æ˜¯å¦æ˜¯æ±‰å­—
+     * @param c è¢«æ ¡éªŒçš„å­—ç¬¦
+     * @return trueä»£è¡¨æ˜¯æ±‰å­—
      */
     public static boolean isChineseChar(char c) {
         try {
@@ -50,20 +58,20 @@ public class WordCountMethods {
     }
     
     /**
-     * Í³¼ÆÎÄ¼şµÄ×Ö·ûÊı
-     * @param str ±»Ğ£ÑéµÄ×Ö·û´®
-     * @return int ÎÄ¼şµÄ×Ö·ûÊı
+     * ç»Ÿè®¡æ–‡ä»¶çš„å­—ç¬¦æ•°
+     * @param str è¢«æ ¡éªŒçš„å­—ç¬¦ä¸²
+     * @return int æ–‡ä»¶çš„å­—ç¬¦æ•°
      */
     public static int countChars(String str){
         int count = 0;
         char[] achar = str.toCharArray();
         
         for (int i = 0;i<achar.length;i++) {
-            //Í³¼Æascii code
+            //ç»Ÿè®¡ascii code
             if (33 <= achar[i] && achar[i] <= 126) {
                 count++;
             }
-            //Í³¼Æ¿Õ¸ñ£¬Ë®Æ½ÖÆ±í·û£¬»»ĞĞ·û
+            //ç»Ÿè®¡ç©ºæ ¼ï¼Œæ°´å¹³åˆ¶è¡¨ç¬¦ï¼Œæ¢è¡Œç¬¦
             if(achar[i] == 32 || achar[i] == 9 || achar[i] == 10) {
                 count++;
             }
@@ -71,7 +79,41 @@ public class WordCountMethods {
         return count;
     }
 
-
-    
+    /**
+     * ç»Ÿè®¡æ–‡ä»¶çš„æœ‰æ•ˆè¡Œæ•°
+     * @param filePath
+     * @return int æ–‡ä»¶æœ‰æ•ˆè¡Œæ•°
+     * @throws FileNotFoundException
+     */
+    public static int CountLines(String filePath) throws FileNotFoundException {
+        int validLine = 0;
+        int allLine = 0;
+        int blankLine = 0;
+        
+        BufferedReader br = null;
+        InputStream inpStr = new FileInputStream(filePath);
+        br = new BufferedReader(new InputStreamReader(inpStr));
+        //åŒ…å«ç©ºç™½å­—ç¬¦çš„è¡Œçš„æ­£åˆ™åŒ¹é…å™¨
+        Pattern blankLinePattern = Pattern.compile(BLANK_LINE_REGEX);
+        String line = null;
+        try {
+            while ((line = br.readLine()) != null) {
+                if (blankLinePattern.matcher(line).find()) {
+                    blankLine ++;
+                }
+                allLine ++;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("è¯»å–æ–‡ä»¶å¤±è´¥!" + e);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                throw new RuntimeException("å…³é—­æ–‡ä»¶è¾“å…¥æµå¤±è´¥");
+            }
+        }
+        validLine = allLine-blankLine;
+        return validLine;
+    }
 
 }
