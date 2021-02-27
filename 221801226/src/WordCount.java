@@ -12,6 +12,10 @@ public class WordCount {
     }
     
     public static void main(String[] args) {
+        if (args.length<2) {
+            System.out.println("参数至少为两个，例如 java WordCount input.txt output.txt");
+            return;
+        }
         WordCount wc = new WordCount(args[0],args[1]);
         wc.work();
     }

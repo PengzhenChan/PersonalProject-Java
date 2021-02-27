@@ -25,9 +25,13 @@ public class WordCountIO {
         try {
             InputStream inpStr = new FileInputStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(inpStr));
-            while ((line = br.readLine())!= null) {
-                strBuf.append(line);
-                strBuf.append("\n");
+            line = br.readLine();
+            strBuf.append(line);
+            if((line = br.readLine())!= null) {
+                do {
+                    strBuf.append(line);
+                    strBuf.append("\n");
+                } while ((line = br.readLine())!= null);
             }
             inpStr.close();
             br.close();
@@ -63,7 +67,7 @@ public class WordCountIO {
                 + "words:" + wordsNum + "\r\n"
                 + "lines:" + linesNum + "\r\n");
         for (int i = 0; i < highFreqList.size(); i++) {
-            HashMap.Entry<String, Integer> temp = highFreqList.get(i);
+            Map.Entry<String, Integer> temp = highFreqList.get(i);
             str.append(temp.getKey());
             str.append(":");
             str.append(temp.getValue());
@@ -86,4 +90,5 @@ public class WordCountIO {
             }
         }
     }
+
 }

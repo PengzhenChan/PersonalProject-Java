@@ -7,25 +7,26 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class WordCountMethods {
     //校验中文的正则表达式
     private static String CHINESE_REGEX = "[\\u4e00-\\u9fa5]";
     //空白行的正则表达式
     private static String BLANK_LINE_REGEX = "^\\s*$";
-    //汉字的unicode编码
-    private static int CHINESE_UNICODE_FLOOR = 0x4e00;  
-    private static int CHINESE_UNICODE_CEILING = 0x9fa5;
     //非字母数字字符的正则表达式
     private static String UN_ALPHABET_NUM_REGEX = "[^0-9a-zA-Z]";
     //匹配以4个英文字母开头的正则表达式
     private static String FIRST_FOUR_APLH_REGEX = "^[a-z]{4,}.*";
     
-    //记录文件内单词以及出现次数的hashmap
-    public static HashMap<String, Integer> map = new HashMap<>();
+    //记录文件内单词以及出现次数的TreeMap
+    public static Map<String, Integer> map = new TreeMap<>();
+    //public static Map<String, Integer> map = new HashMap<>();
     
     /**
      * 过滤掉中文
@@ -99,34 +100,39 @@ public class WordCountMethods {
      * @return validLine 文件有效行数
      * @throws FileNotFoundException
      */
-    public static int CountLines(String filePath) throws FileNotFoundException {
+    public static int CountLines(String filePath){
         int validLine = 0;
         int allLine = 0;
         int blankLine = 0;
-        
-        BufferedReader br = null;
-        InputStream inpStr = new FileInputStream(filePath);
-        br = new BufferedReader(new InputStreamReader(inpStr));
-        //包含空白字符的行的正则匹配器
-        Pattern blankLinePattern = Pattern.compile(BLANK_LINE_REGEX);
-        String line = null;
         try {
-            while ((line = br.readLine()) != null) {
-                if (blankLinePattern.matcher(line).find()) {
-                    blankLine++;
-                }
-                allLine++;
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("读取文件失败!" + e);
-        } finally {
+            BufferedReader br = null;
+            InputStream inpStr = new FileInputStream(filePath);
+            br = new BufferedReader(new InputStreamReader(inpStr));
+            //包含空白字符的行的正则匹配器
+            Pattern blankLinePattern = Pattern.compile(BLANK_LINE_REGEX);
+            String line = null;
             try {
-                br.close();
+                while ((line = br.readLine()) != null) {
+                    if (blankLinePattern.matcher(line).find()) {
+                        blankLine++;
+                    }
+                    allLine++;
+                }
             } catch (IOException e) {
-                throw new RuntimeException("关闭文件输入流失败");
+                System.out.println("读取错误...");
+                e.printStackTrace();
+            } finally {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    throw new RuntimeException("关闭文件输入流失败!");
+                }
             }
+            validLine = allLine-blankLine;
+        } catch (FileNotFoundException e) {
+            System.out.println("未找到文件，请重试...");
+            e.printStackTrace();
         }
-        validLine = allLine-blankLine;
         return validLine;
     }
     
@@ -164,30 +170,18 @@ public class WordCountMethods {
      * @param map 存储word以及出现次数的map键值对
      * @return list 存储出现频率最高的单词
      */
-    public static List<HashMap.Entry<String, Integer>> highFreqWord(HashMap<String, Integer> map){
-        List<HashMap.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        list.sort(new WordComparator());
+
+    public static List<Map.Entry<String, Integer>> highFreqWord(Map<String, Integer> map){
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list,new Comparator<Map.Entry<String, Integer>>(){
+            public int compare(Map.Entry<String, Integer> word1, Map.Entry<String, Integer> word2) {
+                    return word2.getValue() - word1.getValue();
+            }
+        });
         if (list.size() >= 10) {
             return list.subList(0, 10);
         } else {
             return list.subList(0, list.size());
-        }
-    }
-    
-    /**
-     * 使用Comparator接口自定义比较两个word的顺序
-     */
-    private static class WordComparator implements Comparator<HashMap.Entry<String, Integer>> {
-        public int compare(HashMap.Entry<String, Integer> word1, HashMap.Entry<String, Integer> word2) {
-            if (word1.getValue() > word2.getValue()) {
-                return word2.getValue() - word1.getValue();
-            }
-            else if (word1.getValue() < word2.getValue()) {
-                return word2.getValue() - word1.getValue();
-            }
-            else {
-                return word1.getKey().compareTo(word2.getKey());
-            }
         }
     }
 
