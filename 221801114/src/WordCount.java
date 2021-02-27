@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class WordCount{
     private static BufferedReader bufferedReader = null;
@@ -14,6 +15,7 @@ public class WordCount{
         }
         System.out.println("characters:"+getCharacters(args[0]));
         System.out.println("lines:"+getLines(args[0]));
+        System.out.println("words:"+getWords(args[0]));
     }
 
     public static int getLines(String filePath){
@@ -57,6 +59,33 @@ public class WordCount{
             closeInputStream();
         }
         return characters;
+    }
+
+    public static int getWords(String filePath){
+        int words = 0;
+        Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ ]");
+        try{
+            bufferedReader = new BufferedReader(new FileReader(filePath));
+            String currentLine = bufferedReader.readLine();
+            while (currentLine != null) {
+                String[] wordStrings = pattern.split(currentLine);
+                for (String str:wordStrings){
+                    if (!str.equals("")){
+                        words++;
+                        System.out.println(str);
+                    }
+                }
+                currentLine = bufferedReader.readLine();
+            }
+        }catch (FileNotFoundException e){
+            System.out.println("未找到文件：" + filePath);
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            closeInputStream();
+        }
+        return words;
     }
 
     private static void closeInputStream(){
