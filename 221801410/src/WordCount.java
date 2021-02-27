@@ -17,32 +17,11 @@ public class WordCount
         int lineNum=0;
         int charNum=0;
         String fileName="input.txt";
-        try
-        {
-            File readFile = new File(fileName);
-            if (readFile.isFile() && readFile.exists())
-            {
-                InputStreamReader inReader = new InputStreamReader(
-                                             new FileInputStream(fileName));
-                BufferedReader bufferedReader = new BufferedReader(inReader);
-                String wordLine;
-                Function functionMethod = new Function();
-                while((wordLine=bufferedReader.readLine())!=null)
-                {
-                    if(!functionMethod.IsEmptyLine(wordLine))
-                    {
-                        lineNum++; 
-                        System.out.println(wordLine);
-                        System.out.println("行数"+lineNum);
-                    }
-                }
-            }
-            
-        }
-        catch(Exception e)
-        {
-            System.out.println("没有找到文件");
-            e.printStackTrace();
-        }
+        File readFile = new File(fileName);
+        Function functionMethod = new Function();
+        charNum=functionMethod.CountChar(readFile);
+        System.out.println("总字符数"+charNum);
+        lineNum = functionMethod.CountLine(readFile);
+        System.out.println("有效行数"+lineNum);
     }
 }
