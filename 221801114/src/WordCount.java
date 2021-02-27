@@ -32,12 +32,18 @@ public class WordCount{
         }catch (IOException e){
             e.printStackTrace();
         }finally {
-            try{
-                bufferedReader.close();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+            closeInputStream();
         }
         return lines;
+    }
+
+    private static void closeInputStream(){
+        try{
+            if (bufferedReader != null){
+                bufferedReader.close();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
