@@ -152,7 +152,8 @@ public class WordOperationImpl implements WordOperation {
      */
     @Override
     public void countAll() {
-
+        //统计单词词频
+        threadPool.execute(this::countWordThread);
 
         // 统计有效行数
         Matcher lineMatcher = linePattern.matcher(content);
@@ -170,9 +171,6 @@ public class WordOperationImpl implements WordOperation {
         if (content.charAt(content.length() - 1) != '\n'){
             lineNum.getAndIncrement();
         }
-
-        //统计单词词频
-        countWordThread();
 
         threadPool.shutdown();
         boolean loop = false;
