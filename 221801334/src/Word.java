@@ -18,7 +18,7 @@ public class Word implements Comparable<Word> {
         if (count != o.count){
             return count - o.count;
         }
-        return spell.compareTo(o.spell);
+        return o.spell.compareTo(spell);
     }
 
     public String getSpell() {
