@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -11,7 +13,7 @@ public class TrieTree {
 
     public TrieTree(){
         root = new Node('-');
-        wordQueue = new PriorityQueue<>(10);
+        wordQueue = new PriorityQueue<>(16);
     }
 
     /**
@@ -39,13 +41,39 @@ public class TrieTree {
     }
 
     /**
+     * 插入字符串
+     *
+     * @param word 单词
+     */
+    public void insert(String word){
+        Node now = root;
+        int charIndex;
+        char c;
+        int len = word.length();
+
+        for (int i=0;i<len;i++){
+            c = word.charAt(i);
+            charIndex = c - '0';
+            charIndex = ((charIndex < 10) ? charIndex : (c - 'a' + 10));
+            if (now.child[charIndex] == null){
+                now.child[charIndex] = new Node(c);
+            }
+            now = now.child[charIndex];
+        }
+        ++(now.count);
+    }
+
+    /**
      * 获取优先队列中的topTen
      *
-     * @param topTen 存储结果
      */
-    public void getTopTen(Word[] topTen){
+    public List<Word> getTopTen(){
         dfs();
-        wordQueue.toArray(topTen);
+        List<Word> wordList = new ArrayList<>(16);
+        while (!wordQueue.isEmpty()){
+            wordList.add(wordQueue.poll());
+        }
+        return wordList;
     }
 
     /**
@@ -72,7 +100,7 @@ public class TrieTree {
             Word word = new Word(sb.toString(), root.count);
             if (wordQueue.size() < 10){
                 wordQueue.add(word);
-            } else if (word.compareTo(wordQueue.peek()) > 0){
+            } else if (isReplace(word, wordQueue.peek())){
                 wordQueue.poll();
                 wordQueue.add(word);
             }
@@ -83,6 +111,14 @@ public class TrieTree {
             }
         }
         sb.setLength(sb.length() - 1);
+    }
+
+    private boolean isReplace(Word w1, Word w2){
+        if (w1.getCount() != w2.getCount()){
+            return w1.getCount() > w2.getCount();
+        } else {
+            return w1.getSpell().compareTo(w2.getSpell()) < 0;
+        }
     }
 }
 

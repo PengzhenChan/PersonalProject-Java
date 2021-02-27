@@ -48,7 +48,7 @@ public class FileUtil {
             }
             return sb.toString();
         } catch (IOException e) {
-            System.out.println(ExceptionInfo.READ_FILE_ERROR);
+            System.out.println(ExceptionInfo.READ_FILE_ERROR.getMessage());
             System.exit(0);
         } finally {
             try {
@@ -80,7 +80,7 @@ public class FileUtil {
                 return "";
             }
         } catch (IOException e) {
-            System.out.println(ExceptionInfo.READ_FILE_ERROR);
+            System.out.println(ExceptionInfo.READ_FILE_ERROR.getMessage());
             System.exit(0);
         } finally {
             if (mbb != null){

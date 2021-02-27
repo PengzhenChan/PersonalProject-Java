@@ -19,7 +19,7 @@ public class WordCount {
             return;
         }
 
-        new WordOperationImpl(new File(args[0]), new File(args[1]));
+        new WordOperationImpl(new File(args[0]), new File(args[1])).countAll();
     }
 
     /**
