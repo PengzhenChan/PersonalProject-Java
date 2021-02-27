@@ -25,8 +25,7 @@ public class WordCountMethods {
     private static String FIRST_FOUR_APLH_REGEX = "^[a-z]{4,}.*";
     
     //记录文件内单词以及出现次数的TreeMap
-    public static Map<String, Integer> map = new TreeMap<>();
-    //public static Map<String, Integer> map = new HashMap<>();
+    public static HashMap<String, Integer> map = new HashMap<>();
     
     /**
      * 过滤掉中文
@@ -168,21 +167,32 @@ public class WordCountMethods {
     /**
      * 统计文件中各单词的出现次数
      * @param map 存储word以及出现次数的map键值对
-     * @return list 存储出现频率最高的单词
+     * @return list 存储出现频率最高的单词以及次数
      */
-
-    public static List<Map.Entry<String, Integer>> highFreqWord(Map<String, Integer> map){
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        Collections.sort(list,new Comparator<Map.Entry<String, Integer>>(){
-            public int compare(Map.Entry<String, Integer> word1, Map.Entry<String, Integer> word2) {
-                    return word2.getValue() - word1.getValue();
-            }
-        });
+    public static List<HashMap.Entry<String, Integer>> highFreqWord(HashMap<String, Integer> map){
+        List<HashMap.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(new WordComparator());
         if (list.size() >= 10) {
             return list.subList(0, 10);
         } else {
             return list.subList(0, list.size());
         }
     }
-
+    
+    /**
+     * 使用Comparator接口自定义比较两个word的顺序
+     */
+    private static class WordComparator implements Comparator<HashMap.Entry<String, Integer>> {
+        public int compare(HashMap.Entry<String, Integer> word1, HashMap.Entry<String, Integer> word2) {
+            if (word1.getValue() > word2.getValue()) {
+                return word2.getValue() - word1.getValue();
+            }
+            else if (word1.getValue() < word2.getValue()) {
+                return word2.getValue() - word1.getValue();
+            }
+            else {
+                return word1.getKey().compareTo(word2.getKey());
+            }
+        }
+    }
 }

@@ -26,12 +26,10 @@ public class WordCountIO {
             InputStream inpStr = new FileInputStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(inpStr));
             line = br.readLine();
-            strBuf.append(line);
-            if((line = br.readLine())!= null) {
-                do {
-                    strBuf.append(line);
-                    strBuf.append("\n");
-                } while ((line = br.readLine())!= null);
+            while (line != null) {
+                strBuf.append(line);
+                strBuf.append("\n");
+                line = br.readLine();
             }
             inpStr.close();
             br.close();
