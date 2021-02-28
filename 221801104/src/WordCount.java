@@ -126,4 +126,13 @@ public class Count_Word{
 					return -1;
 				}
 			});
- 
+                      
+			// 将出现频率最高的前十个单词写入文件
+			int i = 0;
+			for (Iterator<Map.Entry<String, Integer>> ite = list.iterator(); i < 10; i++) {
+				Map.Entry<String, Integer> maps = ite.next();
+				out.write(maps.getKey() + ": " + maps.getValue());
+				out.newLine();
+				//System.out.println(maps.getKey() + "\t" + maps.getValue());
+			}
+			out.close();
