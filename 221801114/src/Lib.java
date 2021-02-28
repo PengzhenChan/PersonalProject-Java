@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class Lib {
     private static BufferedReader bufferedReader = null;
     private static BufferedWriter bufferedWriter = null;
+    private static FileWriter fileWriter = null;
     private static Map<String, Integer> hashMap = null;
 
     public static int getLines(String filePath){
@@ -50,10 +51,10 @@ public class Lib {
         return words;
     }
 
-    public static void getWordFrequency(String filePath){
+    public static void countWordFrequency(String inputFilePath, String outputFilePath){
         hashMap = new HashMap<String,Integer>();
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ ]");
-        String fileString = readToString(filePath);
+        String fileString = readToString(inputFilePath);
         String[] lineStrings = fileString.split("\\\\r\\\\n|\\\\n");
         for (String lineString:lineStrings){
             String[] wordStrings = pattern.split(lineString);
@@ -66,7 +67,7 @@ public class Lib {
             }
         }
         TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
-        sortByValue(treeMap);
+        sortByValue(treeMap, outputFilePath);
     }
 
     private static boolean judgeWords(String word){
@@ -81,7 +82,7 @@ public class Lib {
         return true;
     }
 
-    public static void sortByValue(TreeMap<String,Integer> map) {
+    public static void sortByValue(TreeMap<String,Integer> map, String filePath) {
         List<Map.Entry<String,Integer>> mappingList = null;
         mappingList = new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
         Collections.sort(mappingList, new Comparator<Map.Entry<String,Integer>>(){
@@ -95,13 +96,28 @@ public class Lib {
                 break;
             }
             System.out.println(mapping.getKey()+":"+mapping.getValue());
+            writeToFile(mapping.getKey() + ":" + mapping.getValue(), filePath);
         }
     }
 
-    private static void closeInputStream(){
+    public static void writeToFile(String content, String filePath){
         try{
-            if (bufferedReader != null){
-                bufferedReader.close();
+            fileWriter = new FileWriter(filePath, true);
+            fileWriter.write(content + "\n");
+        }catch (FileNotFoundException e){
+            System.out.println("未找到文件：" + filePath);
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            closeOutputStream();
+        }
+    }
+
+    private static void closeOutputStream(){
+        try{
+            if (fileWriter != null){
+                fileWriter.close();
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -111,11 +127,11 @@ public class Lib {
     public static String readToString(String filePath) {
         String encoding = "UTF-8";
         File file = new File(filePath);
-        Long filelength = file.length();
-        byte[] filecontent = new byte[filelength.intValue()];
+        Long fileLength = file.length();
+        byte[] fileContent = new byte[fileLength.intValue()];
         try {
             FileInputStream in = new FileInputStream(file);
-            in.read(filecontent);
+            in.read(fileContent);
             in.close();
         } catch (FileNotFoundException e) {
             System.out.println("未找到文件：" + filePath);
@@ -124,7 +140,7 @@ public class Lib {
             e.printStackTrace();
         }
         try {
-            return new String(filecontent, encoding);
+            return new String(fileContent, encoding);
         } catch (UnsupportedEncodingException e) {
             System.err.println("The OS does not support " + encoding);
             e.printStackTrace();

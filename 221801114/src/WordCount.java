@@ -13,6 +13,9 @@ public class WordCount{
         System.out.println("characters:"+Lib.getCharacters(args[0]));
         System.out.println("lines:"+Lib.getLines(args[0]));
         System.out.println("words:"+Lib.getWords(args[0]));
-        Lib.getWordFrequency(args[0]);
+        Lib.writeToFile("characters:"+Lib.getCharacters(args[0]), args[1]);
+        Lib.writeToFile("lines:"+Lib.getLines(args[0]), args[1]);
+        Lib.writeToFile("words:"+Lib.getWords(args[0]), args[1]);
+        Lib.countWordFrequency(args[0], args[1]);
     }
 }
