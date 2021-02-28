@@ -53,29 +53,20 @@ public class Lib {
     public static void getWordFrequency(String filePath){
         hashMap = new HashMap<String,Integer>();
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ ]");
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null) {
-                String[] wordStrings = pattern.split(currentLine);
-                for (String str:wordStrings){
-                    if (!str.equals("") && judgeWords(str.toLowerCase())){
-                        Integer count = hashMap.get(str.toLowerCase());
-                        hashMap.put(str.toLowerCase(),((count != null) ? ++count : 1));
-                    }
+        String fileString = readToString(filePath);
+        String[] lineStrings = fileString.split("\\\\r\\\\n|\\\\n");
+        for (String lineString:lineStrings){
+            String[] wordStrings = pattern.split(lineString);
+            for (String word:wordStrings){
+                word = word.toLowerCase();
+                if (!word.equals("") && judgeWords(word)){
+                    Integer count = hashMap.get(word);
+                    hashMap.put(word, (count == null ? 1 : ++count));
                 }
-                currentLine = bufferedReader.readLine();
             }
-            TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
-            sortByValue(treeMap);
-        }catch (FileNotFoundException e){
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
         }
+        TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
+        sortByValue(treeMap);
     }
 
     private static boolean judgeWords(String word){
