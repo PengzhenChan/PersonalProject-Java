@@ -105,3 +105,5 @@ public class Count_Word{
 	 		//System.out.println("Total number of lines : " + linenumber);
 	 		lnr.close();
 		  
+                        //把文件中所有大写字母转换为小写
+                        toLower(docin);
