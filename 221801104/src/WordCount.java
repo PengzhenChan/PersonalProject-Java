@@ -91,3 +91,17 @@ public class Count_Word{
 	 		out.newLine();
 	 		//System.out.println("characters:  "+countc);
 	 		//System.out.println("words: "+countw);
+		         
+		         //统计文件的行数
+	 		FileReader fr1 = new FileReader(file);
+	 		LineNumberReader lnr = new LineNumberReader(fr1);
+	 		int linenumber = 0;
+	 		while (lnr.readLine() != null){
+        	        linenumber++;
+	                }
+	 		
+	 		out.write("lines:  " + linenumber);
+	 		out.newLine();
+	 		//System.out.println("Total number of lines : " + linenumber);
+	 		lnr.close();
+		  
