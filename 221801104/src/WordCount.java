@@ -143,3 +143,24 @@ public class Count_Word{
 			//  System.out.println(maps.getKey() + "\t" +maps.getValue()); 
 			//} 
 			}
+
+		//把文件中所有单词转化为小写的函数
+		public static void toLower(String file) throws Exception{
+			Reader myReader = new FileReader(file);
+			Reader myBufferedReader = new BufferedReader(myReader);
+			CharArrayWriter  tempStream = new CharArrayWriter();
+			int i = -1;
+			do {
+			tempStream.write(i);
+			i = myBufferedReader.read();
+			if(i >= 65 && i <= 90){
+				i += 32;
+			}
+			}while(i != -1);
+			myBufferedReader.close();
+			Writer myWriter = new FileWriter(file);
+			tempStream.writeTo(myWriter);
+			tempStream.flush();
+			tempStream.close();
+			myWriter.close();
+		}
