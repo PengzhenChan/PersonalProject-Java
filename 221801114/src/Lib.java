@@ -44,7 +44,6 @@ public class Lib {
             for (String word:wordStrings){
                 if (!word.equals("") && judgeWords(word.toLowerCase())){
                     words++;
-                    System.out.println(word);
                 }
             }
         }
@@ -95,7 +94,6 @@ public class Lib {
             if (++count > 10){
                 break;
             }
-            System.out.println(mapping.getKey()+":"+mapping.getValue());
             writeToFile(mapping.getKey() + ":" + mapping.getValue(), filePath);
         }
     }

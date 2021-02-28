@@ -10,9 +10,6 @@ public class WordCount{
             System.out.println("命令行参数错误，需要两个文件名！");
             System.exit(0);
         }
-        System.out.println("characters:"+Lib.getCharacters(args[0]));
-        System.out.println("lines:"+Lib.getLines(args[0]));
-        System.out.println("words:"+Lib.getWords(args[0]));
         Lib.writeToFile("characters:"+Lib.getCharacters(args[0]), args[1]);
         Lib.writeToFile("lines:"+Lib.getLines(args[0]), args[1]);
         Lib.writeToFile("words:"+Lib.getWords(args[0]), args[1]);
