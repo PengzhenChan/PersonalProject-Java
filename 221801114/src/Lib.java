@@ -9,9 +9,15 @@ public class Lib {
     private static Map<String, Integer> hashMap = null;
 
     public static int getLines(String filePath){
+        int lines = 0;
         String fileString = readToString(filePath);
         String[] lineStrings = fileString.split("\\\\r\\\\n|\\\\n");
-        return lineStrings.length;
+        for (String lineString:lineStrings){
+            if (!lineString.trim().equals("")){
+                lines++;
+            }
+        }
+        return lines;
     }
 
     public static int getCharacters(String filePath){
@@ -30,26 +36,16 @@ public class Lib {
     public static int getWords(String filePath){
         int words = 0;
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ ]");
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null) {
-                String[] wordStrings = pattern.split(currentLine);
-                for (String str:wordStrings){
-                    if (!str.equals("")&&judgeWords(str.toLowerCase())){
-                        words++;
-                        System.out.println(str.toLowerCase());
-                    }
+        String fileString = readToString(filePath);
+        String[] lineStrings = fileString.split("\\\\r\\\\n|\\\\n");
+        for (String lineString:lineStrings){
+            String[] wordStrings = pattern.split(lineString);
+            for (String word:wordStrings){
+                if (!word.equals("") && judgeWords(word.toLowerCase())){
+                    words++;
+                    System.out.println(word);
                 }
-                currentLine = bufferedReader.readLine();
             }
-        }catch (FileNotFoundException e){
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
         }
         return words;
     }
@@ -63,7 +59,7 @@ public class Lib {
             while (currentLine != null) {
                 String[] wordStrings = pattern.split(currentLine);
                 for (String str:wordStrings){
-                    if (!str.equals("")&&judgeWords(str.toLowerCase())){
+                    if (!str.equals("") && judgeWords(str.toLowerCase())){
                         Integer count = hashMap.get(str.toLowerCase());
                         hashMap.put(str.toLowerCase(),((count != null) ? ++count : 1));
                     }
