@@ -1,9 +1,6 @@
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,9 +18,11 @@ public class WordOperationImpl implements WordOperation {
     private AtomicInteger lineNum;
     // 单词数
     private int wordNum;
+    // 字典树
+    private TrieTree tree;
+    private AtomicInteger wordNumTwo = new AtomicInteger(0);
 
     // 一个线程最小处理量
-    private static final int MIN_GRANULARITY = (1 << 5);
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final ExecutorService threadPool = new ThreadPoolExecutor(
         8, Math.max((CPU_COUNT << 1), 16), 30, TimeUnit.SECONDS,
@@ -33,6 +32,9 @@ public class WordOperationImpl implements WordOperation {
     // 记录单词个数的映射
     private Map<String, Integer> wordIntegerMap;
     private static final int COUNT_THREAD_NUMBER = 8;
+    private static final int MIN_THREAD_ROW_LENGTH = 256 * 10;
+    private static final int LINE_THREAD_NUMBER = 8;
+    private List<Integer> lineInfo;
 
     private static final Pattern wordPattern = Pattern.compile("[a-z]{4}[a-z0-9]*");
     private static final Pattern linePattern = Pattern.compile("\n");
@@ -42,7 +44,9 @@ public class WordOperationImpl implements WordOperation {
         this.outputFile = outputFile;
         wordNum = 0;
         lineNum = new AtomicInteger(0);
-        wordIntegerMap = new HashMap<>(1 << 17);
+        //wordIntegerMap = new HashMap<>(1 << 18);
+        wordIntegerMap = new ConcurrentHashMap<>(1 << 18);
+        lineInfo = new ArrayList<>(1 << 15);
     }
 
     /**
@@ -101,7 +105,7 @@ public class WordOperationImpl implements WordOperation {
      */
     @Override
     public List<Word> countTopTenWord() {
-        Map<String, Integer> wordIntegerMap = new HashMap<>(1<<17);
+        Map<String, Integer> wordIntegerMap = new HashMap<>(1<<18);
         Matcher wordMatcher = wordPattern.matcher(content);
         String word;
         if (wordMatcher.find()){
@@ -145,32 +149,21 @@ public class WordOperationImpl implements WordOperation {
         return topTen;
     }
 
-
-
     /**
      * 统计字符数、单词数、行数、top10单词并输出到文件
      */
     @Override
     public void countAll() {
-        //统计单词词频
-        threadPool.execute(this::countWordThread);
+        //如果长度为0
+        if (content.length() == 0){
+            saveResult(null);
+        }
 
-        // 统计有效行数
-        Matcher lineMatcher = linePattern.matcher(content);
-        int start = 0;
-        int end;
-        while (lineMatcher.find()){
-            end = lineMatcher.start();
-            if ((end - start) > 0){
-                int finalEnd = end;
-                int finalStart = start;
-                threadPool.execute(() -> countLine(finalStart, finalEnd));
-            }
-            start = lineMatcher.end();
-        }
-        if (content.charAt(content.length() - 1) != '\n'){
-            lineNum.getAndIncrement();
-        }
+        //统计单词词频
+        //threadPool.execute(this::countWordThread);
+//        threadPool.execute(this::countWordTrieThread);
+
+        countEffectiveRow();
 
         threadPool.shutdown();
         boolean loop = false;
@@ -181,8 +174,79 @@ public class WordOperationImpl implements WordOperation {
                 e.printStackTrace();
             }
         } while(loop);
-
+        //threadPool.shutdown();
         saveResult(getTopTen());
+//        saveResult(tree.getTopTen());
+    }
+
+    private void countEffectiveRow(){
+        int len = content.length();
+        int oneLen = Math.max(MIN_THREAD_ROW_LENGTH, len >> 3);
+        int start = 0;
+        int j;
+        for (int i=0;i<len;i+=oneLen){
+            if (i > start){
+                for (j=i;j<len;++j){
+                    if (content.charAt(j) == '\n'){
+                        break;
+                    }
+                }
+                int finalStart = start;
+                int finalJ = j;
+                threadPool.execute(() -> countLine(finalStart, finalJ));
+                threadPool.execute(() -> countWordThread(finalStart, finalJ));
+                start = j + 1;
+            }
+        }
+        if (start < len){
+            int finalStart1 = start;
+            threadPool.execute(() -> countLine(finalStart1, len));
+            threadPool.execute(() -> countWordThread(finalStart1, len));
+        }
+    }
+
+    /**
+     * 计算行数
+     *
+     * @param start 开始位置
+     * @param end 结束位置
+     */
+    private void countLine(int start, int end){
+        String temp = content.substring(start, end);
+        Matcher lineMatcher = linePattern.matcher(temp);
+        int tempLen = temp.length();
+        int startIndex = 0;
+        int endIndex;
+        int i;
+        int count = 0;
+        char c;
+        while (lineMatcher.find()){
+            endIndex = lineMatcher.start();
+            if ((endIndex - startIndex) > 0){
+                for (i = startIndex;i<endIndex;++i){
+                    c = temp.charAt(i);
+                    if ((c >= 33) && (c <= 126)){
+                        break;
+                    }
+                }
+                if (i < end){
+                    ++count;
+                }
+            }
+            startIndex = lineMatcher.end();
+        }
+        if (startIndex != tempLen){
+            for (i = startIndex;i<tempLen;++i){
+                c = temp.charAt(i);
+                if ((c >= 33) && (c <= 126)){
+                    break;
+                }
+            }
+            if (i < end){
+                ++count;
+            }
+        }
+        lineNum.getAndAdd(count);
     }
 
     /**
@@ -228,11 +292,102 @@ public class WordOperationImpl implements WordOperation {
         return m1.getKey().compareTo(m2.getKey()) < 0;
     }
 
+    private void dealMap(String key){
+        Integer oldValue;
+        while (true) {
+            oldValue = wordIntegerMap.get(key);
+            if (null == oldValue) {
+                if (wordIntegerMap.putIfAbsent(key, 1) == null) {
+                    break;
+                }
+            } else {
+                if (wordIntegerMap.replace(key, oldValue, oldValue + 1)) {
+                    break;
+                }
+            }
+        }
+    }
+
     /**
      * 统计单词个数
      *
      */
-    private void countWordThread(){
+    private void countWordThread(int startIndex, int endIndex){
+        String temp = content.substring(startIndex, endIndex);
+        Matcher wordMatcher = wordPattern.matcher(temp);
+        String word;
+        int count = 0;
+        if (wordMatcher.find()){
+            word = wordMatcher.group();
+            int start = wordMatcher.start() - 1;
+            if (start>=0){
+                if (wordLegal(temp.charAt(start))){
+                    ++count;
+                    dealMap(word);
+                }
+            } else {
+                ++count;
+                dealMap(word);
+            }
+        }
+
+        while (wordMatcher.find()){
+            if (wordLegal(temp.charAt(wordMatcher.start() - 1))){
+                ++count;
+                word = wordMatcher.group();
+                dealMap(word);
+            }
+        }
+
+        wordNumTwo.getAndAdd(count);
+
+
+//        Matcher wordMatcher = wordPattern.matcher(content);
+//        String word;
+//        if (wordMatcher.find()){
+//            word = wordMatcher.group();
+//            int start = wordMatcher.start() - 1;
+//            if (start>=0){
+//                if (wordLegal(content.charAt(start))){
+//                    ++wordNum;
+//                    wordIntegerMap.put(word, 1);
+//                }
+//            } else {
+//                ++wordNum;
+//                wordIntegerMap.put(word, 1);
+//            }
+//        }
+//
+//        while (wordMatcher.find()){
+//            if (wordLegal(content.charAt(wordMatcher.start() - 1))){
+//                ++wordNum;
+//                word = wordMatcher.group();
+//                if (wordIntegerMap.containsKey(word)){
+//                    wordIntegerMap.put(word, wordIntegerMap.get(word) + 1);
+//                } else {
+//                    wordIntegerMap.put(word, 1);
+//                }
+//            }
+//        }
+    }
+
+    /**
+     * 字典树计算单词频率
+     *
+     * @param words 单词列表
+     */
+    private void countRate(List<String> words){
+        for (String word : words){
+            tree.insert(word);
+        }
+    }
+
+    /**
+     * 统计单词个数
+     * 使用字典树
+     *
+     */
+    private void countWordTrieThread(){
         Matcher wordMatcher = wordPattern.matcher(content);
         String word;
         if (wordMatcher.find()){
@@ -249,21 +404,17 @@ public class WordOperationImpl implements WordOperation {
             }
         }
 
-        List<List<String>> wordLists = new ArrayList<>(COUNT_THREAD_NUMBER << 1);
-        for (int i=0;i<COUNT_THREAD_NUMBER;i++){
-            wordLists.add(new ArrayList<>(1 << 15));
-        }
+//        List<List<String>> wordLists = new ArrayList<>(COUNT_THREAD_NUMBER << 1);
+//        for (int i=0;i<COUNT_THREAD_NUMBER;i++){
+//            wordLists.add(new ArrayList<>(1 << 15));
+//        }
 
         while (wordMatcher.find()){
             if (wordLegal(content.charAt(wordMatcher.start() - 1))){
                 ++wordNum;
                 word = wordMatcher.group();
 //                wordLists.get(word.charAt(0) % COUNT_THREAD_NUMBER).add(word);
-                if (wordIntegerMap.containsKey(word)){
-                    wordIntegerMap.put(word, wordIntegerMap.get(word) + 1);
-                } else {
-                    wordIntegerMap.put(word, 1);
-                }
+                tree.insert(word);
             }
         }
 
@@ -273,40 +424,7 @@ public class WordOperationImpl implements WordOperation {
 //        }
     }
 
-    /**
-     * 计算单词频率
-     *
-     * @param words 单词列表
-     */
-    private void countRate(List<String> words){
-        for (String word : words){
-            if (wordIntegerMap.containsKey(word)){
-                wordIntegerMap.put(word, wordIntegerMap.get(word) + 1);
-            } else {
-                wordIntegerMap.put(word, 1);
-            }
-        }
-    }
 
-    /**
-     * 计算行数
-     *
-     * @param start 开始位置
-     * @param end 结束位置
-     */
-    private void countLine(int start, int end){
-        int i;
-        char c;
-        for (i=start;i<end;++i){
-            c = content.charAt(i);
-            if ((c >= 33) && (c <= 126)){
-                break;
-            }
-        }
-        if (i < end){
-            lineNum.getAndIncrement();
-        }
-    }
 
     /**
      * 保存计算结果到文件
@@ -315,12 +433,25 @@ public class WordOperationImpl implements WordOperation {
     private void saveResult(List<Map.Entry<String, Integer>> topTen){
         StringBuilder sb = new StringBuilder();
         sb.append("characters: ").append(content.length()).append("\n")
-            .append("words: ").append(wordNum).append("\n")
+            .append("words: ").append(wordNumTwo.get()).append("\n")
             .append("lines: ").append(lineNum.get()).append("\n");
-        for (int i=topTen.size()-1;i>=0;--i){
-            sb.append(topTen.get(i).getKey()).append(": ").append(topTen.get(i).getValue()).append("\n");
+        if (topTen != null){
+            for (int i=topTen.size()-1;i>=0;--i){
+                sb.append(topTen.get(i).getKey()).append(": ").append(topTen.get(i).getValue()).append("\n");
+            }
         }
         FileUtil.write(outputFile, sb.toString());
     }
+
+//    private void saveResult(List<Word> topTen){
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("characters: ").append(content.length()).append("\n")
+//            .append("words: ").append(wordNum).append("\n")
+//            .append("lines: ").append(lineNum.get()).append("\n");
+//        for (int i=topTen.size()-1;i>=0;--i){
+//            sb.append(topTen.get(i).getSpell()).append(": ").append(topTen.get(i).getCount()).append("\n");
+//        }
+//        FileUtil.write(outputFile, sb.toString());
+//    }
 
 }
