@@ -23,5 +23,6 @@ public class WordCount
         System.out.println("总字符数"+charNum);
         lineNum = functionMethod.CountLine(readFile);
         System.out.println("有效行数"+lineNum);
+        functionMethod.CountWord(readFile);
     }
 }

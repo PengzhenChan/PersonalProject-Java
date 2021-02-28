@@ -20,7 +20,7 @@ public class Function {
     
     public int CountChar(File readFile)
     {
-        int charNum=0;
+        int charNum=0;      //用于统计字符数
         
         try
         {
@@ -48,7 +48,7 @@ public class Function {
     
     public int CountLine(File readFile)
     {
-        int lineNum=0;
+        int lineNum=0;      //用于统计有效行数
         try
         {
             if (readFile.isFile() && readFile.exists())
@@ -77,5 +77,40 @@ public class Function {
         }
         
         return lineNum;
+    }
+    
+    public int CountWord(File readFile)
+    {
+        int wordNum=0;      //用于统计单词数
+        int flg=0;          //用于判断是否为一个单词，既4个英文字母开头
+        try
+        {
+            if (readFile.isFile() && readFile.exists())
+            {
+                String wordLine;
+                FileInputStream fileIn = new FileInputStream(readFile);
+                int readChar=0;
+                String word="";     //用于拼接读入的字符成为单词
+                
+                while((readChar = fileIn.read())!=-1)       //每读入一个字符，字符数自增1
+                {
+                    if((readChar>='a'&&readChar<='z')||(readChar>'A'&&readChar<'Z'))
+                    {
+                        char[] ch = new char[1];
+                        ch[0] = (char)readChar;
+                        word+=ch[0];
+                        System.out.println("字符"+ch[0]+"拼接"+word);
+                    }
+                }
+            }
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println("没有找到文件");
+            e.printStackTrace();
+        }
+        
+        return wordNum;
     }
 }
