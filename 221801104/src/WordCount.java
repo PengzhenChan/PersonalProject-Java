@@ -136,3 +136,10 @@ public class Count_Word{
 				//System.out.println(maps.getKey() + "\t" + maps.getValue());
 			}
 			out.close();
+			//打印出所有信息 
+			//for (Iterator<Map.Entry<String, Integer>>ite =list.iterator(); ite .hasNext();)
+			//{ 
+			//	Map.Entry<String, Integer> maps = ite.next(); 
+			//  System.out.println(maps.getKey() + "\t" +maps.getValue()); 
+			//} 
+			}
