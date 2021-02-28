@@ -107,3 +107,23 @@ public class Count_Word{
 		  
                         //把文件中所有大写字母转换为小写
                         toLower(docin);
+                        HashMap<String, Integer> map = (HashMap<String, Integer>) new Count_Word()
+				.wordCount(docin);
+		
+			// 将单词按照次数从高到低排序
+			List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>();
+			list.addAll(map.entrySet());
+			Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+			// 从高往低排序
+			public int compare(Map.Entry obj1, Map.Entry obj2) {
+				if (Integer.parseInt(obj1.getValue().toString()) < Integer
+					.parseInt(obj2.getValue().toString()))
+					return 1;
+				if (Integer.parseInt(obj1.getValue().toString()) == Integer
+					.parseInt(obj2.getValue().toString()))
+					return 0;
+				else
+					return -1;
+				}
+			});
+ 
