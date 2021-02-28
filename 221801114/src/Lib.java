@@ -102,7 +102,11 @@ public class Lib {
 
     public static void writeToFile(String content, String filePath){
         try{
-            fileWriter = new FileWriter(filePath, true);
+            if (fileWriter == null) {
+                fileWriter = new FileWriter(filePath ,false);
+            }else {
+                fileWriter = new FileWriter(filePath, true);
+            }
             fileWriter.write(content + "\n");
         }catch (FileNotFoundException e){
             System.out.println("未找到文件：" + filePath);
