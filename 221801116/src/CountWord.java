@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class CountWord {
-    public static int countWord(String path) throws IOException {
+    public static String countWord(String path) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
         String str = null;
         int wordCount = 0;
@@ -15,6 +15,8 @@ public class CountWord {
             }
         }
         br.close();
-        return wordCount;
+
+        String wordCountStr = "words:"+Integer.toString(wordCount)+"\n";
+        return wordCountStr;
     }
 }

@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class CountChar {
-    public static int countChar(String path) throws IOException {
+    public static String countChar(String path) throws IOException {
         int charCount = 0;
         int ch = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
@@ -10,6 +10,8 @@ public class CountChar {
             charCount++;
         }
         br.close();
-        return charCount;
+
+        String charCountStr = "characters:"+Integer.toString(charCount)+"\n";
+        return charCountStr;
     }
 }
