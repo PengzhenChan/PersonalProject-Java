@@ -51,3 +51,27 @@ public class Count_Word{
 		//需要读取的文件和输出流的初始化
 	        File file = new File(docin);
 	        BufferedWriter out = new BufferedWriter(new FileWriter(docout));
+		
+		//统计字符数和单词数
+		FileReader fr = new FileReader(file);   
+	        BufferedReader bfr = new BufferedReader(fr);
+	 		char ch;
+	 		char fch='A';
+	 		//字符数
+	 		int countc = 0;
+	 		//英文单词数
+	 		int countw = 0;
+	 		//按字符读取文本内容
+	 		while((ch = (char) bfr.read()) != (char)-1)
+	 		{
+	 			//统计文本中字符数
+	 			if(ch != '\n' && ch != '\r') 
+	 				//累计字符数
+	 				countc++;
+	 			if(!(ch>='a'&&ch<='z')&&!(ch>='A'&&ch<='Z')&&((fch>='a'&&fch<='z')||(fch>='A'&&fch<='Z')))
+	 			{
+	 				//累计单词数
+	 				countw++;
+	 			}
+	 			fch=ch;
+	 		}
