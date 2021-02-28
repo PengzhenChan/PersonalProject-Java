@@ -1,8 +1,6 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WordCount{
@@ -73,9 +71,9 @@ public class WordCount{
             while (currentLine != null) {
                 String[] wordStrings = pattern.split(currentLine);
                 for (String str:wordStrings){
-                    if (!str.equals("")){
+                    if (!str.equals("")&&judgeWords(str.toLowerCase())){
                         words++;
-                        System.out.println(str);
+                        System.out.println(str.toLowerCase());
                     }
                 }
                 currentLine = bufferedReader.readLine();
@@ -100,9 +98,9 @@ public class WordCount{
             while (currentLine != null) {
                 String[] wordStrings = pattern.split(currentLine);
                 for (String str:wordStrings){
-                    if (!str.equals("")){
-                        Integer count = hashMap.get(str);
-                        hashMap.put(str,((count != null) ? ++count : 1));
+                    if (!str.equals("")&&judgeWords(str.toLowerCase())){
+                        Integer count = hashMap.get(str.toLowerCase());
+                        hashMap.put(str.toLowerCase(),((count != null) ? ++count : 1));
                     }
                 }
                 currentLine = bufferedReader.readLine();
@@ -126,6 +124,17 @@ public class WordCount{
         }
     }
 
+    private static boolean judgeWords(String word){
+        if (word.length() < 4){
+            return false;
+        }
+        Pattern pattern = Pattern.compile("^[a-z]{4}");
+        Matcher matcher = pattern.matcher(word);
+        if (!matcher.find()){
+            return false;
+        }
+        return true;
+    }
 
     private static void closeInputStream(){
         try{
