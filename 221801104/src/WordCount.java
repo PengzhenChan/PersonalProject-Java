@@ -75,3 +75,19 @@ public class Count_Word{
 	 			}
 	 			fch=ch;
 	 		}
+                       
+		        /*然后将统计结果输出到指定文件，输出的格式如下；
+	 		 * 其中word1和word2 对应具体的单词，number为统计出的个数；换行使用'\n'，编码统一使用UTF-8。
+	 		 * characters: number
+	 		 * words: number
+	 		 * lines: number
+	 		 * word1: number
+	 		 * word2: number
+	 		 * ...
+                         */
+	 		out.write("characters:  "+countc);
+	 		out.newLine();
+	 		out.write("words: "+countw);
+	 		out.newLine();
+	 		//System.out.println("characters:  "+countc);
+	 		//System.out.println("words: "+countw);
