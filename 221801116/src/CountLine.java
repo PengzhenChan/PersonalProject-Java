@@ -7,7 +7,7 @@ public class CountLine {
     public static int countLine(String path) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
         String str = null;
-        String pattern = "[^ ].*";
+        String pattern = ".*[^ ].*";
         int countLine = 0;
 
         while((str= br.readLine())!=null){

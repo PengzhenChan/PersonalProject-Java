@@ -1,8 +1,5 @@
 import java.io.*;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class CountWordRate {
@@ -25,11 +22,20 @@ public class CountWordRate {
             }
         }
         br.close();
-        System.out.println(dictionary);
+        SortedMap<String,Integer> sortedMap = new TreeMap<String, Integer>();
+        sortedMap.putAll(dictionary);
+        List<Map.Entry<String,Integer>> mapList = new ArrayList<>(sortedMap.entrySet());
+        Collections.sort(mapList, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue()-o1.getValue();
+            }
+        });
+        System.out.println(mapList);
     }
 
     public static boolean isThatWord(String content){
-        String pattern = "[a-zA-Z]{4}.*";
+        String pattern = "[a-z]{4}.*";
         boolean isMatch = Pattern.matches(pattern,content);
         return isMatch;
     }
