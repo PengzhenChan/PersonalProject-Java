@@ -40,3 +40,12 @@ import java.util.Scanner;
 public class Count_Word{
 	// 使用HashMap来存储单词的频率
 	Map<String, Integer> wordCount = new HashMap<>();
+       
+	public static void main(String[] args) throws Exception {
+		//用户输入要读取的文件路径（docin），如：E://1.txt
+		//用户输入要输出的文件路径（docout），如：E://2.txt
+		Scanner in = new Scanner(System.in);	
+		String docin = in.nextLine();
+		String docout = in.nextLine();
+		
+		
