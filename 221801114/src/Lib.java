@@ -16,22 +16,14 @@ public class Lib {
 
     public static int getCharacters(String filePath){
         int characters = 0;
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null){
-                characters += currentLine.length() + 2;
-                currentLine = bufferedReader.readLine();
-            }
-            characters -= 2;
-        }catch (FileNotFoundException e){
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
+        String fileString = readToString(filePath);
+        String[] lineStrings = fileString.split("\\\\r\\\\n|\\\\n");
+        for (String s:lineStrings){
+            characters += s.length();
         }
+        int cnt1=(fileString.length()-fileString.replaceAll("\\\\n", "").length())/"\\n".length();
+        int cnt2=(fileString.length()-fileString.replaceAll("\\\\r\\\\n", "").length())/"\\r\\n".length();
+        characters = characters + cnt2 * 2 + (cnt1 - cnt2);
         return characters;
     }
 
