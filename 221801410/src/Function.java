@@ -84,6 +84,7 @@ public class Function {
         int wordNum=0;      //用于统计单词数
         int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
         int resetWord=0;           //用于判断是否重新开始一个单词读入 
+        
         try
         {
             if (readFile.isFile() && readFile.exists())
@@ -150,5 +151,78 @@ public class Function {
         }
         
         return wordNum;
+    }
+    
+    public void CountFrequentWord(File readFile)
+    {
+        int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
+        int resetWord=0;           //用于判断是否重新开始一个单词读入 
+        Vector<Word> allWords = new Vector<Word>();
+        int i=0;
+        try
+        {
+            if (readFile.isFile() && readFile.exists())
+            {
+                String wordLine;
+                FileInputStream fileIn = new FileInputStream(readFile);
+                int readChar=0;
+                String word="";     //用于拼接读入的字符成为单词
+                
+                while((readChar = fileIn.read())!=-1)       //每读入一个字符，字符数自增1
+                {
+                    resetWord = 0;
+                    
+                    if((readChar>='a'&&readChar<='z')
+                            ||(readChar>'A'&&readChar<'Z')
+                                ||(readChar>'0'&&readChar<'9'))
+                    {
+                        if(readChar>'0'&&readChar<'9')
+                        {
+                            if(wordLength>=4)
+                            {
+                                char[] ch = new char[1];
+                                ch[0] = (char)readChar;
+                                word += ch[0];
+                                wordLength++;
+                            }
+                            else
+                            {
+                                resetWord = 1;
+                            }
+                        }
+                        else 
+                        {
+                            char[] ch = new char[1];
+                            ch[0] = (char)readChar;
+                            word += ch[0];
+                            wordLength++;
+                        }
+                    }
+                    else
+                    {
+                        if(wordLength>=4)
+                        {
+                            i++;
+                            Word aWord = new Word(word,0);
+                            allWords.add(aWord);
+                            System.out.println(allWords.get(i-1).getWords());
+                        }
+                        resetWord = 1;
+                    }
+                    
+                    if(resetWord==1)
+                    {
+                        word = "";
+                        wordLength = 0;
+                    }
+                }
+            }
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println("没有找到文件");
+            e.printStackTrace();
+        }
     }
 }

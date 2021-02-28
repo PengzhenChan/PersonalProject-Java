@@ -26,5 +26,6 @@ public class WordCount
         System.out.println("有效行数"+lineNum);
         wordNum = functionMethod.CountWord(readFile);
         System.out.println("单词数"+wordNum);
+        functionMethod.CountFrequentWord(readFile);
     }
 }
