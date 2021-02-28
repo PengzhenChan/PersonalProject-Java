@@ -3,12 +3,22 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class CountWordRate {
-    public static String[] countWordRate(String path) throws IOException {
+    public static String[] countWordRate(String path){
         Map<String,Integer> dictionary = new HashMap<>();
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+        } catch (FileNotFoundException e) {
+            System.out.println("错误位于countWordRate方法,原因可能是未找到目标文件\n请重新确认文件位置\n" + "当前文件位置" + path);
+        }
         String str = null;
 
-        while((str= br.readLine())!=null){
+        while(true){
+            try {
+                if (!((str= br.readLine())!=null)) break;
+            } catch (IOException e) {
+                System.out.println("错误位于countWordRate方法,原因可能是文件读出现问题");
+            }
             String[] splitStr = str.split("[^0-9a-zA-Z]");
             for(int i=0;i<splitStr.length;i++){
                 splitStr[i] = splitStr[i].toLowerCase();
@@ -21,7 +31,11 @@ public class CountWordRate {
                 }
             }
         }
-        br.close();
+        try {
+            br.close();
+        } catch (IOException e) {
+            System.out.println("错误位于countWordRate法,原因可能是文件流未能正确的关闭");
+        }
 
         SortedMap<String,Integer> sortedMap = new TreeMap<String, Integer>();
         sortedMap.putAll(dictionary);
@@ -39,11 +53,6 @@ public class CountWordRate {
                 break;
             mostWord[i] = mapList.get(i).toString().replace('=',':')+"\n";
         }
-
-//        for(int i = 0;i < mostWord.length;i++){
-//            if(mostWord[i]!=null)
-//            System.out.print(mostWord[i]);
-//        }
 
         return mostWord;
 
