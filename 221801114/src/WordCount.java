@@ -105,15 +105,8 @@ public class WordCount{
                 }
                 currentLine = bufferedReader.readLine();
             }
-            int count = 0;
             TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
-            Set<String> keys = treeMap.keySet();
-            for (String s : keys) {
-                if (++count > 10){
-                    break;
-                }
-                System.out.println(s + ":" + treeMap.get(s));
-            }
+            sortByValue(treeMap);
         }catch (FileNotFoundException e){
             System.out.println("未找到文件：" + filePath);
             e.printStackTrace();
@@ -134,6 +127,23 @@ public class WordCount{
             return false;
         }
         return true;
+    }
+
+    public static void sortByValue(TreeMap<String,Integer> map) {
+        List<Map.Entry<String,Integer>> mappingList = null;
+        mappingList = new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
+        Collections.sort(mappingList, new Comparator<Map.Entry<String,Integer>>(){
+            public int compare(Map.Entry<String,Integer> mapping1,Map.Entry<String,Integer> mapping2){
+                return mapping2.getValue().compareTo(mapping1.getValue());
+            }
+        });
+        int count = 0;
+        for(Map.Entry<String,Integer> mapping:mappingList){
+            if (++count > 10){
+                break;
+            }
+            System.out.println(mapping.getKey()+":"+mapping.getValue());
+        }
     }
 
     private static void closeInputStream(){
