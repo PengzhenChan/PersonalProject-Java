@@ -11,29 +11,34 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class WordCountIO {
+    //空白行的正则表达式
+    private static String BLANK_LINE_REGEX = "^\\s*$";
+    
     /**
      * 读取文件转化为string形式
      * @param filePath 文件路径
      * @return 文件内容转成的String
+     * @throws IOException 
      */
-    public static String fileToString(String filePath) {
+    public static String fileToString(String filePath){
         StringBuffer strBuf = new StringBuffer();
-        String line;
-        
+        FileInputStream fis;
         try {
-            InputStream inpStr = new FileInputStream(filePath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(inpStr));
-            line = br.readLine();
-            while (line != null) {
-                strBuf.append(line);
-                strBuf.append("\n");
-                line = br.readLine();
+            fis = new FileInputStream(filePath);
+            byte[] b = new byte[1024]; 
+            strBuf = new StringBuffer();
+            int len ;
+            while ((len = fis.read(b)) != -1) {
+                strBuf.append(new String(b, 0, len));
             }
-            inpStr.close();
-            br.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR:文件" + filePath + "打开失败");
+            e.printStackTrace();
         } catch (IOException e) {
+            System.out.println("ERROR:文件" + filePath + "读取错误");
             e.printStackTrace();
         }
         return strBuf.toString();
@@ -83,7 +88,7 @@ public class WordCountIO {
                     writer.flush();
                     writer.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("关闭文件输入流失败");
+                    throw new RuntimeException("ERROR:关闭文件输入流失败");
                 }
             }
         }

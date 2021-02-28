@@ -124,12 +124,12 @@ public class WordCountMethods {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("关闭文件输入流失败!");
+                    throw new RuntimeException("ERROR:关闭文件输入流失败!");
                 }
             }
             validLine = allLine-blankLine;
         } catch (FileNotFoundException e) {
-            System.out.println("未找到文件，请重试...");
+            System.out.println("ERROR:未找到文件，请重试...");
             e.printStackTrace();
         }
         return validLine;
