@@ -82,7 +82,8 @@ public class Function {
     public int CountWord(File readFile)
     {
         int wordNum=0;      //用于统计单词数
-        int flg=0;          //用于判断是否为一个单词，既4个英文字母开头
+        int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
+        int resetWord=0;           //用于判断是否重新开始一个单词读入 
         try
         {
             if (readFile.isFile() && readFile.exists())
@@ -94,12 +95,49 @@ public class Function {
                 
                 while((readChar = fileIn.read())!=-1)       //每读入一个字符，字符数自增1
                 {
-                    if((readChar>='a'&&readChar<='z')||(readChar>'A'&&readChar<'Z'))
+                    resetWord = 0;
+                    
+                    if((readChar>='a'&&readChar<='z')
+                            ||(readChar>'A'&&readChar<'Z')
+                                ||(readChar>'0'&&readChar<'9'))
                     {
-                        char[] ch = new char[1];
-                        ch[0] = (char)readChar;
-                        word+=ch[0];
-                        System.out.println("字符"+ch[0]+"拼接"+word);
+                        if(readChar>'0'&&readChar<'9')
+                        {
+                            if(wordLength>=4)
+                            {
+                                char[] ch = new char[1];
+                                ch[0] = (char)readChar;
+                                word += ch[0];
+                                System.out.println("字符"+ch[0]+"拼接"+word);
+                                wordLength++;
+                            }
+                            else
+                            {
+                                resetWord = 1;
+                            }
+                        }
+                        else 
+                        {
+                            char[] ch = new char[1];
+                            ch[0] = (char)readChar;
+                            word += ch[0];
+                            System.out.println("字符"+ch[0]+"拼接"+word);
+                            wordLength++;
+                        }
+                    }
+                    else
+                    {
+                        if(wordLength>=4)
+                        {
+                            wordNum++;
+                        }
+                        resetWord = 1;
+                    }
+                    
+                    if(resetWord==1)
+                    {
+                        word = "";
+                        wordLength = 0;
                     }
                 }
             }

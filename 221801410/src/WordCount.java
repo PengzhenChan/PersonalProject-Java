@@ -16,6 +16,7 @@ public class WordCount
     {
         int lineNum=0;
         int charNum=0;
+        int wordNum=0;
         String fileName="input.txt";
         File readFile = new File(fileName);
         Function functionMethod = new Function();
@@ -23,6 +24,7 @@ public class WordCount
         System.out.println("总字符数"+charNum);
         lineNum = functionMethod.CountLine(readFile);
         System.out.println("有效行数"+lineNum);
-        functionMethod.CountWord(readFile);
+        wordNum = functionMethod.CountWord(readFile);
+        System.out.println("单词数"+wordNum);
     }
 }
