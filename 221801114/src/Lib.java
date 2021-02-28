@@ -9,25 +9,9 @@ public class Lib {
     private static Map<String, Integer> hashMap = null;
 
     public static int getLines(String filePath){
-        int lines = 0;
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null){
-                if (currentLine.trim().length() != 0){
-                    lines++;
-                }
-                currentLine = bufferedReader.readLine();
-            }
-        }catch (FileNotFoundException e){
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
-        }
-        return lines;
+        String fileString = readToString(filePath);
+        String[] lineStrings = fileString.split("\\\\r\\\\n|\\\\n");
+        return lineStrings.length;
     }
 
     public static int getCharacters(String filePath){
@@ -142,6 +126,30 @@ public class Lib {
             }
         }catch (IOException e){
             e.printStackTrace();
+        }
+    }
+
+    public static String readToString(String filePath) {
+        String encoding = "UTF-8";
+        File file = new File(filePath);
+        Long filelength = file.length();
+        byte[] filecontent = new byte[filelength.intValue()];
+        try {
+            FileInputStream in = new FileInputStream(file);
+            in.read(filecontent);
+            in.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("未找到文件：" + filePath);
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new String(filecontent, encoding);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("The OS does not support " + encoding);
+            e.printStackTrace();
+            return null;
         }
     }
 }
