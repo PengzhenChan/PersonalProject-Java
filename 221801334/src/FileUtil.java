@@ -17,20 +17,6 @@ public class FileUtil {
     private static final Charset ENCODING = StandardCharsets.UTF_8;
 
     /**
-     * 文件读入
-     *
-     * @param file 输入文件
-     * @return 文件内容，如果空则为""
-     */
-    public static String read(File file){
-//        if (file.length() < 2580000){
-//            return readBuffer(file);
-//        }
-        return readMMAP(file);
-//        return readBuffer(file);
-    }
-
-    /**
      * 文件读入，使用缓存流
      *
      * @param file 输入文件

@@ -31,22 +31,16 @@ public class WordOperationImpl implements WordOperation {
 
     // 记录单词个数的映射
     private Map<String, Integer> wordIntegerMap;
-    private static final int COUNT_THREAD_NUMBER = 8;
     private static final int MIN_THREAD_ROW_LENGTH = 256 * 10;
-    private static final int LINE_THREAD_NUMBER = 8;
-    private List<Integer> lineInfo;
 
     private static final Pattern wordPattern = Pattern.compile("[a-z]{4}[a-z0-9]*");
-    private static final Pattern linePattern = Pattern.compile("\n");
 
     public WordOperationImpl(File inputFile, File outputFile){
-        content = FileUtil.read(inputFile).toLowerCase();
+        content = FileUtil.readMMAP(inputFile).toLowerCase();
         this.outputFile = outputFile;
         wordNum = 0;
         lineNum = new AtomicInteger(0);
-        //wordIntegerMap = new HashMap<>(1 << 18);
         wordIntegerMap = new ConcurrentHashMap<>(1 << 18);
-        lineInfo = new ArrayList<>(1 << 15);
     }
 
     /**
@@ -174,7 +168,6 @@ public class WordOperationImpl implements WordOperation {
                 e.printStackTrace();
             }
         } while(loop);
-        //threadPool.shutdown();
         saveResult(getTopTen());
 //        saveResult(tree.getTopTen());
     }
@@ -213,15 +206,18 @@ public class WordOperationImpl implements WordOperation {
      */
     private void countLine(int start, int end){
         String temp = content.substring(start, end);
-        Matcher lineMatcher = linePattern.matcher(temp);
         int tempLen = temp.length();
         int startIndex = 0;
         int endIndex;
         int i;
         int count = 0;
         char c;
-        while (lineMatcher.find()){
-            endIndex = lineMatcher.start();
+        while (startIndex < tempLen) {
+            for (endIndex = startIndex;endIndex<tempLen;endIndex++){
+                if (temp.charAt(endIndex) == '\n'){
+                    break;
+                }
+            }
             if ((endIndex - startIndex) > 0){
                 for (i = startIndex;i<endIndex;++i){
                     c = temp.charAt(i);
@@ -229,22 +225,11 @@ public class WordOperationImpl implements WordOperation {
                         break;
                     }
                 }
-                if (i < end){
+                if (i < endIndex){
                     ++count;
                 }
             }
-            startIndex = lineMatcher.end();
-        }
-        if (startIndex != tempLen){
-            for (i = startIndex;i<tempLen;++i){
-                c = temp.charAt(i);
-                if ((c >= 33) && (c <= 126)){
-                    break;
-                }
-            }
-            if (i < end){
-                ++count;
-            }
+            startIndex = endIndex + 1;
         }
         lineNum.getAndAdd(count);
     }
