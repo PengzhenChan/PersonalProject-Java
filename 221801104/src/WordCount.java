@@ -48,4 +48,6 @@ public class Count_Word{
 		String docin = in.nextLine();
 		String docout = in.nextLine();
 		
-		
+		//需要读取的文件和输出流的初始化
+	        File file = new File(docin);
+	        BufferedWriter out = new BufferedWriter(new FileWriter(docout));
