@@ -164,3 +164,34 @@ public class Count_Word{
 			tempStream.close();
 			myWriter.close();
 		}
+
+		//统计单词频率
+		public Map<String, Integer> wordCount(String fileName) throws IOException {
+		// 打开文件
+			File file = new File(fileName);
+			FileInputStream fis = null;		
+			fis = new FileInputStream(file);
+			// 英文单词以空格为分隔符，将单词分隔，并将所有大写字母转换为小写
+			BufferedReader bufr = new BufferedReader(new InputStreamReader(fis));
+			String s = null;
+		
+			while ((s = bufr.readLine()) != null) {
+				// 移除字符串的前导空白和后尾部空白
+				s = s.trim();
+				// 正则表达式：以非字母或者是数字为分隔符，进行分割
+				String[] str = s.split("(\\s+\\W+)|[\\s+\\W+]");
+				for (int i = 0; i < str.length; i++) {
+					// 如果HashMap中已有该值,将值加1
+					if (wordCount.containsKey(str[i])) {
+						wordCount.put(str[i], wordCount.get(str[i]) + 1);
+					} else {
+						// 默认初始化该单词的出现次数为1
+						wordCount.put(str[i], 1);
+					}
+				}
+			}		
+			// 移除HashMap中的""空字符串
+			wordCount.remove("");
+			return wordCount;
+		}
+	}
