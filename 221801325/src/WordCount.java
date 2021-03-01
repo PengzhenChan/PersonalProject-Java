@@ -6,9 +6,9 @@ import java.io.IOException;
 public class WordCount
 {
     public static void main(String[] args) throws IOException {
+        CountChar countChar = new CountChar();
         String root = System.getProperty("user.dir");
-            String path = root+ File.separator+"src"+File.separator+"input.txt";
-        System.out.println(path);
+        String path = root+ File.separator+"src"+File.separator+"input.txt";
 
         try
         {
@@ -19,7 +19,7 @@ public class WordCount
             {
                 s = s + line + "\n";
             }
-            System.out.println(s);
+            System.out.println(countChar.charCount(s));
         }
         catch (IOException e) {
             e.printStackTrace();
