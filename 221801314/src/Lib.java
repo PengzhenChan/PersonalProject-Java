@@ -1,9 +1,7 @@
 import sun.nio.cs.ext.ISCII91;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +16,7 @@ public class Lib {
          * @Param [filePath]
          * @return java.io.InputStream
          **/
-        public InputStream openStream(String filePath) {
+        public InputStream openReadStream(String filePath) {
             File file = new File(filePath);
             try {
                 input = new FileInputStream(file);
@@ -36,7 +34,7 @@ public class Lib {
          * @Param []
          * @return boolean
          **/
-        public boolean closeStream() {
+        public boolean closeReadStream() {
             try {
                 input.close();
             } catch (IOException e) {
@@ -86,6 +84,12 @@ public class Lib {
         BufferedReader reader = null;
         InputStream input = null;
         List<String> strings = new ArrayList<>();
+        static final int TOP_NUM = 10;
+        HashMap<String,Integer> words = new HashMap<String, Integer>();
+        List<Map.Entry<String,Integer>> list = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+
+
         public TextEditor(BufferedReader reader) {
             this.reader = reader;
         }
@@ -193,7 +197,7 @@ public class Lib {
         }
 
         /**
-         * @Description 统计单词
+         * @Description 统计有效单词总数
          * @Author Lvv
          * @Date 2021/3/1 21:13
          * @Param []
@@ -203,22 +207,86 @@ public class Lib {
             String word;
             int sum = 0;
             for (int i = 0; i < strings.size(); i++) {
-                String[] arr = strings.get(i).split("\\s+");
+//              \w :匹配包括下划线的任何单词字符,等价于 [A-Z a-z 0-9_]
+//              \W :匹配任何非单词字符,等价于 [^A-Z a-z 0-9_]
+                String[] arr = strings.get(i).split("\\W");
                 for (String str : arr) {
-                    if (validate(str))
-                        sum++;
+                    word = str.toLowerCase();   //转小写
+                    if (validate(word)) {
+                        if (!words.containsKey(word)) {
+                            words.put(word,0);
+                        } else {
+                            continue;
+//                            int times = words.get(word) + 1;
+//                            words.remove(word);
+//                            words.put(word,times);
+                        }
+                    }
                 }
             }
 //            //测试用输出
 //            System.out.println("sum:" + sum);
+            return words.size();
+        }
+
+        public void countTopWords() {
+            String word;
+            int sum = 0;
+            for (int i = 0; i < strings.size(); i++) {
+//              \w :匹配包括下划线的任何单词字符,等价于 [A-Z a-z 0-9_]
+//              \W :匹配任何非单词字符,等价于 [^A-Z a-z 0-9_]
+                String[] arr = strings.get(i).split("\\W");
+                for (String str : arr) {
+                    word = str.toLowerCase();   //转小写
+                    if (validate(word)) {
+                        if (!words.containsKey(word)) {
+                            words.put(word, 1);
+                        } else {
+                            int times = words.get(word) + 1;
+                            words.remove(word);
+                            words.put(word, times);
+                        }
+                    }
+                }
+            }
+            for (Map.Entry<String,Integer> entry : words.entrySet()) {
+                list.add(entry);
+            }
+            list.sort(new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    if (o2.getValue() == o1.getValue()) {
+                        return o1.getKey().compareTo(o2.getKey());
+                    }
+                    return o2.getValue() - o1.getValue();
+                }
+            });
+        }
+
+        public void printTops() {
+            for (int i = 0; i < Math.min(TOP_NUM, list.size()); i++) {
+                stringBuilder.append("word" + i +": ").append(list.get(i).getKey())
+                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');
+            }
+            System.out.println(stringBuilder.toString());
+        }
+
+        /**
+         * @Description 统计文件中非空行数
+         * @Author Lvv
+         * @Date 2021/3/1 21:49
+         * @Param []
+         * @return int
+         **/
+        public int countRows() {
+            int sum = 0;
+            for (int i = 0; i < strings.size(); i++) {
+                if (!strings.get(i).isEmpty())
+                    sum++;
+            }
+//            System.out.println("行数: " + sum);
             return sum;
         }
-//        public int countRows(String str) {
-//            Scanner scanner = new Scanner(input);
-//            while (scanner.hasNext()){
-//
-//            }
-//        }
     }
 
 }
