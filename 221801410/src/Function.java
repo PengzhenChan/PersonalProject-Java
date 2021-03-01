@@ -203,6 +203,10 @@ public class Function {
                         if(wordLength>=4)
                         {
                             i++;
+                            if(FindWord(allWords,word))
+                            {
+                                System.out.println("该单词已存在");
+                            }
                             Word aWord = new Word(word,0);
                             allWords.add(aWord);
                             System.out.println(allWords.get(i-1).getWords());
@@ -224,5 +228,17 @@ public class Function {
             System.out.println("没有找到文件");
             e.printStackTrace();
         }
+    }
+    
+    public boolean FindWord(Vector<Word> allWords,String word)
+    {
+        for(int i = 0;i<allWords.size();i++)
+        {
+            if(allWords.get(i).getWords().equals(word))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
