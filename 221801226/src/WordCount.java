@@ -5,7 +5,7 @@ import java.util.Map;
 public class WordCount {
     private String inputFile;
     private String outputFile;
-    
+
     public WordCount(String inputFile, String outputFile) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
