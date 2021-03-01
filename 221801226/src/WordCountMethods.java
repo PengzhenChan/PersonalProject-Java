@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class WordCountMethods {
-    //校验中文的正则表达式
-    private static String CHINESE_REGEX = "[\\u4e00-\\u9fa5]";
     //空白行的正则表达式
     private static String BLANK_LINE_REGEX = "^\\s*$";
     //非字母数字字符的正则表达式
@@ -25,51 +23,7 @@ public class WordCountMethods {
     private static String FIRST_FOUR_APLH_REGEX = "^[a-z]{4,}.*";
     
     //记录文件内单词以及出现次数的TreeMap
-    public static Map<String, Integer> map = new TreeMap<>();
-    
-    /**
-     * 过滤掉中文
-     * @param str 待过滤中文的字符串
-     * @return result 过滤掉中文后字符串
-     */
-    public static String filterChinese(String str) {
-        String result = str;
-        //判断字符串中是否包含中文
-        Pattern p = Pattern.compile(CHINESE_REGEX);
-        Matcher m = p.matcher(str);
-        
-        if (m.find()) {
-            StringBuffer sb = new StringBuffer();
-            // 用于校验是否为中文
-            boolean flag = false;
-            char chinese = 0;
-            char[] charArray = str.toCharArray();
-            // 过滤中文及中文字符
-            for (int i = 0; i < charArray.length; i++) {
-                chinese = charArray[i];
-                flag = isChineseChar(chinese);
-                if (!flag) {
-                    sb.append(chinese);
-                }
-            }
-            result = sb.toString();
-        }
-        return result;
-    }
-    
-    /**
-     * 校验一个字符是否是汉字
-     * @param c 被校验的字符
-     * @return true代表是汉字
-     */
-    public static boolean isChineseChar(char c) {
-        try {
-            return String.valueOf(c).getBytes("UTF-8").length > 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    public static TreeMap<String, Integer> map = new TreeMap<>();
     
     /**
      * 统计文件的字符数
@@ -170,7 +124,7 @@ public class WordCountMethods {
      * @return list 存储出现频率最高的单词以及次数
      */
     
-    public static List<Map.Entry<String, Integer>> highFreqWord(Map<String, Integer> map){
+    public static List<Map.Entry<String, Integer>> highFreqWord(TreeMap<String, Integer> map){
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
         Collections.sort(list,new Comparator<Map.Entry<String, Integer>>(){
             public int compare(Map.Entry<String, Integer> word1, Map.Entry<String, Integer> word2) {

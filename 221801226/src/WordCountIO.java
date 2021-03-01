@@ -37,10 +37,10 @@ public class WordCountIO {
             br.close();
             return strBud.toString();
         } catch (FileNotFoundException e) {
-            System.out.println("ERROR:文件" + filePath + "打开失败");
+            System.out.println("ERROR:文件打开失败");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("ERROR:文件" + filePath + "读取错误");
+            System.out.println("ERROR:文件读取错误");
             e.printStackTrace();
         }
         return strBud.toString();

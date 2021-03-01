@@ -27,8 +27,7 @@ public class WordCount {
     public void work() {
         try {
             String fileToStr = WordCountIO.fileToString(inputFile);
-            String StrToFilterChinese = WordCountMethods.filterChinese(fileToStr);
-            int chars = WordCountMethods.countChars(StrToFilterChinese);
+            int chars = WordCountMethods.countChars(fileToStr);
             int words = WordCountMethods.countWords(fileToStr);
             int lines = WordCountMethods.CountLines(inputFile);
             List<Map.Entry<String, Integer>> wordList;
