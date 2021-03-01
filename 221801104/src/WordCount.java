@@ -150,7 +150,7 @@ public class Count_Word{
  
 		// 将出现频率最高的前十个单词写入文件
 		int i = 0;
-		if(wordsnum>=10) {
+		if(map.size()>=10) {
 			for (Iterator<Map.Entry<String, Integer>> ite = list.iterator(); i < 10; i++) {
 				Map.Entry<String, Integer> maps = ite.next();
 				out.write(maps.getKey() + ": " + maps.getValue());
