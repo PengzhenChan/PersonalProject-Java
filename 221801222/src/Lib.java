@@ -39,9 +39,17 @@ public class Lib
         return lines;
     }
 
-
-
     
+    /*
+    返回字符数
+     */
+    int getChars()
+    {
+        chars = text.length();
+        return chars;
+    }
+
+
     /*
     获取单词总数
      */
