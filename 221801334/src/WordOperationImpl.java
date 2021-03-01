@@ -10,6 +10,12 @@ import java.util.regex.Pattern;
  * @date 2021/02/25
  */
 public class WordOperationImpl implements WordOperation {
+    // 一个线程处理的字符串的最小长度
+    private static final int MIN_THREAD_LENGTH = 256 * 10;
+    // 单词的正则表达式匹配
+    private static final Pattern wordPattern = Pattern.compile("[a-z]{4}[a-z0-9]*");
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+
     // 输出文件
     private File outputFile;
     // 文本内容
@@ -17,28 +23,19 @@ public class WordOperationImpl implements WordOperation {
     // 有效行数
     private AtomicInteger lineNum;
     // 单词数
-    private int wordNum;
-    // 字典树
-    private TrieTree tree;
-    private AtomicInteger wordNumTwo = new AtomicInteger(0);
+    private AtomicInteger wordNum;
+    // 记录单词-个数的映射
+    private Map<String, Integer> wordIntegerMap;
 
-    // 一个线程最小处理量
-    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final ExecutorService threadPool = new ThreadPoolExecutor(
         8, Math.max((CPU_COUNT << 1), 16), 30, TimeUnit.SECONDS,
         new LinkedBlockingQueue<>(Integer.MAX_VALUE), r -> new Thread(null, r, "", 0),
         new ThreadPoolExecutor.CallerRunsPolicy());
 
-    // 记录单词个数的映射
-    private Map<String, Integer> wordIntegerMap;
-    private static final int MIN_THREAD_ROW_LENGTH = 256 * 10;
-
-    private static final Pattern wordPattern = Pattern.compile("[a-z]{4}[a-z0-9]*");
-
     public WordOperationImpl(File inputFile, File outputFile){
         content = FileUtil.readMMAP(inputFile).toLowerCase();
         this.outputFile = outputFile;
-        wordNum = 0;
+        wordNum = new AtomicInteger(0);
         lineNum = new AtomicInteger(0);
         wordIntegerMap = new ConcurrentHashMap<>(1 << 18);
     }
@@ -61,7 +58,7 @@ public class WordOperationImpl implements WordOperation {
     @Override
     public int countWord() {
         Matcher wordMatcher = wordPattern.matcher(content);
-        wordNum = 0;
+        int wordNum = 0;
         if (wordMatcher.find()){
             int start = wordMatcher.start() - 1;
             if (start >= 0){
@@ -78,18 +75,6 @@ public class WordOperationImpl implements WordOperation {
             }
         }
         return wordNum;
-    }
-
-    /**
-     * 判断是否是合法的单词
-     *
-     * @param c 前一个字符
-     * @return true为合法
-     */
-    private boolean wordLegal(char c){
-        if ((c >= '0') && (c <='9'))
-            return false;
-        return (c < 'a') || (c > 'z');
     }
 
     /**
@@ -124,23 +109,28 @@ public class WordOperationImpl implements WordOperation {
             }
         }
 
-        List<Map.Entry<String, Integer>> words = new ArrayList<>(wordIntegerMap.entrySet());
-        words.sort((o1, o2) -> {
+        Queue<Map.Entry<String, Integer>> wordQueue = new PriorityQueue<>(16, (o1, o2) -> {
             if (o1.getValue().intValue() != o2.getValue().intValue()){
-                return o2.getValue() - o1.getValue();
+                return o1.getValue() - o2.getValue();
             }
-            return o1.getKey().compareTo(o2.getKey());
+            return o2.getKey().compareTo(o1.getKey());
         });
-
-        List<Word> topTen = new ArrayList<>();
-        int num = 0;
-        for (Map.Entry<String, Integer> wordd : words){
-            if (num < 10){
-                topTen.add(new Word(wordd.getKey(), wordd.getValue()));
+        List<Map.Entry<String, Integer>> words = new ArrayList<>(wordIntegerMap.entrySet());
+        for (Map.Entry<String, Integer> oneWord : words){
+            if (wordQueue.size() < 10){
+                wordQueue.add(oneWord);
+            } else if (isReplace(oneWord, wordQueue.peek())){
+                wordQueue.poll();
+                wordQueue.add(oneWord);
             }
-            ++num;
         }
-        return topTen;
+
+        List<Word> wordList = new ArrayList<>(16);
+        while (!wordQueue.isEmpty()){
+            Map.Entry<String, Integer> oneWord = wordQueue.poll();
+            wordList.add(0, new Word(oneWord.getKey(), oneWord.getValue()));
+        }
+        return wordList;
     }
 
     /**
@@ -153,33 +143,13 @@ public class WordOperationImpl implements WordOperation {
             saveResult(null);
         }
 
-        //统计单词词频
-        //threadPool.execute(this::countWordThread);
-//        threadPool.execute(this::countWordTrieThread);
-
-        countEffectiveRow();
-
-        threadPool.shutdown();
-        boolean loop = false;
-        do {
-            try {
-                loop = (!threadPool.awaitTermination(3, TimeUnit.MINUTES));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } while(loop);
-        saveResult(getTopTen());
-//        saveResult(tree.getTopTen());
-    }
-
-    private void countEffectiveRow(){
         int len = content.length();
-        int oneLen = Math.max(MIN_THREAD_ROW_LENGTH, len >> 3);
+        int oneLen = Math.max(MIN_THREAD_LENGTH, len >> 4);
         int start = 0;
         int j;
-        for (int i=0;i<len;i+=oneLen){
+        for (int i = 0;i < len;i += oneLen){
             if (i > start){
-                for (j=i;j<len;++j){
+                for (j = i;j < len;++j){
                     if (content.charAt(j) == '\n'){
                         break;
                     }
@@ -196,6 +166,29 @@ public class WordOperationImpl implements WordOperation {
             threadPool.execute(() -> countLine(finalStart1, len));
             threadPool.execute(() -> countWordThread(finalStart1, len));
         }
+
+        threadPool.shutdown();
+        boolean loop = false;
+        do {
+            try {
+                loop = (!threadPool.awaitTermination(1, TimeUnit.MINUTES));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while(loop);
+        saveResult(getTopTen());
+    }
+
+    /**
+     * 判断是否是合法的单词
+     *
+     * @param c 前一个字符
+     * @return true为合法
+     */
+    private boolean wordLegal(char c){
+        if ((c >= '0') && (c <='9'))
+            return false;
+        return (c < 'a') || (c > 'z');
     }
 
     /**
@@ -207,7 +200,9 @@ public class WordOperationImpl implements WordOperation {
     private void countLine(int start, int end){
         String temp = content.substring(start, end);
         int tempLen = temp.length();
+        // 一行的开始位置
         int startIndex = 0;
+        // 一行的结束位置
         int endIndex;
         int i;
         int count = 0;
@@ -219,7 +214,7 @@ public class WordOperationImpl implements WordOperation {
                 }
             }
             if ((endIndex - startIndex) > 0){
-                for (i = startIndex;i<endIndex;++i){
+                for (i = startIndex;i < endIndex;++i){
                     c = temp.charAt(i);
                     if ((c >= 33) && (c <= 126)){
                         break;
@@ -277,11 +272,16 @@ public class WordOperationImpl implements WordOperation {
         return m1.getKey().compareTo(m2.getKey()) < 0;
     }
 
+    /**
+     * 往map中修改数据
+     *
+     * @param key 单词
+     */
     private void dealMap(String key){
         Integer oldValue;
         while (true) {
             oldValue = wordIntegerMap.get(key);
-            if (null == oldValue) {
+            if (oldValue == null) {
                 if (wordIntegerMap.putIfAbsent(key, 1) == null) {
                     break;
                 }
@@ -296,6 +296,8 @@ public class WordOperationImpl implements WordOperation {
     /**
      * 统计单词个数
      *
+     * @param startIndex 开始位置
+     * @param endIndex 结束位置
      */
     private void countWordThread(int startIndex, int endIndex){
         String temp = content.substring(startIndex, endIndex);
@@ -315,128 +317,31 @@ public class WordOperationImpl implements WordOperation {
                 dealMap(word);
             }
         }
-
         while (wordMatcher.find()){
             if (wordLegal(temp.charAt(wordMatcher.start() - 1))){
                 ++count;
-                word = wordMatcher.group();
-                dealMap(word);
+                dealMap(wordMatcher.group());
             }
         }
-
-        wordNumTwo.getAndAdd(count);
-
-
-//        Matcher wordMatcher = wordPattern.matcher(content);
-//        String word;
-//        if (wordMatcher.find()){
-//            word = wordMatcher.group();
-//            int start = wordMatcher.start() - 1;
-//            if (start>=0){
-//                if (wordLegal(content.charAt(start))){
-//                    ++wordNum;
-//                    wordIntegerMap.put(word, 1);
-//                }
-//            } else {
-//                ++wordNum;
-//                wordIntegerMap.put(word, 1);
-//            }
-//        }
-//
-//        while (wordMatcher.find()){
-//            if (wordLegal(content.charAt(wordMatcher.start() - 1))){
-//                ++wordNum;
-//                word = wordMatcher.group();
-//                if (wordIntegerMap.containsKey(word)){
-//                    wordIntegerMap.put(word, wordIntegerMap.get(word) + 1);
-//                } else {
-//                    wordIntegerMap.put(word, 1);
-//                }
-//            }
-//        }
+        wordNum.getAndAdd(count);
     }
-
-    /**
-     * 字典树计算单词频率
-     *
-     * @param words 单词列表
-     */
-    private void countRate(List<String> words){
-        for (String word : words){
-            tree.insert(word);
-        }
-    }
-
-    /**
-     * 统计单词个数
-     * 使用字典树
-     *
-     */
-    private void countWordTrieThread(){
-        Matcher wordMatcher = wordPattern.matcher(content);
-        String word;
-        if (wordMatcher.find()){
-            word = wordMatcher.group();
-            int start = wordMatcher.start() - 1;
-            if (start>=0){
-                if (wordLegal(content.charAt(start))){
-                    ++wordNum;
-                    wordIntegerMap.put(word, 1);
-                }
-            } else {
-                ++wordNum;
-                wordIntegerMap.put(word, 1);
-            }
-        }
-
-//        List<List<String>> wordLists = new ArrayList<>(COUNT_THREAD_NUMBER << 1);
-//        for (int i=0;i<COUNT_THREAD_NUMBER;i++){
-//            wordLists.add(new ArrayList<>(1 << 15));
-//        }
-
-        while (wordMatcher.find()){
-            if (wordLegal(content.charAt(wordMatcher.start() - 1))){
-                ++wordNum;
-                word = wordMatcher.group();
-//                wordLists.get(word.charAt(0) % COUNT_THREAD_NUMBER).add(word);
-                tree.insert(word);
-            }
-        }
-
-//        for (int i=0;i<COUNT_THREAD_NUMBER;i++){
-//            int finalI = i;
-//            threadPool.execute(() -> countRate(wordLists.get(finalI)));
-//        }
-    }
-
-
 
     /**
      * 保存计算结果到文件
      *
+     * @param topTen top10单词
      */
     private void saveResult(List<Map.Entry<String, Integer>> topTen){
         StringBuilder sb = new StringBuilder();
         sb.append("characters: ").append(content.length()).append("\n")
-            .append("words: ").append(wordNumTwo.get()).append("\n")
+            .append("words: ").append(wordNum.get()).append("\n")
             .append("lines: ").append(lineNum.get()).append("\n");
         if (topTen != null){
-            for (int i=topTen.size()-1;i>=0;--i){
+            for (int i = topTen.size() - 1;i >= 0;--i){
                 sb.append(topTen.get(i).getKey()).append(": ").append(topTen.get(i).getValue()).append("\n");
             }
         }
         FileUtil.write(outputFile, sb.toString());
     }
-
-//    private void saveResult(List<Word> topTen){
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("characters: ").append(content.length()).append("\n")
-//            .append("words: ").append(wordNum).append("\n")
-//            .append("lines: ").append(lineNum.get()).append("\n");
-//        for (int i=topTen.size()-1;i>=0;--i){
-//            sb.append(topTen.get(i).getSpell()).append(": ").append(topTen.get(i).getCount()).append("\n");
-//        }
-//        FileUtil.write(outputFile, sb.toString());
-//    }
 
 }

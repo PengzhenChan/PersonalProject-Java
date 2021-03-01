@@ -44,13 +44,13 @@ public class WordCount {
             return ExceptionInfo.INPUT_FILE_NOT_EXIST;
         }
         // 输入文件后缀名不是.txt
-        if (!inputFile.getName().endsWith(".txt")){
+        if (!args[0].endsWith(".txt")){
             return ExceptionInfo.ILLEGAL_INPUT_FILE;
         }
 
         File outputFile = new File(args[1]);
         // 输出文件后缀名不是.txt
-        if (!inputFile.getName().endsWith(".txt")){
+        if (!args[1].endsWith(".txt")){
             return ExceptionInfo.ILLEGAL_OUTPUT_FILE;
         }
         // 输出文件不存在
