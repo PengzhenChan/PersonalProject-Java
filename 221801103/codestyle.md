@@ -57,10 +57,8 @@ public int Add(int a,int b)<br/>
 }
 >if、for、do、while、case、switch、default default default 等语句自占一行等语句
 自占一行，且 if、for、 do、while 等语句的执行语句部分无论多少都要加括号等
-语句的执行语句部分无论多少都要加括号{}。
+语句的执行语句部分无论多少都要加括号{}。如：
 
-
-如：
 if (pUserCR == NULL) <br/>
 {<br/>
 ......<br/>
