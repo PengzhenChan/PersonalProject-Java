@@ -90,10 +90,7 @@ public class Lib
         while(matcher.find())
         {
             words++;   //单词数+1
-
             String midWord = matcher.group(2).toString().toLowerCase();  //取出匹配的word,并统一转化为小写
-            System.out.println(midWord);
-
             Integer wordsCnt = maxCntWords.get(midWord);
             if(wordsCnt == null)   //word在文中第一次出现
             {
@@ -110,7 +107,9 @@ public class Lib
                 maxCntWords
                 .entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .sorted(Map.Entry.<String, Integer> comparingByValue() //按值降序
+                        .reversed()
+                        .thenComparing(Map.Entry.comparingByKey()))//按key字典序升序
                 .limit(10)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
     }
