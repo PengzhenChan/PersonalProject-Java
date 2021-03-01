@@ -229,6 +229,13 @@ public class Lib {
             return words.size();
         }
 
+        /**
+         * @Description 统计词频
+         * @Author Lvv
+         * @Date 2021/3/1 23:43
+         * @Param []
+         * @return void
+         **/
         public void countTopWords() {
             String word;
             int sum = 0;
@@ -263,6 +270,13 @@ public class Lib {
             });
         }
 
+        /**
+         * @Description 打印词频
+         * @Author Lvv
+         * @Date 2021/3/1 23:43
+         * @Param []
+         * @return void
+         **/
         public void printTops() {
             for (int i = 0; i < Math.min(TOP_NUM, list.size()); i++) {
                 stringBuilder.append("word" + i +": ").append(list.get(i).getKey())
