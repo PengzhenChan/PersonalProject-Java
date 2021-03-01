@@ -39,7 +39,7 @@ public class Lib
         return lines;
     }
 
-    
+
     /*
     返回字符数
      */
@@ -57,6 +57,7 @@ public class Lib
     {
         if(!isDoHandleWordsFunc)
             handleWords();
+        isDoHandleWordsFunc = true;
         return words;
     }
 
@@ -68,6 +69,7 @@ public class Lib
     {
         if(!isDoHandleWordsFunc)
             handleWords();
+        isDoHandleWordsFunc = true;
         return maxCntWords;
     }
 
