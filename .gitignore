@@ -1,8 +1,0 @@
-/target/
-/src/test
-.idea
-.project
-.settings
-.class
-*.class
-*.jar
