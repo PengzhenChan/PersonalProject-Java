@@ -159,13 +159,12 @@ public class Count_Word{
 			}
 		}
 		else {
-			    Iterator<Map.Entry<String, Integer>> ite = list.iterator();
-			    if(ite.hasNext()) {
+			for (Iterator<Map.Entry<String, Integer>> ite = list.iterator(); i < map.size(); i++) {
 				Map.Entry<String, Integer> maps = ite.next();
 				out.write(maps.getKey() + ": " + maps.getValue());
 				out.newLine();
 				//System.out.println(maps.getKey() + "\t" + maps.getValue());
-			}		
+			}
 		}
 		out.close();
 		//打印出所有信息 
@@ -230,5 +229,3 @@ public class Count_Word{
 		return wordCount;
 	}
 }
-
-
