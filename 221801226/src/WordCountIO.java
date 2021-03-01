@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,16 +25,17 @@ public class WordCountIO {
      * @throws IOException 
      */
     public static String fileToString(String filePath){
-        StringBuffer strBuf = new StringBuffer();
-        FileInputStream fis;
+        StringBuilder strBud = new StringBuilder();
         try {
-            fis = new FileInputStream(filePath);
-            byte[] b = new byte[1024]; 
-            strBuf = new StringBuffer();
-            int len ;
-            while ((len = fis.read(b)) != -1) {
-                strBuf.append(new String(b, 0, len));
+            FileInputStream fileinputstream=new FileInputStream(filePath);
+            InputStreamReader inputstreamreader=new InputStreamReader(fileinputstream);
+            BufferedReader br = new BufferedReader(inputstreamreader);
+            int c;
+            while ((c = br.read()) != -1) {
+                strBud.append((char) c);
             }
+            br.close();
+            return strBud.toString();
         } catch (FileNotFoundException e) {
             System.out.println("ERROR:文件" + filePath + "打开失败");
             e.printStackTrace();
@@ -41,7 +43,7 @@ public class WordCountIO {
             System.out.println("ERROR:文件" + filePath + "读取错误");
             e.printStackTrace();
         }
-        return strBuf.toString();
+        return strBud.toString();
     }
     
     /**

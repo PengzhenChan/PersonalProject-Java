@@ -24,7 +24,7 @@ public class WordCountMethods {
     //匹配以4个英文字母开头的正则表达式
     private static String FIRST_FOUR_APLH_REGEX = "^[a-z]{4,}.*";
     
-    //记录文件内单词以及出现次数的TreeMap
+    //记录文件内单词以及出现次数的HashMap
     public static HashMap<String, Integer> map = new HashMap<>();
     
     /**
@@ -86,7 +86,7 @@ public class WordCountMethods {
                 count++;
             }
             //统计空格，水平制表符，换行符
-            if(achar[i] == 32 || achar[i] == 9 || achar[i] == 10) {
+            else if (achar[i] == 32 || achar[i] == 9 || achar[i] == 10 || achar[i] == 13) {
                 count++;
             }
         }
@@ -107,7 +107,7 @@ public class WordCountMethods {
             BufferedReader br = null;
             InputStream inpStr = new FileInputStream(filePath);
             br = new BufferedReader(new InputStreamReader(inpStr));
-            //包含空白字符的行的正则匹配器
+            //空白行的正则匹配器
             Pattern blankLinePattern = Pattern.compile(BLANK_LINE_REGEX);
             String line = null;
             try {
