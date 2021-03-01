@@ -24,7 +24,7 @@ public class Lib {
 
             }
             System.out.println("文件字符数为"+charnumber);
-            System.out.println("文件字符数统计成功！");
+           // System.out.println("文件字符数统计成功！");
             File outfile =new File(outputfileName);
 
             //if file doesnt exists, then create it
