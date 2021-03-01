@@ -1,26 +1,24 @@
 
 import java.io.*;
+import java.util.Date;
 import java.util.Map;
 
 public class WordCount
 {
-    public static void main(String[] args) throws IOException {
 
-        /*
-        输入部分
-         */
-//        if(args.length != 2)
-//        {
-//            System.out.print("程序只接受两个参数");
-//            return;  //退出程序
-//        }
-//
-//        String inputFileName = args[0]; //输入文件名
-//        String outputFileName = args[1]; //输出文件名
+    private String text = "";
+    private String inputFileName;
+    private String outputFileName;
+    private int chars;
+    private int words;
+    private int lines;
+    private Map<String, Integer> maxCntWords;
 
-        String text = "";  //存放从输入文件输入的数据
-        String inputFileName = "input.txt"; //输入文件名
-        String outputFileName = "output.txt"; //输出文件名
+
+    /*
+    将文件读出函数
+     */
+    private void input() throws IOException {
         FileReader inputFileReader = null;  //读文件Reader
         BufferedReader inputBfd = null;    //缓存Reader 提高效率
 
@@ -48,26 +46,29 @@ public class WordCount
                 inputFileReader.close();
         }
 
-        /*
-        执行计算
-         */
+    }
+
+
+    /*
+    计算部分
+     */
+    private void calculate()
+    {
         Lib lib = new Lib(text);
-        int chars = lib.getChars();  //字符数
-        int lines = lib.getLines();  //行数
-        int words = lib.getWords();  //单词数
-        Map<String, Integer> maxCntWords = lib.getMaxCntWords();  //频率最高10
+        chars = lib.getChars();  //字符数
+        lines = lib.getLines();  //行数
+        words = lib.getWords();  //单词数
+        maxCntWords = lib.getMaxCntWords();  //频率最高10
+    }
 
 
-        /*
-        输出部分
-         */
+    /*
+    输出部分
+     */
+    private void output()
+    {
         File file = new File(outputFileName);
         PrintWriter output = null;
-//        if (file.exists()) { // 检查scores.txt是否存在
-//            System.out.println("文件 " + outputFileName + " 已存在");
-//            System.exit(1); // 如果存在则退出程序
-//        }
-        // 如果不存在则创建一个新文件
         try
         {
             output = new PrintWriter(file);
@@ -89,5 +90,51 @@ public class WordCount
             if(output != null)
                 output.close();
         }
+    }
+
+
+    /*
+    构造函数，接受两个参数
+    输入和输出文件名
+     */
+    public WordCount(String inputFileName, String outputFileName) throws IOException {
+        this.inputFileName = inputFileName;
+        this.outputFileName = outputFileName;
+        input();
+        calculate();
+        output();
+    }
+
+
+
+
+
+    public static void main(String[] args) throws IOException {
+
+        //        if(args.length != 2)
+//        {
+//            System.out.print("程序只接受两个参数");
+//            return;  //退出程序
+//        }
+//
+//        String inputFileName = args[0]; //输入文件名
+//        String outputFileName = args[1]; //输出文件名
+//
+//
+        String inputFileName = "input.txt"; //输入文件名
+        String outputFileName = "output.txt"; //输出文件名
+
+        Date begin = new Date();
+        long begintime = begin.getTime();
+
+        //初始化类
+        new WordCount(inputFileName, outputFileName);
+
+        Date end = new Date();
+        long endTime = end.getTime();
+        long time = endTime - begintime;
+        System.out.println("程序运行结束共耗时"+time+"毫秒");
+
+
     }
 }
