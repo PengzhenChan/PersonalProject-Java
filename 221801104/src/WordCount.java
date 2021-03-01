@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Collections;
@@ -52,7 +51,8 @@ public class Count_Word{
 	    File file = new File(docin);
 	    BufferedWriter out = new BufferedWriter(new FileWriter(docout));
 	    
-	    //统计字符数和单词数
+	    
+	    /*统计字符数和单词数
 		FileReader fr = new FileReader(file);   
 	    BufferedReader bfr = new BufferedReader(fr);
 	 		char ch;
@@ -77,7 +77,7 @@ public class Count_Word{
 	 		}
 	 		
 	 		/*然后将统计结果输出到指定文件，输出的格式如下；
-	 		 * 其中word1和word2 对应具体的单词，number为统计出的个数；换行使用'\n'，编码统一使用UTF-8。
+	 		 * 其中word1和word2 对应具体的单词，number为统计出的个数；换行使用'\n'，编码统一使用UTF-8。
 	 		 * characters: number
 	 		 * words: number
 	 		 * lines: number
@@ -85,7 +85,7 @@ public class Count_Word{
 	 		 * word2: number
 	 		 * ...
             */
-	 		out.write("characters:  "+countc);
+	 		/*out.write("characters:  "+countc);
 	 		out.newLine();
 	 		out.write("words: "+countw);
 	 		out.newLine();
@@ -103,8 +103,27 @@ public class Count_Word{
 	 	out.write("lines:  " + linenumber);
 	 	out.newLine();
 	 	//System.out.println("Total number of lines : " + linenumber);
-	 	lnr.close();
+	 	lnr.close();*/
         
+	    int charnum= 0 ;
+	    int wordsnum= 0;
+	    int linenum = 0;
+	    InputStreamReader isr = new InputStreamReader(new FileInputStream(docin));
+	    BufferedReader br = new BufferedReader(isr);
+	    while( br.read()!= -1) {
+	    String s = br.readLine();
+	    charnum += s.length();
+	    wordsnum += s.split(" ").length;
+	    linenum ++;
+	    }
+	    isr.close();
+	    out.write("characters: " + charnum);
+ 		out.newLine();
+ 		out.write("words: " + wordsnum);
+ 		out.newLine();
+	    out.write("lines: " + linenum);
+	    out.newLine();
+	    
         //把文件中所有大写字母转换为小写
         toLower(docin);
         
@@ -131,13 +150,23 @@ public class Count_Word{
  
 		// 将出现频率最高的前十个单词写入文件
 		int i = 0;
-		for (Iterator<Map.Entry<String, Integer>> ite = list.iterator(); i < 10; i++) {
-			Map.Entry<String, Integer> maps = ite.next();
-			out.write(maps.getKey() + ": " + maps.getValue());
-			out.newLine();
-			//System.out.println(maps.getKey() + "\t" + maps.getValue());
+		if(wordsnum>=10) {
+			for (Iterator<Map.Entry<String, Integer>> ite = list.iterator(); i < 10; i++) {
+				Map.Entry<String, Integer> maps = ite.next();
+				out.write(maps.getKey() + ": " + maps.getValue());
+				out.newLine();
+				//System.out.println(maps.getKey() + "\t" + maps.getValue());
+			}
 		}
- 
+		else {
+			    Iterator<Map.Entry<String, Integer>> ite = list.iterator();
+			    if(ite.hasNext()) {
+				Map.Entry<String, Integer> maps = ite.next();
+				out.write(maps.getKey() + ": " + maps.getValue());
+				out.newLine();
+				//System.out.println(maps.getKey() + "\t" + maps.getValue());
+			}		
+		}
 		out.close();
 		//打印出所有信息 
 		//for (Iterator<Map.Entry<String, Integer>>ite =list.iterator(); ite .hasNext();)
@@ -148,8 +177,9 @@ public class Count_Word{
 		 
 	}
 	
+	
 	//把文件中所有单词转化为小写的函数
-	public static void toLower(String file) throws Exception{
+	public static void toLower(String file) throws Exception {
 		Reader myReader = new FileReader(file);
 		Reader myBufferedReader = new BufferedReader(myReader);
 		CharArrayWriter  tempStream = new CharArrayWriter();
@@ -200,3 +230,5 @@ public class Count_Word{
 		return wordCount;
 	}
 }
+
+
