@@ -1,5 +1,8 @@
 /**
- * @author 李星源
+ * 单词类
+ * 包括单词的拼写和个数
+ *
+ * @author 李星源221801334
  * @date 2021/02/25
  */
 public class Word implements Comparable<Word> {

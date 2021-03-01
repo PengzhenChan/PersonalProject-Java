@@ -4,7 +4,7 @@ import java.util.List;
  * 接口封装，将功能独立出来
  * 计算字符数、计算单词数、计算top10词频、计算全部
  *
- * @author 李星源
+ * @author 李星源221801334
  * @date 2021/02/25
  */
 public interface WordOperation {

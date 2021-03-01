@@ -6,7 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author 李星源
+ * 实现WordOperation接口
+ * 实现其中的所有功能
+ *
+ * @author 李星源221801334
  * @date 2021/02/25
  */
 public class WordOperationImpl implements WordOperation {

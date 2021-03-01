@@ -10,43 +10,11 @@ import java.nio.charset.StandardCharsets;
 /**
  * 文件输入输出工具类
  *
- * @author 李星源
+ * @author 李星源221801334
  * @date 2021/02/25
  */
 public class FileUtil {
     private static final Charset ENCODING = StandardCharsets.UTF_8;
-
-    /**
-     * 文件读入，使用缓存流
-     *
-     * @param file 输入文件
-     * @return 文件内容，如果空则为""
-     */
-    public static String readBuffer(File file){
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(file), ENCODING), 16384);
-            StringBuilder sb = new StringBuilder(16384);
-            String oneLine = in.readLine();
-            while (oneLine != null){
-                sb.append(oneLine).append("\n");
-                oneLine = in.readLine();
-            }
-            return sb.toString();
-        } catch (IOException e) {
-            System.out.println(ExceptionInfo.READ_FILE_ERROR.getMessage());
-            System.exit(0);
-        } finally {
-            try {
-                if (in != null){
-                    in.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
     /**
      * 文件读入，使用mmap
