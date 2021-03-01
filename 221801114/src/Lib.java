@@ -14,11 +14,8 @@ public class Lib {
             bufferedReader = new BufferedReader(new FileReader(filePath));
             String currentLine = bufferedReader.readLine();
             while (currentLine != null){
-                String[] lineStrings = currentLine.split("\\\\r\\\\n|\\\\n");
-                for (String lineString:lineStrings){
-                    if (!lineString.trim().equals("")){
+                if (!currentLine.trim().equals("")){
                         lines++;
-                    }
                 }
                 currentLine = bufferedReader.readLine();
             }
@@ -39,15 +36,10 @@ public class Lib {
             bufferedReader = new BufferedReader(new FileReader(filePath));
             String currentLine = bufferedReader.readLine();
             while (currentLine != null){
-                String[] lineStrings = currentLine.split("\\\\r\\\\n|\\\\n");
-                for (String s:lineStrings){
-                    characters += s.length();
-                }
-                int cnt1=(currentLine.length()-currentLine.replaceAll("\\\\n", "").length())/"\\n".length();
-                int cnt2=(currentLine.length()-currentLine.replaceAll("\\\\r\\\\n", "").length())/"\\r\\n".length();
-                characters = characters + cnt2 * 2 + (cnt1 - cnt2);
+                characters += currentLine.length() + 2;
                 currentLine = bufferedReader.readLine();
             }
+            characters -= 2;
         }catch (FileNotFoundException e) {
             System.out.println("未找到文件：" + filePath);
             e.printStackTrace();
@@ -66,13 +58,10 @@ public class Lib {
             bufferedReader = new BufferedReader(new FileReader(filePath));
             String currentLine = bufferedReader.readLine();
             while (currentLine != null){
-                String[] lineStrings = currentLine.split("\\\\r\\\\n|\\\\n");
-                for (String lineString:lineStrings){
-                    String[] wordStrings = pattern.split(lineString);
-                    for (String word:wordStrings){
-                        if (!word.equals("") && judgeWords(word.toLowerCase())){
-                            words++;
-                        }
+                String[] wordStrings = pattern.split(currentLine);
+                for (String word:wordStrings){
+                    if (!word.equals("") && judgeWords(word.toLowerCase())){
+                        words++;
                     }
                 }
                 currentLine = bufferedReader.readLine();
@@ -95,15 +84,12 @@ public class Lib {
             bufferedReader = new BufferedReader(new FileReader(inputFilePath));
             String currentLine = bufferedReader.readLine();
             while (currentLine != null){
-                String[] lineStrings = currentLine.split("\\\\r\\\\n|\\\\n");
-                for (String lineString:lineStrings){
-                    String[] wordStrings = pattern.split(lineString);
-                    for (String word:wordStrings){
-                        word = word.toLowerCase();
-                        if (!word.equals("") && judgeWords(word)){
-                            Integer count = hashMap.get(word);
-                            hashMap.put(word, (count == null ? 1 : ++count));
-                        }
+                String[] wordStrings = pattern.split(currentLine);
+                for (String word:wordStrings){
+                    word = word.toLowerCase();
+                    if (!word.equals("") && judgeWords(word)){
+                        Integer count = hashMap.get(word);
+                        hashMap.put(word, (count == null ? 1 : ++count));
                     }
                 }
                 currentLine = bufferedReader.readLine();
