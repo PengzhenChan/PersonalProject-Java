@@ -15,9 +15,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class WordCountIO {
-    //空白行的正则表达式
-    private static String BLANK_LINE_REGEX = "^\\s*$";
-    
     /**
      * 读取文件转化为string形式
      * @param filePath 文件路径
@@ -35,13 +32,11 @@ public class WordCountIO {
                 strBud.append((char) c);
             }
             br.close();
-            return strBud.toString();
         } catch (FileNotFoundException e) {
-            System.out.println("ERROR:文件打开失败");
+            System.out.println("ERROR:文件未找到...\n");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("ERROR:文件读取错误");
-            e.printStackTrace();
+            throw new RuntimeException("ERROR:输入流出错...");
         }
         return strBud.toString();
     }
@@ -83,6 +78,7 @@ public class WordCountIO {
         try {
             writer.write(str.toString());
         } catch (IOException e){
+            System.out.println("ERROR:写文件出错...\n");
             e.printStackTrace();
         } finally {
             if (writer != null){
@@ -90,7 +86,7 @@ public class WordCountIO {
                     writer.flush();
                     writer.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("ERROR:关闭文件输入流失败");
+                    throw new RuntimeException("ERROR:关闭输出流出错...");
                 }
             }
         }

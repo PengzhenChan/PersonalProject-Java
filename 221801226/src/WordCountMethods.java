@@ -83,7 +83,7 @@ public class WordCountMethods {
             }
             validLine = allLine-blankLine;
         } catch (FileNotFoundException e) {
-            System.out.println("ERROR:未找到文件，请重试...");
+            System.out.println("ERROR:文件未找到...\n");
             e.printStackTrace();
         }
         return validLine;
