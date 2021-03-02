@@ -22,7 +22,8 @@ public class Lib {
 
 
             }
-            System.out.println("文件字符数为"+charnumber);
+            charnumber+=(lineCount-1)*2;
+            //System.out.println("文件字符数为"+charnumber);
            // System.out.println("文件字符数统计成功！");
             File outfile =new File(outputfileName);
 
@@ -33,7 +34,7 @@ public class Lib {
 
             //true = append file
             FileWriter fileWritter = new FileWriter(outfile,true);
-            fileWritter.write(Integer.toString(charnumber));
+            fileWritter.write("characters:"+Integer.toString(charnumber));
             fileWritter.close();
 
         }catch(Exception e){
@@ -63,34 +64,43 @@ public class Lib {
                             wordlength++;
                             strindex++;
                         }
-                        else
-                        {
+                        else {
 
-                            strindex++;
-                            if(wordlength>=4)
-                            {
+
+                            if (wordlength >= 4) {
                                 String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
-                                if(wordarray.get(tempword)==null)
-                                wordarray.put(tempword,1);
-                                else
-                                {
-                                    wordarray.put(tempword,wordarray.get(tempword)+1);
+
+                                if (wordarray.get(tempword) == null) {
+                                    wordarray.put(tempword, 1);
                                 }
+                                else {
+                                    wordarray.put(tempword, wordarray.get(tempword) + 1);
+                                }
+
                             }
+                            strindex++;
                             wordlength=0;
-                            //break;
                         }
-                        lineCount++;
+
                     }
 
+                    if (wordlength >= 4) {
+                        String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
 
+                        if (wordarray.get(tempword) == null) {
+                            wordarray.put(tempword, 1);
+                        } else {
+                            wordarray.put(tempword, wordarray.get(tempword) + 1);
+                        }
+                    }
+                    lineCount++;
 
 
                 }
                 wordnumber=wordarray.size();
 
-                System.out.println("文件单词数为" + wordnumber);
-                System.out.println("文件单词数统计成功！");
+                //System.out.println("文件单词数为" + wordnumber);
+                //System.out.println("文件单词数统计成功！");
                 File outfile = new File(outputfileName);
 
                 //if file doesnt exists, then create it
@@ -100,8 +110,8 @@ public class Lib {
 
                 //true = append file
                 FileWriter fileWritter = new FileWriter(outfile, true);
-                fileWritter.write(Integer.toString(wordnumber));
-                fileWritter.write("\n"+Integer.toString(lineCount));
+                fileWritter.write("\n"+"words:"+Integer.toString(wordnumber));
+                fileWritter.write("\n"+"lines:"+Integer.toString(lineCount));
                 fileWritter.close();
 
             } catch (Exception e) {
@@ -184,9 +194,13 @@ public class Lib {
             list.sort(new Comparator<Map.Entry<String, Integer>>() {
                 @Override
                 public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                    return o2.getValue().compareTo(o1.getValue());
+                    if(o2.getValue()!=o1.getValue())
+                        return o2.getValue().compareTo(o1.getValue());
+                    else
+                        return o1.getKey().compareTo(o2.getKey());
                 }
             });
+
 
             File outfile = new File(outputfileName);
 

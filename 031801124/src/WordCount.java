@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.Scanner;
 import java.io.File;
 public class WordCount {
@@ -16,12 +17,19 @@ public class WordCount {
             try {
                 File inputfile = new File(inputfilename);
                 File outputfile = new File(outputfilename);
+                if (!outputfile.exists()) {
+                    outputfile.createNewFile();
+                }
+                FileWriter fileWritter = new FileWriter(outputfile);
+                fileWritter.close();
             } catch (Exception e) {
                 System.out.println("文件打开失败");
                 System.exit(0);
             } finally {
-                //lib.countChars(inputfilename,outputfilename);
-                //lib.countWords(inputfilename,outputfilename);
+                //if file doesnt exists, then create it
+
+                lib.countChars(inputfilename,outputfilename);
+                lib.countWords(inputfilename,outputfilename);
                 lib.countMost(inputfilename,outputfilename);
             }
 
