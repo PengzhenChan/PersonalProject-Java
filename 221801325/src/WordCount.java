@@ -6,6 +6,7 @@ public class WordCount
     {
         CountChar countChar = new CountChar();
         Countword countword = new Countword();
+        CountLine countLine = new CountLine();
         String root = System.getProperty("user.dir");
         String path = root+ File.separator+"src"+File.separator+"input.txt";
 
@@ -20,8 +21,9 @@ public class WordCount
             }
             output("output.txt","characters",countChar.charCount(s));
             output("output.txt","words:",countword.countword(s));
+            output("output.txt","lines:",countLine.countLine(s));
 
-            System.out.println(countChar.charCount(s)+""+countword.countword(s));
+            System.out.println(countChar.charCount(s)+"|"+countword.countword(s)+"|"+countLine.countLine(s));
         }
         catch (IOException e) {
             e.printStackTrace();

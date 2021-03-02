@@ -4,3 +4,6 @@ characters:28
 words::3
 characters:38
 words::4
+characters:38
+words::4
+lines::5
