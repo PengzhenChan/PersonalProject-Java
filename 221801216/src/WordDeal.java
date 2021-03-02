@@ -6,6 +6,7 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 	
 	private int charNum; //统计字符数
 	String content;//代表文件
+	private int wordCount; // 单词总数
 
 	//// 统计文件字符数
 	public int getCharCount() 
@@ -22,6 +23,41 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 			i++;
 		}
 		return charNum;
+	}
+	
+	//统计单词总数
+	public int getWordCount() 
+	{
+		String s= content;
+		//用"\\"来划分词
+		String[] sp = s.split("\\s"); 
+		for (int i = 0; i < sp.length; i++) 
+		{
+			// 判断长度是否大于等于4,因为只有大于4的才称为单词
+			if (sp[i].length() < 4) 
+			{ 
+				continue;
+			} 
+			else 
+			{
+				// 判断字符串的前四位是否是英文字母
+				int flag = 1; 
+				char c;
+				for (int j = 0; j < 4; j++) 
+				{
+					c = sp[i].charAt(j);
+					if (!(c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')) 
+					{
+						flag = 0;
+					}
+				}
+				if (flag == 1) 
+				{
+					wordCount++;
+				}
+			}
+		}
+		return wordCount;
 	}
 
 }
