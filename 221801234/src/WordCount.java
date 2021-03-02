@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class WordCount {
 
@@ -12,7 +13,8 @@ public class WordCount {
     }
 
     public static void write(CountCore cc, String outPath) {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPath)))) {
+        try (BufferedWriter writer
+                     = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPath), StandardCharsets.UTF_8))) {
             writer.write("characters: " + cc.getCharCount() + '\n');
             writer.write("words: " + cc.getWordCount() + '\n');
             writer.write("lines: " + cc.getValidLines() + '\n');
