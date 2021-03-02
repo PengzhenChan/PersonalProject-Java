@@ -26,7 +26,7 @@ public class Lib {
 
     public static long getWords(String filePath){
         long words = 0;
-        Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ \t]");
+        Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ \t\\[\\]]");
         String fileString = readToString(filePath);
         String[] lineStrings = fileString.split("\n|\r\n");
         for (String lineString : lineStrings){
@@ -42,7 +42,7 @@ public class Lib {
 
     public static void countWordFrequency(String inputFilePath, String outputFilePath){
         hashMap = new HashMap<String,Long>();
-        Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ \t]");
+        Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ \t\\[\\]]");
         String fileString = readToString(inputFilePath);
         String[] lineStrings = fileString.split("\n|\r\n");
         for (String lineString : lineStrings){
