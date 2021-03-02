@@ -14,5 +14,7 @@ public class WordCount{
 		String[] wFreq;
 		List wordFreq;
 		
+		String content = fd.ReadFile(file);
+		
 		
 	}}
