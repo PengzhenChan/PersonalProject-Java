@@ -21,11 +21,13 @@ public class IOTool {
     }
 
     /* 将结果输出到文件中 */
-    public void OutputToFile (String filePath, int sumCharacter) throws IOException {
+    public void OutputToFile (String filePath, int sumCharacter,int wordsNum) throws IOException {
         FileOutputStream file = new FileOutputStream(filePath);
         OutputStreamWriter writer = new OutputStreamWriter(file,"UTF-8");
-        //使用了转码，转成UTF-8；
+        //输出内容
         String context ="characters:"+sumCharacter+System.getProperty("line.separator");
+        context += "words:"+wordsNum+System.getProperty("line.separator");
+        //转码成UTF-8
         byte[] bytes = context.getBytes("UTF-8");
         file.write(bytes);
         //关闭文件流

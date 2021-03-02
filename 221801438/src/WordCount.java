@@ -7,6 +7,6 @@ public class WordCount {
         StringBuffer fileBuffer = io.fileInputToString("input.txt");
         //创建计数类
         CountTool count = new CountTool();
-        io.OutputToFile("output.txt",count.characterCount(fileBuffer));
+        io.OutputToFile("output.txt",count.characterCount(fileBuffer),count.wordsCount(fileBuffer));
     }
 }
