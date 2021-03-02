@@ -174,7 +174,7 @@ public class Lib {
                     content += c;
                     if ('\n' == c.charAt(0)) {
                         strings.add(content);
-                        System.out.println(content + "|" + content.length());
+//                        System.out.println(content + "|" + content.length());
                         content = "";
                     }
                 }
@@ -335,7 +335,12 @@ public class Lib {
         public int countRows() {
             int sum = 0;
             for (int i = 0; i < strings.size(); i++) {
-                if (!strings.get(i).isEmpty())
+                String str = strings.get(i);
+                str = str.replace("\n","");
+                str = str.replace("\r","");
+                str = str.replace("\t","");
+                str = str.replace(" ","");
+                if (!str.isEmpty())
                     sum++;
             }
 //            System.out.println("行数: " + sum);
