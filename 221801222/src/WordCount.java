@@ -19,12 +19,10 @@ public class WordCount
     将文件读出函数
      */
     private void input() throws IOException {
-        FileReader inputFileReader = null;  //读文件Reader
         BufferedReader inputBfd = null;    //缓存Reader 提高效率
 
         try {
-            inputFileReader = new FileReader(inputFileName);   //读文件Reader
-            inputBfd = new BufferedReader(inputFileReader);  //缓存Reader 提高效率
+            inputBfd = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileName), "UTF-8"));  //缓存Reader 提高效率
 
             int charIndex = 0;
             StringBuilder stringBuilder = new StringBuilder();   //字符串构建器
@@ -42,8 +40,6 @@ public class WordCount
         {
             if (inputBfd != null)
                 inputBfd.close();   //关闭文件流
-            if (inputFileReader != null)
-                inputFileReader.close();
         }
 
     }
