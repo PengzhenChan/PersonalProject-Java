@@ -1,3 +1,4 @@
+import re
 class WordCount:
     def __init__(self, s):
         """
@@ -20,11 +21,14 @@ class WordCount:
         Returns:
             单词数量
         """
+        s = self.str
+        s = s.lower()
+        return len(re.findall("([a-z]{4,}[a-z0-9]*)",s))
 
     def topWord(self):
         """
         Returns:
-            [[单词，评论]...]
+            [[单词，频率]...]
         """
 
     def lineCount(self):
