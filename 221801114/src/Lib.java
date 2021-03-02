@@ -4,12 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lib {
-    private static BufferedReader bufferedReader = null;
     private static FileWriter fileWriter = null;
-    private static Map<String, Integer> hashMap = null;
+    private static Map<String, Long> hashMap = null;
 
-    public static int getLines(String filePath){
-        int lines = 0;
+    public static long getLines(String filePath){
+        long lines = 0;
         String fileString = readToString(filePath);
         String[] lineStrings = fileString.split("\n|\r\n");
         for (String lineString : lineStrings){
@@ -20,13 +19,13 @@ public class Lib {
         return lines;
     }
 
-    public static int getCharacters(String filePath){
+    public static long getCharacters(String filePath){
         String fileString = readToString(filePath);
         return fileString.length();
     }
 
-    public static int getWords(String filePath){
-        int words = 0;
+    public static long getWords(String filePath){
+        long words = 0;
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ \t]");
         String fileString = readToString(filePath);
         String[] lineStrings = fileString.split("\n|\r\n");
@@ -34,7 +33,7 @@ public class Lib {
             String[] wordStrings = pattern.split(lineString);
             for (String word : wordStrings){
                 if (!word.equals("") && judgeWords(word.toLowerCase())){
-                    words++;
+                    words ++;
                 }
             }
         }
@@ -42,7 +41,7 @@ public class Lib {
     }
 
     public static void countWordFrequency(String inputFilePath, String outputFilePath){
-        hashMap = new HashMap<String,Integer>();
+        hashMap = new HashMap<String,Long>();
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ \t]");
         String fileString = readToString(inputFilePath);
         String[] lineStrings = fileString.split("\n|\r\n");
@@ -51,12 +50,12 @@ public class Lib {
             for (String word:wordStrings){
                 word = word.toLowerCase();
                 if (!word.equals("") && judgeWords(word)){
-                    Integer count = hashMap.get(word);
-                    hashMap.put(word, (count == null ? 1 : ++count));
+                    Long count = hashMap.get(word);
+                    hashMap.put(word, (count == null ? 1 : ++ count));
                 }
             }
         }
-        TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
+        TreeMap<String, Long> treeMap = new TreeMap<String, Long>(hashMap);
         sortByValue(treeMap, outputFilePath);
     }
 
@@ -72,16 +71,16 @@ public class Lib {
         return true;
     }
 
-    public static void sortByValue(TreeMap<String,Integer> map, String filePath) {
-        List<Map.Entry<String,Integer>> mappingList = null;
-        mappingList = new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
-        Collections.sort(mappingList, new Comparator<Map.Entry<String,Integer>>(){
-            public int compare(Map.Entry<String,Integer> mapping1,Map.Entry<String,Integer> mapping2){
+    public static void sortByValue(TreeMap<String, Long> map, String filePath) {
+        List<Map.Entry<String,Long>> mappingList = null;
+        mappingList = new ArrayList<Map.Entry<String,Long>>(map.entrySet());
+        Collections.sort(mappingList, new Comparator<Map.Entry<String,Long>>(){
+            public int compare(Map.Entry<String,Long> mapping1,Map.Entry<String,Long> mapping2){
                 return mapping2.getValue().compareTo(mapping1.getValue());
             }
         });
         int count = 0;
-        for(Map.Entry<String,Integer> mapping:mappingList){
+        for(Map.Entry<String,Long> mapping:mappingList){
             if (++count > 10){
                 break;
             }
