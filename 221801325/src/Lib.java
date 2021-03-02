@@ -1,8 +1,15 @@
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CountMost {
+public class Lib {
+    public int countLine(String str )
+    {
+        String[] lines = str.split("\r\n|\r|\n");
+        return  lines.length;
+
+    }
     public List<Map.Entry<String, Integer>> countWord(String str)
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
@@ -39,10 +46,35 @@ public class CountMost {
 
         return list;
     }
-
-
-
-
+    public int countword(String string)
+    {
+        int num = 0;
+        String[] word = string.split("\\s+");
+        for (int i = 0; i < word.length; i++)
+        {
+            word[i] = word[i].toLowerCase();
+        }
+        String regex = "^[a-z]{4,}.*";
+        for (int i = 0; i < word.length; i++)
+        {
+            String temp = word[i];
+            if (temp.matches(regex))
+            {
+                num++;
+            }
+        }
+        return num;
 
     }
+    public int charCount(String string) throws IOException {
+        int characters = 0;
+        String regex = "\\p{ASCII}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+        while (matcher.find()) {
+            characters++;
+        }
+        return characters - 1;
+    }
 
+}
