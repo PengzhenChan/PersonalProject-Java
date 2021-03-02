@@ -28,6 +28,13 @@ public class Lib {
             return input;
         }
 
+        /**
+         * @Description 将msg写入targetPath的文件中
+         * @Author Lvv
+         * @Date 2021/3/2 15:36
+         * @Param [targetPath, msg]
+         * @return void
+         **/
         public void writeFile(String targetPath, String msg) {
             File file = new File(targetPath);
             try {
@@ -112,7 +119,6 @@ public class Lib {
         BufferedReader reader = null;
         InputStream input = null;
         List<String> strings = new ArrayList<>();
-        int addCharNum = 0;
         static final int TOP_NUM = 10;
         HashMap<String,Integer> words = new HashMap<String, Integer>();
         List<Map.Entry<String,Integer>> list = new ArrayList<>();
@@ -270,13 +276,13 @@ public class Lib {
         }
 
         /**
-         * @Description 统计词频
+         * @Description 统计词频并返回Top10的单词
          * @Author Lvv
-         * @Date 2021/3/1 23:43
+         * @Date 2021/3/2 15:43
          * @Param []
-         * @return void
+         * @return String Top10单词的一个排名String
          **/
-        public void countTopWords() {
+        public String countTopWords() {
             String word;
             int sum = 0;
             for (int i = 0; i < strings.size(); i++) {
@@ -308,16 +314,7 @@ public class Lib {
                     return o2.getValue() - o1.getValue();
                 }
             });
-        }
-
-        /**
-         * @Description 返回top的词频
-         * @Author Lvv
-         * @Date 2021/3/1 23:43
-         * @Param []
-         * @return String
-         **/
-        public String getTops() {
+            //输出TOP10字符串的过程
             for (int i = 0; i < Math.min(TOP_NUM, list.size()); i++) {
                 stringBuilder.append("word" + i +": ").append(list.get(i).getKey()).append('\n');
 //                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');   //测试用

@@ -23,8 +23,7 @@ public class WordCount{
         stringBuilder.append("characters: ").append(textEditor.countAscii()).append('\n')
                 .append("words: ").append(textEditor.countWords()).append('\n')
                 .append("lines: ").append(textEditor.countRows()).append('\n');
-        textEditor.countTopWords(); //统计词频
-        stringBuilder.append(textEditor.getTops());
+        stringBuilder.append(textEditor.countTopWords());
         fileIOUtil.writeFile(outputPath,stringBuilder.toString());
 
 //        fileIOUtil.closeRead/Stream();
