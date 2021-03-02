@@ -6,7 +6,10 @@ import java.util.ArrayList;
 
 public class WordCount {
     public static void main(String[] args) {
-        CountWord countWord = new CountWord("C:\\Users\\Sady哇哈哈\\Desktop\\test.txt");
+        CountWord countWord = new CountWord("C:\\Users\\Sady哇哈哈\\Desktop\\input.txt");
         System.out.println(countWord.getCount());
+/*        String s="adasda\n"+"dads\ta";
+        s = s.replaceAll("\t", "");
+        System.out.println(s);*/
     }
 }
