@@ -5,11 +5,10 @@ import java.util.Map;
 public class WordCount
 {
     public static void main(String[] args) throws IOException
-    {
+    {   int num_of_line = 0;
         Lib lib = new Lib();
         String root = System.getProperty("user.dir");
         String path = root+ File.separator+"src"+File.separator+"input.txt";
-
         try
         {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
@@ -17,11 +16,12 @@ public class WordCount
             String line;
             while ((line = bufferedReader.readLine()) != null)
             {
+                num_of_line++;
                 s = s + line + "\n";
             }
             output("output.txt","characters",lib.charCount(s));
             output("output.txt","words:",lib.countword(s));
-            output("output.txt","lines:",lib.countLine(s));
+            output("output.txt","lines:",num_of_line);
             List<Map.Entry<String, Integer>> list=lib.countWord(s);
             for (int i = 0; i < list.size(); i++)
             {
@@ -31,7 +31,7 @@ public class WordCount
                     output("output.txt",mapping.getKey(),mapping.getValue());
                 }
             }
-            System.out.println(lib.charCount(s)+"|"+lib.countword(s)+"|"+lib.countLine(s)+"|");
+            System.out.println(lib.charCount(s)+"|"+lib.countword(s)+"|"+num_of_line+"|");
             
         }
         catch (IOException e) {
