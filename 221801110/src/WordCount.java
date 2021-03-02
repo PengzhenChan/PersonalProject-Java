@@ -10,7 +10,7 @@ public class WordCount {
         Reader readFile = null;
         int count = 0;
         try {
-            readFile = new InputStreamReader(new FileInputStream(file));
+            readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             int tempChar;
             while ((tempChar=readFile.read()) != -1) {
                 count++;
@@ -35,7 +35,7 @@ public class WordCount {
         int countSum = 0;//总行数
         int countNull = 0;//空行数
         try {
-            readFile = new InputStreamReader(new FileInputStream(file));
+            readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             int tempChar;
             while ((tempChar = readFile.read()) != -1) {
                 if ((char)tempChar == '\n') {
@@ -61,12 +61,10 @@ public class WordCount {
             System.out.println("指定输入文件不存在");
         }
         finally {
-            System.out.println(countSum);
-            System.out.println(countNull);
+            //System.out.println(countSum);
+            //System.out.println(countNull);
             return countSum-countNull;
         }
-
-
     }
 
     public static void main(String[] args){
