@@ -4,8 +4,12 @@ public class WordCount{
         String inputFile = "input.txt";
         String outputFile = "output.txt";
         String content;
+        int asciiCharNum = 0;
 
         content = ReadTxt.readTxt(inputFile);
-        System.out.print(content);
+        System.out.println(content);
+
+        asciiCharNum = CountAsciiChar.countChar(content);
+        System.out.println(asciiCharNum);
     }
 }
