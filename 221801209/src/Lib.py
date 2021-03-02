@@ -11,6 +11,7 @@ class WordCount:
         Returns:
             字符数量
         """
+
     def wordCount(self):
         """
         Returns:
@@ -19,5 +20,12 @@ class WordCount:
     def topWord(self):
         """
         Returns:
-            {单词:频率...}
+            [[单词，评论]...]
+        """
+
+    def lineCount(self):
+        """
+
+        Returns:
+            行数
         """
