@@ -23,5 +23,17 @@ public class FileDeal
 		}
 		return sb.toString();
 	}
+	
+	//文件写入
+	public void WriteToFile(String str) throws IOException 
+	{ 
+		File writename = new File("output.txt");
+		//创建新文件
+		writename.createNewFile(); 
+		BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+		out.write(str);
+		out.flush(); 
+		out.close(); 
+	}
 
 }
