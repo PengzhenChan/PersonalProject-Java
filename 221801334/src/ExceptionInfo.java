@@ -1,5 +1,6 @@
 /**
  * 枚举所有的异常信息统一管理
+ * 0表示正常情况，1表示出现该异常程序无法继续执行，2表示出现该异常程序可以解决并继续执行
  *
  * @author 李星源221801334
  * @date 2021/02/25
@@ -15,6 +16,7 @@ public enum ExceptionInfo {
     OUTPUT_FILE_CREATE_ERROR(1, "输出文件创建失败"),
     READ_FILE_ERROR(1, "文件读入失败"),
     WRITE_FILE_ERROR(1, "文件写入失败"),
+    THREAD_ERROR(1, "多线程运行错误"),
 
     CREATE_OUTPUT_FILE(2, "输出文件不存在，已自动创建"),
     CLEAR_OUTPUT_FILE(2, "已自动清空输出文件原有内容");

@@ -30,7 +30,7 @@ public class WordCount {
      */
     private static ExceptionInfo argsLegal(String[] args){
         // 输入参数0个
-        if (args.length == 0){
+        if ((args == null) || (args.length == 0)){
             return ExceptionInfo.PARAMETER_ZERO;
         }
         // 输入参数1个

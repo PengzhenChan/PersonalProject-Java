@@ -30,7 +30,7 @@ public class WordOperationImpl implements WordOperation {
     // 记录单词-个数的映射
     private Map<String, Integer> wordIntegerMap;
 
-    private static final ExecutorService threadPool = new ThreadPoolExecutor(
+    private final ExecutorService threadPool = new ThreadPoolExecutor(
         8, Math.max((CPU_COUNT << 1), 16), 30, TimeUnit.SECONDS,
         new LinkedBlockingQueue<>(Integer.MAX_VALUE), r -> new Thread(null, r, "", 0),
         new ThreadPoolExecutor.CallerRunsPolicy());
@@ -60,6 +60,7 @@ public class WordOperationImpl implements WordOperation {
      */
     @Override
     public int countWord() {
+        // 正则表达式为：[a-z]{4}[a-z0-9]*
         Matcher wordMatcher = wordPattern.matcher(content);
         int wordNum = 0;
         if (wordMatcher.find()){
@@ -87,13 +88,13 @@ public class WordOperationImpl implements WordOperation {
      */
     @Override
     public List<Word> countTopTenWord() {
-        Map<String, Integer> wordIntegerMap = new HashMap<>(1<<18);
+        Map<String, Integer> wordIntegerMap = new HashMap<>(1 << 18);
         Matcher wordMatcher = wordPattern.matcher(content);
         String word;
         if (wordMatcher.find()){
             word = wordMatcher.group();
             int start = wordMatcher.start() - 1;
-            if (start>=0){
+            if (start >= 0){
                 if (wordLegal(content.charAt(start))){
                     wordIntegerMap.put(word, 1);
                 }
@@ -112,25 +113,10 @@ public class WordOperationImpl implements WordOperation {
             }
         }
 
-        Queue<Map.Entry<String, Integer>> wordQueue = new PriorityQueue<>(16, (o1, o2) -> {
-            if (o1.getValue().intValue() != o2.getValue().intValue()){
-                return o1.getValue() - o2.getValue();
-            }
-            return o2.getKey().compareTo(o1.getKey());
-        });
-        List<Map.Entry<String, Integer>> words = new ArrayList<>(wordIntegerMap.entrySet());
-        for (Map.Entry<String, Integer> oneWord : words){
-            if (wordQueue.size() < 10){
-                wordQueue.add(oneWord);
-            } else if (isReplace(oneWord, wordQueue.peek())){
-                wordQueue.poll();
-                wordQueue.add(oneWord);
-            }
-        }
-
+        List<Map.Entry<String, Integer>> topTen = getTopTen(wordIntegerMap);
         List<Word> wordList = new ArrayList<>(16);
-        while (!wordQueue.isEmpty()){
-            Map.Entry<String, Integer> oneWord = wordQueue.poll();
+        for (int i = 0;i < topTen.size();i++){
+            Map.Entry<String, Integer> oneWord = topTen.get(i);
             wordList.add(0, new Word(oneWord.getKey(), oneWord.getValue()));
         }
         return wordList;
@@ -176,10 +162,11 @@ public class WordOperationImpl implements WordOperation {
             try {
                 loop = (!threadPool.awaitTermination(1, TimeUnit.MINUTES));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println(ExceptionInfo.THREAD_ERROR.getMessage());
+                System.exit(0);
             }
         } while(loop);
-        saveResult(getTopTen());
+        saveResult(getTopTen(wordIntegerMap));
     }
 
     /**
@@ -233,11 +220,12 @@ public class WordOperationImpl implements WordOperation {
     }
 
     /**
-     * 获取top10单词
+     * 获取top10的单词
      *
-     * @return top10列表
+     * @param wordIntegerMap Map类，各个单词的个数
+     * @return top10单词列表
      */
-    private List<Map.Entry<String, Integer>> getTopTen(){
+    private List<Map.Entry<String, Integer>> getTopTen(Map<String, Integer> wordIntegerMap){
         Queue<Map.Entry<String, Integer>> wordQueue = new PriorityQueue<>(16, (o1, o2) -> {
             if (o1.getValue().intValue() != o2.getValue().intValue()){
                 return o1.getValue() - o2.getValue();
@@ -335,7 +323,7 @@ public class WordOperationImpl implements WordOperation {
      * @param topTen top10单词
      */
     private void saveResult(List<Map.Entry<String, Integer>> topTen){
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(1024);
         sb.append("characters: ").append(content.length()).append("\n")
             .append("words: ").append(wordNum.get()).append("\n")
             .append("lines: ").append(lineNum.get()).append("\n");

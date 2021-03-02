@@ -47,7 +47,8 @@ public class FileUtil {
                 try {
                     raf.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println(ExceptionInfo.READ_FILE_ERROR.getMessage());
+                    System.exit(0);
                 }
             }
         }
@@ -76,7 +77,8 @@ public class FileUtil {
                     out.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(ExceptionInfo.READ_FILE_ERROR.getMessage());
+                System.exit(0);
             }
         }
     }

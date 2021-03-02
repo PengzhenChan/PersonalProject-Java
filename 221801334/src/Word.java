@@ -5,7 +5,7 @@
  * @author 李星源221801334
  * @date 2021/02/25
  */
-public class Word implements Comparable<Word> {
+public class Word {
     // 单词的拼写
     private String spell;
     // 单词出现的次数
@@ -16,14 +16,6 @@ public class Word implements Comparable<Word> {
         this.count = count;
     }
 
-    @Override
-    public int compareTo(Word o) {
-        if (count != o.count){
-            return count - o.count;
-        }
-        return o.spell.compareTo(spell);
-    }
-
     public String getSpell() {
         return spell;
     }
@@ -32,11 +24,4 @@ public class Word implements Comparable<Word> {
         return count;
     }
 
-    @Override
-    public String toString() {
-        return "Word{" +
-            "spell='" + spell + '\'' +
-            ", count=" + count +
-            '}';
-    }
 }
