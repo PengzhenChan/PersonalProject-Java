@@ -7,6 +7,7 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 	private int charNum; //统计字符数
 	String content;//代表文件
 	private int wordCount; // 单词总数
+	private int validLine;//有效行数
 
 	//// 统计文件字符数
 	public int getCharCount() 
@@ -59,5 +60,21 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 		}
 		return wordCount;
 	}
+	
+	
+	// 统计有效行数
+	public int getLineCount() 
+	{ 
+		//将每一行分开放入一个字符串数组
+		String[] line = content.split("\n"); 
+		// 找出无效行，统计有效行
+		for (int i = 0; i < line.length; i++) 
+		{ 
 
+			if (line[i].trim().length() == 0)
+				continue;
+			validLine = validLine + 1;
+		}
+		return validLine;
+	}
 }
