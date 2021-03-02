@@ -1,32 +1,6 @@
 import re
 
 
-def cmp(mycmp):
-    class K:
-        def __init__(self, obj, *args):
-            self.obj = obj
-
-        def __lt__(self, other):
-            return mycmp(self.obj, other.obj) < 0
-
-        def __gt__(self, other):
-            return mycmp(self.obj, other.obj) > 0
-
-        def __eq__(self, other):
-            return mycmp(self.obj, other.obj) == 0
-
-        def __le__(self, other):
-            return mycmp(self.obj, other.obj) <= 0
-
-        def __ge__(self, other):
-            return mycmp(self.obj, other.obj) >= 0
-
-        def __ne__(self, other):
-            return mycmp(self.obj, other.obj) != 0
-
-    return K
-
-
 class WordCount:
     def __init__(self, s):
         """
@@ -61,7 +35,7 @@ class WordCount:
         Returns:
             [[单词，频率]...]
         """
-        if self.words == []:
+        if not self.words:
             self.wordCount()
         count = []
         keys = []
@@ -72,7 +46,7 @@ class WordCount:
             count.append([key, self.words.count(key)])
         count2 = count.copy()
 
-        count.sort(key=cmp(lambda e1, e2: e2[1] if e1[1] > e2[1] else e1[1] ))
+        count.sort(key=lambda a: a[1], reverse=True)
         result = []
         for c in count:
             for c2 in count2:
@@ -82,7 +56,6 @@ class WordCount:
                     break
             if len(result) == 10:
                 break
-
 
         return result
 
