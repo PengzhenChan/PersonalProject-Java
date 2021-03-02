@@ -1,19 +1,32 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class WordCount{
 
     public static void main(String[] args) {
-        String path = "./input.txt";
+        String inputPath = args[0];
+        String outputPath = args[1];
+
         StringBuilder stringBuilder = new StringBuilder();
         Lib.FileIOUtil fileIOUtil = new Lib.FileIOUtil();
-        Lib.TextEditor textEditor = new Lib.TextEditor(fileIOUtil.openReadStream(path));
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(inputPath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Lib.TextEditor textEditor = new Lib.TextEditor(bufferedReader);
+//        Lib.TextEditor textEditor = new Lib.TextEditor(fileIOUtil.openReadStream(inputPath));
 
+        textEditor.readString();
         stringBuilder.append("characters: ").append(textEditor.countAscii()).append('\n')
                 .append("words: ").append(textEditor.countWords()).append('\n')
                 .append("lines: ").append(textEditor.countRows()).append('\n');
-        System.out.println(stringBuilder.toString());
-        textEditor.countTopWords();
-        textEditor.printTops();
+        textEditor.countTopWords(); //统计词频
+        stringBuilder.append(textEditor.getTops());
+        fileIOUtil.writeFile(outputPath,stringBuilder.toString());
 
-        fileIOUtil.closeReadStream();
-        //System.out.println(fileIOUtil.readFile("./input.txt"));
+//        fileIOUtil.closeRead/Stream();
     }
 }

@@ -9,6 +9,7 @@ public class Lib {
     //文件io工具类
     public static class FileIOUtil {
         InputStream input = null;
+        OutputStream output = null;
         /**
          * @Description 创建一个打开文件的InputStream
          * @Author Lvv
@@ -26,6 +27,33 @@ public class Lib {
             }
             return input;
         }
+
+        public void writeFile(String targetPath, String msg) {
+            File file = new File(targetPath);
+            try {
+                output = new FileOutputStream(file);
+                byte[] bytes = msg.getBytes();
+                output.write(bytes,0,bytes.length);
+                output.flush();
+            } catch (FileNotFoundException e) {
+                System.out.println("文件未找到");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("写出到文件时发生异常");
+                e.printStackTrace();
+            } finally {
+                if (output != null){
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        System.out.println("关闭文件输出流失败");
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+
 
         /**
          * @Description 关闭流
@@ -84,6 +112,7 @@ public class Lib {
         BufferedReader reader = null;
         InputStream input = null;
         List<String> strings = new ArrayList<>();
+        int addCharNum = 0;
         static final int TOP_NUM = 10;
         HashMap<String,Integer> words = new HashMap<String, Integer>();
         List<Map.Entry<String,Integer>> list = new ArrayList<>();
@@ -104,47 +133,58 @@ public class Lib {
          * @Param []
          * @return java.util.List<java.lang.String>
          **/
-        private void scanString() {
+        public void scanString() {
             Scanner scanner = new Scanner(input);
             String content;
+            char c;
             List<String> arr = new ArrayList<>();
             if (scanner == null) {
                 System.out.println("Reader为空");
                 return ;
             }
             while(scanner.hasNext()) {
-                content = scanner.nextLine();
-//                System.out.println(content + "|" + content.length());
+//                content = scanner.nextLine();
+                content = scanner.next();
+                System.out.println(content + "|" + content.length());
                 arr.add(content);
             }
             strings = arr;
         }
 
         /**
-         * @Description 用BufferedReader
+         * @Description 用BufferedReader的read方法一个字符一个字符地读，能够读到换行符
          * @Author Lvv
-         * @Date 2021/3/1 20:07
+         * @Date 2021/3/2 15:06
          * @Param []
          * @return java.util.List<java.lang.String>
          **/
-        private List<String> readString() {
-            String content = null;
+        public void readString() {
+            String content = "";
+            int value;
             List<String> arr = new ArrayList<>();
             if (reader == null) {
                 System.out.println("Reader为空");
-                return null;
+                return ;
             }
             try {
-                while ((content = reader.readLine()) != null) {
+                while ((value = reader.read()) != -1) {
                     //测试输出读取内容
 //                    content += '\n';
-                    System.out.println(content);
-                    arr.add(content);
+                    String c = String.valueOf((char)value);
+                    content += c;
+                    if ('\n' == c.charAt(0)) {
+                        strings.add(content);
+                        System.out.println(content + "|" + content.length());
+                        content = "";
+                    }
+                }
+                if (!content.equals(null)) {
+                    strings.add(content);
+                    content = "";
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return arr;
         }
 
         /**
@@ -158,7 +198,7 @@ public class Lib {
             int sum = 0;
 //            List<String> arr = readString();    //bufferedReader
 //            List<String> arr = scanString();    //scanner
-            scanString();
+//            scanString();
             for (int i = 0; i < strings.size(); i++) {
                 for (int j = 0; j < strings.get(i).length(); j++) {
                     String str = strings.get(i);
@@ -271,18 +311,18 @@ public class Lib {
         }
 
         /**
-         * @Description 打印词频
+         * @Description 返回top的词频
          * @Author Lvv
          * @Date 2021/3/1 23:43
          * @Param []
-         * @return void
+         * @return String
          **/
-        public void printTops() {
+        public String getTops() {
             for (int i = 0; i < Math.min(TOP_NUM, list.size()); i++) {
-                stringBuilder.append("word" + i +": ").append(list.get(i).getKey())
-                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');
+                stringBuilder.append("word" + i +": ").append(list.get(i).getKey()).append('\n');
+//                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');   //测试用
             }
-            System.out.println(stringBuilder.toString());
+            return stringBuilder.toString();
         }
 
         /**
