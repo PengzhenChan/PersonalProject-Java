@@ -84,6 +84,7 @@ public class Function {
         int wordNum=0;      //用于统计单词数
         int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
         int resetWord=0;           //用于判断是否重新开始一个单词读入 
+        int isNotWord=0;            //与wordLength共同作用，判断是不是一个单词
         
         try
         {
@@ -99,10 +100,10 @@ public class Function {
                     resetWord = 0;
                     
                     if((readChar>='a'&&readChar<='z')
-                            ||(readChar>'A'&&readChar<'Z')
-                                ||(readChar>'0'&&readChar<'9'))
+                            ||(readChar>='A'&&readChar<='Z')
+                                ||(readChar>='0'&&readChar<='9'))
                     {
-                        if(readChar>'0'&&readChar<'9')
+                        if(readChar>='0'&&readChar<='9')
                         {
                             if(wordLength>=4)
                             {
@@ -114,7 +115,7 @@ public class Function {
                             }
                             else
                             {
-                                resetWord = 1;
+                                isNotWord = 1;
                             }
                         }
                         else 
@@ -128,10 +129,11 @@ public class Function {
                     }
                     else
                     {
-                        if(wordLength>=4)
+                        if(wordLength>=4 && isNotWord != 1)
                         {
                             wordNum++;
                         }
+                        isNotWord = 0;
                         resetWord = 1;
                     }
                     
@@ -140,6 +142,10 @@ public class Function {
                         word = "";
                         wordLength = 0;
                     }
+                }
+                if(wordLength>=4)
+                {
+                    wordNum++;
                 }
             }
             
@@ -157,6 +163,8 @@ public class Function {
     {
         int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
         int resetWord=0;           //用于判断是否重新开始一个单词读入 
+        int isNotWord=0;            //与wordLength共同作用，判断是不是一个单词
+        
         Vector<Word> allWords = new Vector<Word>();
         int noRepeatWordNum = 0;
         try
@@ -187,7 +195,7 @@ public class Function {
                             }
                             else
                             {
-                                resetWord = 1;
+                                isNotWord = 1;
                             }
                         }
                         else 
@@ -200,8 +208,9 @@ public class Function {
                     }
                     else
                     {
-                        if(wordLength>=4)
+                        if(wordLength>=4 && isNotWord !=1)
                         {
+                            word = word.toLowerCase();
                             int index = FindWord(allWords,word);    //查找有是否重复，重复则返回下标
                             if(index!=-1)
                             {
@@ -218,6 +227,7 @@ public class Function {
                                 System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
                             }
                         }
+                        isNotWord = 0;
                         resetWord = 1;
                     }
                     
@@ -229,8 +239,9 @@ public class Function {
                 }
                 
                 /*防止最后一次读入的是合理的字符，导致最后一个单词没有计入数据*/
-                if(wordLength>=4)
+                if(wordLength>=4 && isNotWord != 1)
                 {
+                    word = word.toLowerCase();
                     int index = FindWord(allWords,word);    //查找有是否重复，重复则返回下标
                     if(index!=-1)
                     {
