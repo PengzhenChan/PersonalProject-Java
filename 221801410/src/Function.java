@@ -227,6 +227,14 @@ public class Function {
                         wordLength = 0;
                     }
                 }
+                
+                Comparator<Word> cmp = new CompareRule();
+                Collections.sort(allWords,cmp);
+                System.out.println("以下是按照频率输出：");
+                for(int i = 0;i<allWords.size();i++)
+                {
+                    System.out.println(allWords.get(i).GetWords()+":"+allWords.get(i).GetFrequent());
+                }
             }
             
         }
