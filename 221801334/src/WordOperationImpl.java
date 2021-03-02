@@ -189,7 +189,7 @@ public class WordOperationImpl implements WordOperation {
      * @return true为合法
      */
     private boolean wordLegal(char c){
-        if ((c >= '0') && (c <='9'))
+        if ((c >= '0') && (c <= '9'))
             return false;
         return (c < 'a') || (c > 'z');
     }
@@ -211,7 +211,7 @@ public class WordOperationImpl implements WordOperation {
         int count = 0;
         char c;
         while (startIndex < tempLen) {
-            for (endIndex = startIndex;endIndex<tempLen;endIndex++){
+            for (endIndex = startIndex;endIndex < tempLen;endIndex++){
                 if (temp.charAt(endIndex) == '\n'){
                     break;
                 }
@@ -310,7 +310,7 @@ public class WordOperationImpl implements WordOperation {
         if (wordMatcher.find()){
             word = wordMatcher.group();
             int start = wordMatcher.start() - 1;
-            if (start>=0){
+            if (start >= 0){
                 if (wordLegal(temp.charAt(start))){
                     ++count;
                     dealMap(word);
