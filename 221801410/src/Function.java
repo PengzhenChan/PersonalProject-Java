@@ -158,7 +158,7 @@ public class Function {
         int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
         int resetWord=0;           //用于判断是否重新开始一个单词读入 
         Vector<Word> allWords = new Vector<Word>();
-        int i=0;
+        int noRepeatWordNum = 0;
         try
         {
             if (readFile.isFile() && readFile.exists())
@@ -202,14 +202,21 @@ public class Function {
                     {
                         if(wordLength>=4)
                         {
-                            i++;
-                            if(FindWord(allWords,word))
+                            int index = FindWord(allWords,word);    //查找有是否重复，重复则返回下标
+                            if(index!=-1)
                             {
-                                System.out.println("该单词已存在");
+                                allWords.get(index).AddFrequent();
+                                System.out.println("该单词已存在："
+                                                        +allWords.get(index).GetWords()+"次数是："
+                                                            +allWords.get(index).GetFrequent());
                             }
-                            Word aWord = new Word(word,0);
-                            allWords.add(aWord);
-                            System.out.println(allWords.get(i-1).getWords());
+                            else 
+                            {
+                                noRepeatWordNum++;        //用于计数总共有多少个单词存入了已经
+                                Word aWord = new Word(word,1);
+                                allWords.add(aWord);
+                                System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
+                            }
                         }
                         resetWord = 1;
                     }
@@ -230,15 +237,15 @@ public class Function {
         }
     }
     
-    public boolean FindWord(Vector<Word> allWords,String word)
+    public int FindWord(Vector<Word> allWords,String word)
     {
         for(int i = 0;i<allWords.size();i++)
         {
-            if(allWords.get(i).getWords().equals(word))
+            if(allWords.get(i).GetWords().equals(word))
             {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }

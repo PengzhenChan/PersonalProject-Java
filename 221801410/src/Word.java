@@ -17,23 +17,28 @@ public class Word {
         frequent = fre;
     }
     
-    public void setWords(String word)
+    public void SetWords(String word)
     {
         words = word;
     }
     
-    public void setFrequent(int fre)
+    public void SetFrequent(int fre)
     {
         frequent = fre;
     }
     
-    public String getWords()
+    public String GetWords()
     {
         return words;
     }
     
-    public int getFrequent()
+    public int GetFrequent()
     {
         return frequent;
+    }
+    
+    public void AddFrequent()
+    {
+        frequent = frequent + 1;
     }
 }
