@@ -2,6 +2,7 @@
 import java.io.*;
 import java.util.Date;
 import java.util.Map;
+import java.util.Random;
 
 public class WordCount
 {
@@ -13,7 +14,6 @@ public class WordCount
     private int words;
     private int lines;
     private Map<String, Integer> maxCntWords;
-
 
     /*
     将文件读出函数
@@ -102,35 +102,19 @@ public class WordCount
     }
 
 
-
-
-
     public static void main(String[] args) throws IOException {
+        long time = System.currentTimeMillis();  //计算代码运行时间
+        if(args.length != 2)
+        {
+            System.out.print("程序只接受两个参数");
+            return;  //退出程序
+        }
 
-        //        if(args.length != 2)
-//        {
-//            System.out.print("程序只接受两个参数");
-//            return;  //退出程序
-//        }
-//
-//        String inputFileName = args[0]; //输入文件名
-//        String outputFileName = args[1]; //输出文件名
-//
-//
-        String inputFileName = "input.txt"; //输入文件名
-        String outputFileName = "output.txt"; //输出文件名
-
-        Date begin = new Date();
-        long begintime = begin.getTime();
+        String inputFileName = args[0]; //输入文件名
+        String outputFileName = args[1]; //输出文件名
 
         //初始化类
         new WordCount(inputFileName, outputFileName);
-
-        Date end = new Date();
-        long endTime = end.getTime();
-        long time = endTime - begintime;
-        System.out.println("程序运行结束共耗时"+time+"毫秒");
-
-
+        System.out.println("程序运行结束共耗时" + (System.currentTimeMillis() - time) + "毫秒");
     }
 }

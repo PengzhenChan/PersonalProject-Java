@@ -15,7 +15,6 @@ public class Lib
     private Map<String,Integer> maxCntWords;
     boolean isDoHandleWordsFunc = false;   //标识handleWord函数是否被运行过
 
-
     /*
     构造函数
     传入参数为从文件读取的数据
@@ -24,6 +23,7 @@ public class Lib
     {
         this.text = text;
     }
+
 
     /*
     获取行数
@@ -60,6 +60,7 @@ public class Lib
         isDoHandleWordsFunc = true;
         return words;
     }
+
 
     /*
     获取频率最高的10个词
@@ -113,6 +114,9 @@ public class Lib
                 .limit(10)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
     }
+
+
+
 
 
 }
