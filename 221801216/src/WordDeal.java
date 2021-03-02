@@ -8,6 +8,12 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 	String content;//代表文件
 	private int wordCount; // 单词总数
 	private int validLine;//有效行数
+	private Map<String, Integer> wordFrequence; // 单词词频
+	
+	public WordDeal(String content) 
+	{
+		this.content = content;
+	}
 
 	//// 统计文件字符数
 	public int getCharCount() 
@@ -76,5 +82,63 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 			validLine = validLine + 1;
 		}
 		return validLine;
+	}
+	
+	//对单词词频的Map进行排序
+	public List getWordFreq() 
+	{ 
+	    wordFrequence = new HashMap<String, Integer>();
+		String con = content;
+		//分词
+		String[] spWord = con.split("\\s"); 
+		for (int i = 0; i < spWord.length; i++) 
+		{
+			if (spWord[i].length() < 4) 
+			{
+				continue;
+			} 
+			else 
+			{
+			int flag = 1;
+			char c;
+			for (int j = 0; j < 4; j++) 
+			{
+			    c = spWord[i].charAt(j);
+				if (!(c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')) 
+				{
+						flag = 0;
+				}
+			}
+			if (flag == 1) 
+			{
+			    spWord[i] = spWord[i].trim().toLowerCase();
+				if (wordFrequence.get(spWord[i]) == null) 
+				{
+						wordFrequence.put(spWord[i], 1);
+				} 
+				else
+						wordFrequence.put(spWord[i], wordFrequence.get(spWord[i]) + 1);
+
+				}
+			}
+		}
+
+		List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordFrequence.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() 
+		{
+			// 对Map中内容进行排序，先按词频后按字典顺序
+			@Override
+			public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) 
+			{ 
+				if (o1.getValue() == o2.getValue()) 
+				{
+					return o1.getKey().compareTo(o2.getKey());
+				}
+				return o2.getValue() - o1.getValue();
+			}
+
+		}
+		);
+		return list;
 	}
 }
