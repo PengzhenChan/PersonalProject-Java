@@ -21,7 +21,8 @@ public class WordCount {
                 System.exit(0);
             } finally {
                 //lib.countChars(inputfilename,outputfilename);
-                lib.countWords(inputfilename,outputfilename);
+                //lib.countWords(inputfilename,outputfilename);
+                lib.countMost(inputfilename,outputfilename);
             }
 
         //} else {

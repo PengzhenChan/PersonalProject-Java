@@ -6,8 +6,7 @@
  * @Version 1.0
  **/
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Lib {
     public void countChars(String inputfileName,String outputfileName)
@@ -54,17 +53,23 @@ public class Lib {
                     int strindex = 0;
                     int strlength = strLine.length();
                     int wordlength = 0;
-                    while (true) {
-                        if(strindex<strlength&&isPartOfWord(strLine.charAt(strindex)) == true) {
+                    while (strindex<strlength) {
+                        if(isPartOfAlphaWord(strLine.charAt(strindex)) == true&&wordlength<4) {
+                            wordlength++;
+                            strindex++;
+                        }
+                        else if(isPartOfWord(strLine.charAt(strindex)) == true&&wordlength>=4)
+                        {
                             wordlength++;
                             strindex++;
                         }
                         else
                         {
-                            String tempword=strLine.substring(strindex-wordlength,strindex);
+
                             strindex++;
                             if(wordlength>=4)
                             {
+                                String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
                                 if(wordarray.get(tempword)==null)
                                 wordarray.put(tempword,1);
                                 else
@@ -72,15 +77,17 @@ public class Lib {
                                     wordarray.put(tempword,wordarray.get(tempword)+1);
                                 }
                             }
-                            break;
+                            wordlength=0;
+                            //break;
                         }
+                        lineCount++;
                     }
 
-                    lineCount++;
+
 
 
                 }
-                wordnumber=wordarray.size(); //wrong
+                wordnumber=wordarray.size();
 
                 System.out.println("文件单词数为" + wordnumber);
                 System.out.println("文件单词数统计成功！");
@@ -94,6 +101,7 @@ public class Lib {
                 //true = append file
                 FileWriter fileWritter = new FileWriter(outfile, true);
                 fileWritter.write(Integer.toString(wordnumber));
+                fileWritter.write("\n"+Integer.toString(lineCount));
                 fileWritter.close();
 
             } catch (Exception e) {
@@ -109,12 +117,106 @@ public class Lib {
                 return false;
         }
 
-    public void countMost()
+    public boolean isPartOfAlphaWord(char cha)
     {
-
+        if((cha<='Z'&&cha>='A')||(cha<='z'&&cha>='a'))
+            return true;
+        else
+            return false;
     }
 
+    public void countMost(String inputfileName, String outputfileName) {
+        Map<String, Integer> wordarray = new HashMap<String, Integer>();
+        int wordnumber = 0;
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(inputfileName));
+            String strLine = null;
+            int lineCount = 0;
+
+            while (null != (strLine = bufferedReader.readLine())) {
+                int strindex = 0;
+                int strlength = strLine.length();
+                int wordlength = 0;
+                while (strindex<strlength) {
+                    if(isPartOfAlphaWord(strLine.charAt(strindex)) == true&&wordlength<4) {
+                        wordlength++;
+                        strindex++;
+                    }
+                    else if(isPartOfWord(strLine.charAt(strindex)) == true&&wordlength>=4)
+                    {
+                        wordlength++;
+                        strindex++;
+                    }
+                     else {
 
 
+                        if (wordlength >= 4) {
+                            String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
 
+                            if (wordarray.get(tempword) == null) {
+                                wordarray.put(tempword, 1);
+                            }
+                            else {
+                                wordarray.put(tempword, wordarray.get(tempword) + 1);
+                            }
+
+                        }
+                        strindex++;
+                        wordlength=0;
+                    }
+
+                }
+
+                if (wordlength >= 4) {
+                    String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
+
+                    if (wordarray.get(tempword) == null) {
+                        wordarray.put(tempword, 1);
+                    } else {
+                        wordarray.put(tempword, wordarray.get(tempword) + 1);
+                    }
+                }
+                lineCount++;
+
+
+            }
+            List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordarray.entrySet()); //转换为list
+            list.sort(new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    return o2.getValue().compareTo(o1.getValue());
+                }
+            });
+
+            File outfile = new File(outputfileName);
+
+            //if file doesnt exists, then create it
+            if (!outfile.exists()) {
+                outfile.createNewFile();
+            }
+            FileWriter fileWritter = new FileWriter(outfile, true);
+
+            if(list.size()<10) {
+                for (int i = 0; i < list.size(); i++) {
+                    //System.out.println(list.get(i).getKey() + ": " + list.get(i).getValue());
+
+                    fileWritter.write("\n"+list.get(i).getKey() + ": " + list.get(i).getValue());
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 10; i++) {
+                    //System.out.println(list.get(i).getKey() + ": " + list.get(i).getValue());
+                    fileWritter.write("\n"+list.get(i).getKey() + ": " + list.get(i).getValue());
+                }
+            }
+            fileWritter.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
