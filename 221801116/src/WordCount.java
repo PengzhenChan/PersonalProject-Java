@@ -8,7 +8,7 @@ public class WordCount {
 
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath)));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputPath),"UTF-8"));
         } catch (FileNotFoundException e) {
             System.out.println("错误位于WordCount类main方法,原因可能是未能正确创建output.txt文件");
         }
