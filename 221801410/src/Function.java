@@ -173,10 +173,10 @@ public class Function {
                     resetWord = 0;
                     
                     if((readChar>='a'&&readChar<='z')
-                            ||(readChar>'A'&&readChar<'Z')
-                                ||(readChar>'0'&&readChar<'9'))
+                            ||(readChar>='A'&&readChar<='Z')
+                                ||(readChar>='0'&&readChar<='9'))
                     {
-                        if(readChar>'0'&&readChar<'9')
+                        if(readChar>='0'&&readChar<='9')
                         {
                             if(wordLength>=4)
                             {
@@ -225,6 +225,26 @@ public class Function {
                     {
                         word = "";
                         wordLength = 0;
+                    }
+                }
+                
+                /*防止最后一次读入的是合理的字符，导致最后一个单词没有计入数据*/
+                if(wordLength>=4)
+                {
+                    int index = FindWord(allWords,word);    //查找有是否重复，重复则返回下标
+                    if(index!=-1)
+                    {
+                        allWords.get(index).AddFrequent();
+                        System.out.println("该单词已存在："
+                                                +allWords.get(index).GetWords()+"次数是："
+                                                    +allWords.get(index).GetFrequent());
+                    }
+                    else 
+                    {
+                        noRepeatWordNum++;        //用于计数总共有多少个单词存入了已经
+                        Word aWord = new Word(word,1);
+                        allWords.add(aWord);
+                        System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
                     }
                 }
                 
