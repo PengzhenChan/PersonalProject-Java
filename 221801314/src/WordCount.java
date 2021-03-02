@@ -8,6 +8,7 @@ public class WordCount{
         String inputPath = args[0];
         String outputPath = args[1];
 
+        Long startTime = System.currentTimeMillis();
         StringBuilder stringBuilder = new StringBuilder();
         Lib.FileIOUtil fileIOUtil = new Lib.FileIOUtil();
         BufferedReader bufferedReader = null;
@@ -25,6 +26,8 @@ public class WordCount{
                 .append("lines: ").append(textEditor.countRows()).append('\n');
         stringBuilder.append(textEditor.countTopWords());
         fileIOUtil.writeFile(outputPath,stringBuilder.toString());
+        Long endTime = System.currentTimeMillis();
+        System.out.println("运行用时: " + (endTime - startTime) + "ms");
 
 //        fileIOUtil.closeRead/Stream();
     }

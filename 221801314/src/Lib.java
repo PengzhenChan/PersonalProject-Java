@@ -165,28 +165,29 @@ public class Lib {
          * @return java.util.List<java.lang.String>
          **/
         public void readString() {
-            String content = "";
+//            String content = "";
+            stringBuilder = new StringBuilder();
             int value;
-            List<String> arr = new ArrayList<>();
+//            List<String> arr = new ArrayList<>();
             if (reader == null) {
                 System.out.println("Reader为空");
                 return ;
             }
             try {
                 while ((value = reader.read()) != -1) {
-                    //测试输出读取内容
-//                    content += '\n';
-                    String c = String.valueOf((char)value);
-                    content += c;
-                    if ('\n' == c.charAt(0)) {
-                        strings.add(content);
+                    char ch = (char)value;
+                    stringBuilder.append(ch);
+//                    String c = String.valueOf((char)value);
+//                    content += c;
+                    if (ch == '\n') {
+                        strings.add(stringBuilder.toString());
 //                        System.out.println(content + "|" + content.length());
-                        content = "";
+                        stringBuilder.delete(0, stringBuilder.length());
                     }
                 }
-                if (!content.equals(null)) {
-                    strings.add(content);
-                    content = "";
+                if (stringBuilder != null) {
+                    strings.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.length());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -250,6 +251,9 @@ public class Lib {
          * @return int
          **/
         public int countWords() {
+            stringBuilder.delete(0,stringBuilder.length());
+
+
             String word;
             int sum = 0;
             for (int i = 0; i < strings.size(); i++) {
@@ -308,16 +312,18 @@ public class Lib {
             list.sort(new Comparator<Map.Entry<String, Integer>>() {
                 @Override
                 public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                    if (o2.getValue() == o1.getValue()) {
-                        return o1.getKey().compareTo(o2.getKey());
+                    if (o2.getValue().compareTo(o1.getValue()) == 0) {
+                        return o2.getKey().compareTo(o1.getKey()) * -1;
+                    } else  {
+                        return o2.getValue() - o1.getValue();
                     }
-                    return o2.getValue() - o1.getValue();
                 }
             });
             //输出TOP10字符串的过程
+            stringBuilder.delete(0, stringBuilder.length());
             for (int i = 0; i < Math.min(TOP_NUM, list.size()); i++) {
-                stringBuilder.append("word" + i +": ").append(list.get(i).getKey()).append('\n');
-//                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');   //测试用
+                stringBuilder.append("word" + i +": ").append(list.get(i).getKey())
+                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');   //测试用
             }
             return stringBuilder.toString();
         }
@@ -331,6 +337,7 @@ public class Lib {
          **/
         public int countRows() {
             int sum = 0;
+            //400ms
             for (int i = 0; i < strings.size(); i++) {
                 String str = strings.get(i);
                 str = str.replace("\n","");
