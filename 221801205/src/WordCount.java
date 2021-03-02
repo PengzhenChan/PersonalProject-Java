@@ -8,10 +8,11 @@ public class WordCount {
 	 * 参数：源文件路径
 	 * 返回值：文件内容
 	 */
-	public String readFile(String sourceFile) {
+	public static String readFile(String sourceFile) {
 		String encoding = "UTF-8";
 		File file = new File(sourceFile);
 		long fileLength = file.length();
+		System.out.print(fileLength);
 		byte[] fileContent = new byte[(int)fileLength];
 		try {
 			FileInputStream in = new FileInputStream(file);
@@ -29,8 +30,6 @@ public class WordCount {
 	}
 	
 	public static void main(String[] args) {
-		
-		
 	}
 
 }
