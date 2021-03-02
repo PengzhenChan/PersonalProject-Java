@@ -15,7 +15,7 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 		this.content = content;
 	}
 
-	//// 统计文件字符数
+	// 统计文件字符数
 	public int getCharCount() 
 	{
 		char c;
@@ -23,7 +23,7 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 		while (i<(content.length())) 
 		{
 			c = content.charAt(i);
-			if (c >= 32 && c <= 126 || c == '\r' || c == '\n' || c == '\t') 
+			if (c >= 32 && c <= 126  || c == '\n' || c == '\t') 
 			{
 				charNum++;
 			}
@@ -140,5 +140,34 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 		}
 		);
 		return list;
+	}
+	
+	// 将排完序的List元素筛选出前十个并存入数组
+	public String[] ListToArray(List<Map.Entry<String, Integer>> list) 
+	{ 
+		String[] arr;
+		int i = 0;
+		int len = list.size();
+		if (len <= 10) 
+		{
+			arr = new String[len];
+			for (Map.Entry<String, Integer> m : list) 
+			{
+				arr[i] = "<" + m.getKey() + ">:" + m.getValue();
+				i++;
+			}
+		} 
+		else 
+		{
+			arr = new String[10];
+			for (Map.Entry<String, Integer> m : list) 
+			{
+				if (i == 10)
+					break;
+				arr[i] = "<" + m.getKey() + ">:" + m.getValue();
+				i++;
+			}
+		}
+		return arr;
 	}
 }
