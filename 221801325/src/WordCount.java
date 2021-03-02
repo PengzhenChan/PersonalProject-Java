@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 public class WordCount
 {
@@ -7,6 +9,7 @@ public class WordCount
         CountChar countChar = new CountChar();
         Countword countword = new Countword();
         CountLine countLine = new CountLine();
+        CountMost countMost = new CountMost();
         String root = System.getProperty("user.dir");
         String path = root+ File.separator+"src"+File.separator+"input.txt";
 
@@ -22,8 +25,17 @@ public class WordCount
             output("output.txt","characters",countChar.charCount(s));
             output("output.txt","words:",countword.countword(s));
             output("output.txt","lines:",countLine.countLine(s));
-
-            System.out.println(countChar.charCount(s)+"|"+countword.countword(s)+"|"+countLine.countLine(s));
+            List<Map.Entry<String, Integer>> list=countMost.countWord(s);
+            for (int i = 0; i < list.size(); i++)
+            {
+                Map.Entry<String, Integer> mapping = list.get(i);
+                if(i<10)
+                {
+                    output("output.txt",mapping.getKey(),mapping.getValue());
+                }
+            }
+            System.out.println(countChar.charCount(s)+"|"+countword.countword(s)+"|"+countLine.countLine(s)+"|");
+            
         }
         catch (IOException e) {
             e.printStackTrace();
