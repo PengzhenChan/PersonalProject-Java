@@ -1,4 +1,32 @@
 import re
+
+
+def cmp(mycmp):
+    class K:
+        def __init__(self, obj, *args):
+            self.obj = obj
+
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+
+    return K
+
+
 class WordCount:
     def __init__(self, s):
         """
@@ -36,12 +64,27 @@ class WordCount:
         if self.words == []:
             self.wordCount()
         count = []
-        keys = list(set(self.words))
+        keys = []
+        for k in self.words:
+            if k not in keys:
+                keys.append(k)
         for key in keys:
             count.append([key, self.words.count(key)])
-        count.sort(key=(lambda e: e[1]))
-        return count[:10]
+        count2 = count.copy()
 
+        count.sort(key=cmp(lambda e1, e2: e2[1] if e1[1] > e2[1] else e1[1] ))
+        result = []
+        for c in count:
+            for c2 in count2:
+                if c[1] == c2[1] and c2 not in result:
+                    result.append(c2)
+                    count2.remove(c2)
+                    break
+            if len(result) == 10:
+                break
+
+
+        return result
 
     def lineCount(self):
         """
