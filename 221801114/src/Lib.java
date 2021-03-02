@@ -10,69 +10,33 @@ public class Lib {
 
     public static int getLines(String filePath){
         int lines = 0;
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null){
-                if (!currentLine.trim().equals("")){
-                        lines++;
-                }
-                currentLine = bufferedReader.readLine();
+        String fileString = readToString(filePath);
+        String[] lineStrings = fileString.split("\n|\r\n");
+        for (String lineString : lineStrings){
+            if (!lineString.trim().equals("")){
+                lines ++;
             }
-        }catch (FileNotFoundException e) {
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
         }
         return lines;
     }
 
     public static int getCharacters(String filePath){
-        int characters = 0;
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null){
-                characters += currentLine.length() + 2;
-                currentLine = bufferedReader.readLine();
-            }
-            characters -= 2;
-        }catch (FileNotFoundException e) {
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
-        }
-        return characters;
+        String fileString = readToString(filePath);
+        return fileString.length();
     }
 
     public static int getWords(String filePath){
         int words = 0;
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ ]");
-        try{
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null){
-                String[] wordStrings = pattern.split(currentLine);
-                for (String word:wordStrings){
-                    if (!word.equals("") && judgeWords(word.toLowerCase())){
-                        words++;
-                    }
+        String fileString = readToString(filePath);
+        String[] lineStrings = fileString.split("\n|\r\n");
+        for (String lineString : lineStrings){
+            String[] wordStrings = pattern.split(lineString);
+            for (String word : wordStrings){
+                if (!word.equals("") && judgeWords(word.toLowerCase())){
+                    words++;
                 }
-                currentLine = bufferedReader.readLine();
             }
-        }catch (FileNotFoundException e) {
-            System.out.println("未找到文件：" + filePath);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
         }
         return words;
     }
@@ -80,30 +44,20 @@ public class Lib {
     public static void countWordFrequency(String inputFilePath, String outputFilePath){
         hashMap = new HashMap<String,Integer>();
         Pattern pattern = Pattern.compile("[`~!@#$%^&*()_+\\-={}\\\\|:;\"'<,>.?/ ]");
-        try{
-            bufferedReader = new BufferedReader(new FileReader(inputFilePath));
-            String currentLine = bufferedReader.readLine();
-            while (currentLine != null){
-                String[] wordStrings = pattern.split(currentLine);
-                for (String word:wordStrings){
-                    word = word.toLowerCase();
-                    if (!word.equals("") && judgeWords(word)){
-                        Integer count = hashMap.get(word);
-                        hashMap.put(word, (count == null ? 1 : ++count));
-                    }
+        String fileString = readToString(inputFilePath);
+        String[] lineStrings = fileString.split("\n|\r\n");
+        for (String lineString : lineStrings){
+            String[] wordStrings = pattern.split(lineString);
+            for (String word:wordStrings){
+                word = word.toLowerCase();
+                if (!word.equals("") && judgeWords(word)){
+                    Integer count = hashMap.get(word);
+                    hashMap.put(word, (count == null ? 1 : ++count));
                 }
-                currentLine = bufferedReader.readLine();
             }
-            TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
-            sortByValue(treeMap, outputFilePath);
-        }catch (FileNotFoundException e) {
-            System.out.println("未找到文件：" + inputFilePath);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            closeInputStream();
         }
+        TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>(hashMap);
+        sortByValue(treeMap, outputFilePath);
     }
 
     private static boolean judgeWords(String word){
@@ -135,6 +89,30 @@ public class Lib {
         }
     }
 
+    public static String readToString(String fileName) {
+        String encoding = "UTF-8";
+        File file = new File(fileName);
+        Long filelength = file.length();
+        byte[] filecontent = new byte[filelength.intValue()];
+        try {
+            FileInputStream in = new FileInputStream(file);
+            in.read(filecontent);
+            in.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("未找到文件：" + fileName);
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new String(filecontent, encoding);
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("The OS does not support " + encoding);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void writeToFile(String content, String filePath){
         try{
             if (fileWriter == null) {
@@ -150,16 +128,6 @@ public class Lib {
             e.printStackTrace();
         }finally {
             closeOutputStream();
-        }
-    }
-
-    private static void closeInputStream(){
-        try{
-            if (bufferedReader != null){
-                bufferedReader.close();
-            }
-        }catch (IOException e){
-            e.printStackTrace();
         }
     }
 
