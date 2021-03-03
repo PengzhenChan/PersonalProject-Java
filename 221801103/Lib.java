@@ -22,7 +22,7 @@ public class Lib
 		return bufferedReader;
 	}
 	
-	//Í³¼ÆÎÄ¼şµÄ×Ö·û¸öÊı£¬°üÀ¨¿Õ¸ñ£¬Ë®Æ½ÖÆ±í·û£¬»»ĞĞ·û
+	//ç»Ÿè®¡æ–‡ä»¶çš„å­—ç¬¦ä¸ªæ•°ï¼ŒåŒ…æ‹¬ç©ºæ ¼ï¼Œæ°´å¹³åˆ¶è¡¨ç¬¦ï¼Œæ¢è¡Œç¬¦
 	public static int CharsCount(String fileName)
 	{
 		int count=0;
@@ -30,7 +30,7 @@ public class Lib
 		
 		if(targetFile==null)
 		{
-			System.out.println("ÕÒ²»µ½¸ÃÎÄ¼şÅ¶~");
+			System.out.println("æ‰¾ä¸åˆ°è¯¥æ–‡ä»¶å“¦~");
 			return 0;
 		}
 		
@@ -53,7 +53,7 @@ public class Lib
 		return count;	
 	}
 	
-	//Í³¼ÆÎÄÕÂµ¥´ÊÊıÁ¿
+	//ç»Ÿè®¡æ–‡ç« å•è¯æ•°é‡
 	public static List<Map.Entry<String, Integer>> WordCount(String fileName)
 	{
 		HashMap<String,Integer> wordHash=new HashMap<String,Integer>();
@@ -61,7 +61,7 @@ public class Lib
 		
 		if(targetFile==null)
 		{
-			System.out.println("ÕÒ²»µ½¸ÃÎÄ¼şÅ¶~");
+			System.out.println("æ‰¾ä¸åˆ°è¯¥æ–‡ä»¶å“¦~");
 			return null;
 		}
 		
@@ -87,7 +87,7 @@ public class Lib
 		
 		while(matcher.find())
 		{
-			word=matcher.group().toLowerCase();//×ª»¯ÎªĞ¡Ğ´
+			word=matcher.group().toLowerCase();//è½¬åŒ–ä¸ºå°å†™
 			if(wordHash.containsKey(word))
 			{
 				int num=wordHash.get(word);
@@ -100,11 +100,11 @@ public class Lib
 			}
 		}
 		
-		//½«map.entrySet()×ª»»³Élist
+		//å°†map.entrySet()è½¬æ¢æˆlist
 		List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordHash.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() 
 		{
-			//½µĞòÅÅĞò
+			//é™åºæ’åº
 			@Override
 			public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) 
 			{
@@ -115,7 +115,7 @@ public class Lib
 		return list;	
 	}
 	
-	//Í³¼ÆÎÄ¼şµÄĞĞÊı
+	//ç»Ÿè®¡æ–‡ä»¶çš„è¡Œæ•°
 	public static int LineCount(String fileName)
 	{
 		int count=0;
@@ -123,7 +123,7 @@ public class Lib
 		
 		if(targetFile==null)
 		{
-			System.out.println("ÕÒ²»µ½¸ÃÎÄ¼şÅ¶~");
+			System.out.println("æ‰¾ä¸åˆ°è¯¥æ–‡ä»¶å“¦~");
 			return 0;
 		}
 		
@@ -147,12 +147,12 @@ public class Lib
 	    Matcher matcher = linePattern.matcher(str);
 	    while (matcher.find()) 
 	    {
-            count++;
-        }
+                count++;
+            }
 	    return count;
 	}
 	
-	//Êä³öÎÄ¼ş
+	//è¾“å‡ºæ–‡ä»¶
 	public static void OutputFile(String inputFileName,String outputFileName)
 	{
 		
