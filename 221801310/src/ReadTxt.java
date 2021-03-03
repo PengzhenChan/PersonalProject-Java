@@ -5,10 +5,11 @@ public class ReadTxt{
     public static String readTxt(String fileName){
         //要返回的字符串
         String content = "";
+        String encoding = "UTF-8";
 
         try{
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(fileName), encoding);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             //每一行
             String oneLine;
 
