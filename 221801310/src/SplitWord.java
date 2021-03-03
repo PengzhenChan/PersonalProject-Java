@@ -27,4 +27,11 @@ public class SplitWord {
         return legalWords;
     }
 
+    /*集成上面两个方法，传入文本就可以得到合法单词的List*/
+    public static List<String> textToLegalWord(String text){
+        String[] words = splitWord(text);
+        return splitLegalWord(words);
+    }
+
+
 }

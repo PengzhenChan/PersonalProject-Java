@@ -20,11 +20,13 @@ public class WordCount{
 //        asciiCharNum = CountAsciiChar.countChar(content);
 //        System.out.println(asciiCharNum);
 
-        wordNum = CountWord.countWordNum(content);
-        System.out.println(wordNum);
-//        HashMap<String, Integer> hashMap = CountFrequency.countFrequency(content);
+//        wordNum = CountWord.countWordNum(content);
+//        System.out.println(wordNum);
+        HashMap<String, Integer> hashMap = CountFrequency.countFrequency(content);
+        hashMap = CountFrequency.sortHashMap(hashMap);
 //        for(Map.Entry<String, Integer> entry : hashMap.entrySet()){
 //            System.out.println(entry.getKey()+":"+entry.getValue());
 //        }
+        System.out.println(hashMap);
     }
 }
