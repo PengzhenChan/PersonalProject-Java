@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,9 +29,9 @@ public class Lib
 
         return list;
     }
-    public int countword(String string)
+    public long  countword(String string)
     {
-        int num = 0;
+        long num = 0;
         String[] word = string.split("\\s+");
         for (int i = 0; i < word.length; i++)
         {
@@ -53,9 +53,9 @@ public class Lib
         return num;
 
     }
-    public int charCount(String string) throws IOException
+    public long charCount(String string) throws IOException
     {
-        int characters = 0;
+        long characters = 0;
         String regex = "\\p{ASCII}";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(string);
@@ -64,13 +64,13 @@ public class Lib
         }
         return characters;
     }
-    public  int lineCount(String string)
+    public  long lineCount(String string)
     {
-        int num_of_line=0;
+        long num_of_line=0;
         String[] line = string.split("\r\n|\r|\n");
         for (int i = 0;i<line.length;i++)
         {
-            if(!line[i].equals("")||line[i]!=null)
+            if(!line[i].equals("")&&line[i]!=null)
             {
                 num_of_line++;
             }
@@ -78,5 +78,34 @@ public class Lib
         }
         return num_of_line;
     }
+    public String openFile(String path) throws IOException
+    {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+        StringBuffer s =  new StringBuffer();
+        int li=0;
+        double endTime1 = System.currentTimeMillis();//获取结束时间
+        while ((li=bufferedReader.read())!= -1)
+        {   //System.out.print(line );
 
+            char c= (char)li;
+            s.append(c);
+        }
+        return s.toString();
+    }
+    public  void output(String output_file,String style,long num)
+    {
+        // TODO Auto-generated method stub
+        File txt=new File(output_file);
+        try
+        {
+            FileWriter fw = new FileWriter(txt,true);//参数为true代表可以追加写入
+            BufferedWriter out = new BufferedWriter(fw);
+            out.write(style +":" + num + "\r\n");
+            out.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("指定输出文件不存在");
+        }
+    }
 }
