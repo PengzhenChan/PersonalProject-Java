@@ -63,11 +63,14 @@ public class WordCount
      */
     private void output()
     {
-        File file = new File(outputFileName);
+        //File file = new File(outputFileName);
         PrintWriter output = null;
         try
         {
-            output = new PrintWriter(file);
+            output = new PrintWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(outputFileName),
+                            "UTF-8"));    //输出设置编码为utf-8
             output.print("characters:" + chars + '\n');
             output.print("words:" + words + '\n');
             output.print("lines:" + lines + '\n');
