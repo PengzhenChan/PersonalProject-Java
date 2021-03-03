@@ -88,28 +88,22 @@ public class Lib {
     //统计文件行数
     public int FileLines(BufferedReader bufferedReader) {
         int rows = 0;
+        String line = new String();
 
-        int ch;
-        char temp = '0';
         try {
-            while ((ch = bufferedReader.read()) != -1) {
-                char chs = (char) ch;
+            while ((line = bufferedReader.readLine()) != null) {
+                String temp = line.replaceAll("\\s*","");
 
-                if (temp == '\n' && chs == '\r' || temp == '\r'
-                        || temp == '\n') {
+                if (line.length() != 0) {
                     rows++;
-                    ch = '0';
                 }
-                temp = (char) ch;
-
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        rows++;
         return rows;
-
     }
+
+    //
 }
