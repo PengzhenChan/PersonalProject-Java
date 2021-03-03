@@ -6,27 +6,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lib {
+    public static class Core{
+//        public static int getAscii() {
+//
+//        }
+//
+//        public static int getWords() {
+//
+//        }
+//
+//        public static String getTopWords() {
+//
+//        }
+    }
+
     //文件io工具类
     public static class FileIOUtil {
-        InputStream input = null;
-        OutputStream output = null;
-        /**
-         * @Description 创建一个打开文件的InputStream
-         * @Author Lvv
-         * @Date 2021/3/1 20:05
-         * @Param [filePath]
-         * @return java.io.InputStream
-         **/
-        public InputStream openReadStream(String filePath) {
-            File file = new File(filePath);
-            try {
-                input = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                System.out.println("文件未找到");
-                e.printStackTrace();
-            }
-            return input;
-        }
+        static InputStream input = null;
+        static OutputStream output = null;
 
         /**
          * @Description 将msg写入targetPath的文件中
@@ -35,16 +32,13 @@ public class Lib {
          * @Param [targetPath, msg]
          * @return void
          **/
-        public void writeFile(String targetPath, String msg) {
+        public static void writeFile(String targetPath, String msg) {
             File file = new File(targetPath);
             try {
                 output = new FileOutputStream(file);
                 byte[] bytes = msg.getBytes();
                 output.write(bytes,0,bytes.length);
                 output.flush();
-            } catch (FileNotFoundException e) {
-                System.out.println("文件未找到");
-                e.printStackTrace();
             } catch (IOException e) {
                 System.out.println("写出到文件时发生异常");
                 e.printStackTrace();
@@ -58,26 +52,6 @@ public class Lib {
                     }
                 }
             }
-
-        }
-
-
-        /**
-         * @Description 关闭流
-         * @Author Lvv
-         * @Date 2021/3/1 20:06
-         * @Param []
-         * @return boolean
-         **/
-        public boolean closeReadStream() {
-            try {
-                input.close();
-            } catch (IOException e) {
-                System.out.println("关闭流出现异常");
-                e.printStackTrace();
-                return false;
-            }
-            return true;
         }
 
         /**
@@ -87,7 +61,7 @@ public class Lib {
          * @Param [filePath]
          * @return int
          **/
-        public BufferedReader readFile(String filePath) {
+        public static BufferedReader readFile(String filePath) {
             File file = new File(filePath);
             FileInputStream inputStream = null;
             InputStreamReader inputStreamReader = null;
@@ -100,24 +74,41 @@ public class Lib {
                 System.out.println("找不到文件路径");
                 System.out.println("当前路径"+System.getProperty("user.dir"));
                 e.printStackTrace();
-            } finally {
-//                try {
-//                    bufferedReader.close();
-//                    inputStreamReader.close();
-//                    inputStream.close();
-//                } catch (IOException e) {
-//                    System.out.println("关闭inputStream时 异常");
-//                    e.printStackTrace();
-//                }
             }
             return bufferedReader;
         }
+
+        public static void bigDateTest(String outputPath) throws IOException {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(int k=0;k<100;k++){
+                for (int i = 0; i < 10000; i++) {
+                    stringBuilder.append("aaaa").append(i).append(",");
+                }
+                stringBuilder.append('\n');
+                for (int i = 0; i < 10000; i++) {
+                    stringBuilder.append("bbbb").append(i).append(",");
+                }
+                stringBuilder.append('\n');
+                for (int i = 0; i < 10000; i++) {
+                    for (int j = 0; j < 60; j++) {
+                        stringBuilder.append("maxmax").append(j).append(",");
+                    }
+                    stringBuilder.append('\n');
+                }
+            }
+            String testContent = stringBuilder.toString();
+            System.out.println(testContent.length());
+            BufferedWriter out=new BufferedWriter(new FileWriter(outputPath));
+            out.write(testContent);
+            out.close();
+        }
+
     }
 
     //String处理类
     public static class TextEditor{
         BufferedReader reader = null;
-        InputStream input = null;
+        int rows = 0;
         List<String> strings = new ArrayList<>();
         static final int TOP_NUM = 10;
         HashMap<String,Integer> words = new HashMap<String, Integer>();
@@ -128,34 +119,7 @@ public class Lib {
         public TextEditor(BufferedReader reader) {
             this.reader = reader;
         }
-        public TextEditor(InputStream input) {
-            this.input = input;
-        }
 
-        /**
-         * @Description 用Scanner读出文件内容
-         * @Author Lvv
-         * @Date 2021/3/1 20:06
-         * @Param []
-         * @return java.util.List<java.lang.String>
-         **/
-        public void scanString() {
-            Scanner scanner = new Scanner(input);
-            String content;
-            char c;
-            List<String> arr = new ArrayList<>();
-            if (scanner == null) {
-                System.out.println("Reader为空");
-                return ;
-            }
-            while(scanner.hasNext()) {
-//                content = scanner.nextLine();
-                content = scanner.next();
-                System.out.println(content + "|" + content.length());
-                arr.add(content);
-            }
-            strings = arr;
-        }
 
         /**
          * @Description 用BufferedReader的read方法一个字符一个字符地读，能够读到换行符
@@ -165,10 +129,8 @@ public class Lib {
          * @return java.util.List<java.lang.String>
          **/
         public void readString() {
-//            String content = "";
             stringBuilder = new StringBuilder();
             int value;
-//            List<String> arr = new ArrayList<>();
             if (reader == null) {
                 System.out.println("Reader为空");
                 return ;
@@ -177,8 +139,6 @@ public class Lib {
                 while ((value = reader.read()) != -1) {
                     char ch = (char)value;
                     stringBuilder.append(ch);
-//                    String c = String.valueOf((char)value);
-//                    content += c;
                     if (ch == '\n') {
                         strings.add(stringBuilder.toString());
 //                        System.out.println(content + "|" + content.length());
@@ -203,16 +163,14 @@ public class Lib {
          **/
         public int countAscii() {
             int sum = 0;
-//            List<String> arr = readString();    //bufferedReader
-//            List<String> arr = scanString();    //scanner
-//            scanString();
             for (int i = 0; i < strings.size(); i++) {
-                for (int j = 0; j < strings.get(i).length(); j++) {
-                    String str = strings.get(i);
-                    char ch = str.charAt(j);
-                    if (ch >= 0 && ch < 128)
-                        sum++;
-                }
+                sum += strings.get(i).length();
+//                for (int j = 0; j < strings.get(i).length(); j++) {
+//                    String str = strings.get(i);
+//                    char ch = str.charAt(j);
+//                    if (ch >= 0 && ch < 128)
+//                        sum++;
+//                }
             }
 //            //测试输出统计的总数
 //            System.out.println("ASCII sums:" + sum);
@@ -226,7 +184,7 @@ public class Lib {
          * @Param [word]
          * @return boolean
          **/
-        private boolean validate(String word) {
+        public static boolean validate(String word) {
             boolean flag = true;
             final int MIN_LENGTH = 4;
             if (word.length() < MIN_LENGTH) {
@@ -251,32 +209,33 @@ public class Lib {
          * @return int
          **/
         public int countWords() {
-            stringBuilder.delete(0,stringBuilder.length());
-
+//            stringBuilder.delete(0,stringBuilder.length());
 
             String word;
-            int sum = 0;
+            int rowsSum = 0;
+            int wordsSum = 0;
             for (int i = 0; i < strings.size(); i++) {
 //              \w :匹配包括下划线的任何单词字符,等价于 [A-Z a-z 0-9_]
 //              \W :匹配任何非单词字符,等价于 [^A-Z a-z 0-9_]
-                String[] arr = strings.get(i).split("\\W");
-                for (String str : arr) {
-                    word = str.toLowerCase();   //转小写
-                    if (validate(word)) {
-                        if (!words.containsKey(word)) {
-                            words.put(word,0);
-                        } else {
-                            continue;
-//                            int times = words.get(word) + 1;
-//                            words.remove(word);
-//                            words.put(word,times);
-                        }
+                String str = strings.get(i);
+                String[] arr = str.split("\\W");
+                for (String s : arr) {
+                    if (validate(s)) {
+                        wordsSum++;
                     }
                 }
+                //string.replace用string.trim替换提升效率20%
+//                str = str.replace("\n","");
+//                str = str.replace("\r","");
+//                str = str.replace("\t","");
+//                str = str.replace(" ","");
+                if (!str.trim().isEmpty())
+                    rowsSum++;
             }
 //            //测试用输出
-//            System.out.println("sum:" + sum);
-            return words.size();
+//            System.out.println("rowsSum:" + rowsSum);
+            rows = rowsSum;
+            return wordsSum;
         }
 
         /**
@@ -322,8 +281,7 @@ public class Lib {
             //输出TOP10字符串的过程
             stringBuilder.delete(0, stringBuilder.length());
             for (int i = 0; i < Math.min(TOP_NUM, list.size()); i++) {
-                stringBuilder.append("word" + i +": ").append(list.get(i).getKey())
-                        .append("\t\tfrequency: ").append(list.get(i).getValue()).append('\n');   //测试用
+                stringBuilder.append(list.get(i).getKey()).append(": ").append(list.get(i).getValue()).append('\n');
             }
             return stringBuilder.toString();
         }
@@ -336,19 +294,7 @@ public class Lib {
          * @return int
          **/
         public int countRows() {
-            int sum = 0;
-            //400ms
-            for (int i = 0; i < strings.size(); i++) {
-                String str = strings.get(i);
-                str = str.replace("\n","");
-                str = str.replace("\r","");
-                str = str.replace("\t","");
-                str = str.replace(" ","");
-                if (!str.isEmpty())
-                    sum++;
-            }
-//            System.out.println("行数: " + sum);
-            return sum;
+            return this.rows;
         }
     }
 

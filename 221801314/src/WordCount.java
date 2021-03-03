@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class WordCount{
 
@@ -10,25 +11,23 @@ public class WordCount{
 
         Long startTime = System.currentTimeMillis();
         StringBuilder stringBuilder = new StringBuilder();
-        Lib.FileIOUtil fileIOUtil = new Lib.FileIOUtil();
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(inputPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        BufferedReader bufferedReader = Lib.FileIOUtil.readFile(inputPath);
         Lib.TextEditor textEditor = new Lib.TextEditor(bufferedReader);
-//        Lib.TextEditor textEditor = new Lib.TextEditor(fileIOUtil.openReadStream(inputPath));
 
         textEditor.readString();
-        stringBuilder.append("characters: ").append(textEditor.countAscii()).append('\n')
-                .append("words: ").append(textEditor.countWords()).append('\n')
-                .append("lines: ").append(textEditor.countRows()).append('\n');
+        stringBuilder.append("characters: ").append(textEditor.countAscii()).append('\n');
+        stringBuilder.append("words: ").append(textEditor.countWords()).append('\n');
+        stringBuilder.append("lines: ").append(textEditor.countRows()).append('\n');
         stringBuilder.append(textEditor.countTopWords());
-        fileIOUtil.writeFile(outputPath,stringBuilder.toString());
+        Lib.FileIOUtil.writeFile(outputPath,stringBuilder.toString());
         Long endTime = System.currentTimeMillis();
         System.out.println("运行用时: " + (endTime - startTime) + "ms");
 
-//        fileIOUtil.closeRead/Stream();
+//        try {
+//            Lib.FileIOUtil.bigDateTest("input.txt");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
     }
 }
