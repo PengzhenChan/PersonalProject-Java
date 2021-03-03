@@ -5,8 +5,12 @@ if __name__ == '__main__':
     if len(sys.argv) != 3:
         print("python WordCount.py input.txt output.txt")
     s = ""
-    with open(sys.argv[1], "r", encoding="utf-8") as f:
-        s = f.read()
+    try:
+        with open(sys.argv[1], "r", encoding="utf-8") as f:
+            s = f.read()
+    except FileNotFoundError:
+        print("File not found:" + sys.argv[1])
+        exit()
     wc = WordCount(s)
 
     output = ""
