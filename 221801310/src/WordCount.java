@@ -8,14 +8,17 @@ public class WordCount{
         String content;
         int asciiCharNum = 0;
         int wordNum = 0;
+        int lines = 0;
 
         content = ReadTxt.readTxt(inputFile);
         System.out.println(content);
 
-        asciiCharNum = CountAsciiChar.countChar(content);
-        System.out.println(asciiCharNum);
+        lines = CountLine.countLine(content);
+        System.out.println(lines);
+//        asciiCharNum = CountAsciiChar.countChar(content);
+//        System.out.println(asciiCharNum);
 
-        wordNum = CountWord.countWordNum(content);
-        System.out.println(wordNum);
+//        wordNum = CountWord.countWordNum(content);
+//        System.out.println(wordNum);
     }
 }
