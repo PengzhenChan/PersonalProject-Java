@@ -14,7 +14,7 @@ public class OutputToTxt {
         File outputFile = new File(outputFileName);
 
         try{
-            FileWriter fileWriter = new FileWriter(outputFile, true);
+            FileWriter fileWriter = new FileWriter(outputFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             //输出ascii字符数
             bufferedWriter.write("characters:"+num1+"\r\n");

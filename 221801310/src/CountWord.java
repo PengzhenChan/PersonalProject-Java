@@ -1,5 +1,3 @@
-import java.util.Locale;
-
 public class CountWord {
     /*
         统计文本中有多少个单词，单词规则：至少以4个英文字母开头，跟上字母数字符号，单词以分隔符分割，不区分大小写。
