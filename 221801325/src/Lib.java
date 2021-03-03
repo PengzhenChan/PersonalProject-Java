@@ -63,7 +63,21 @@ public class Lib {
         while (matcher.find()) {
             characters++;
         }
-        return characters - 1;
+        return characters;
+    }
+    public  int lineCount(String string)
+    {
+        int num_of_line=0;
+        String[] line = string.split("\r\n|\r|\n");
+        for (int i = 0;i<line.length;i++)
+        {
+            if(!line[i].equals("")||line[i]!=null)
+            {
+                num_of_line++;
+            }
+
+        }
+        return num_of_line;
     }
 
 }

@@ -1,4 +1,5 @@
 
+import javax.sound.sampled.Line;
 import java.io.*;
 import java.util.List;
 import java.util.Map;
@@ -6,28 +7,24 @@ import java.util.Map;
 public class WordCount
 {
     public static void main(String[] args) throws IOException
-    {   int num_of_line = 0;
+    {
         Lib lib = new Lib();
-        String root = System.getProperty("user.dir");
-        String path = root+File.separator+"src"+File.separator+"input.txt";
         try
         {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("input1.txt"));
             StringBuffer s =  new StringBuffer();
-           // RandomAccessFile randomAccessFile = new RandomAccessFile("input.txt", "r");
-            String line=null;
+            int li=0;
             double endTime1 = System.currentTimeMillis();//获取结束时间
-            while ((line = bufferedReader.readLine()) != null)
-            {
-                num_of_line++;
-                s.append(line+"\n");
+            while ((li=bufferedReader.read())!= -1)
+            {   //System.out.print(line );
+
+                char c= (char)li;
+                s.append(c);
             }
-           // output("output.txt",s.toString(),1);
             double endTime2 = System.currentTimeMillis();//获取结束时间
-            System.out.println(s.toString() );//输出程序运行时间
             output("output.txt","characters",lib.charCount(s.toString()));
             output("output.txt","words:",lib.countword(s.toString()));
-            output("output.txt","lines:",num_of_line);
+            output("output.txt","lines:",lib.lineCount(s.toString()));
             List<Map.Entry<String, Integer>> list = lib.countmostWord(s.toString());
             double endTime3 = System.currentTimeMillis();//获取结束时间
             double a=(endTime2 - endTime1)/(endTime3 - endTime1);
@@ -42,7 +39,7 @@ public class WordCount
                     output("output.txt",mapping.getKey(),mapping.getValue());
                 }
             }
-            System.out.println(lib.charCount(s.toString()) + "|"+lib.countword(s.toString()) + "|"+num_of_line + "|");
+            System.out.println(lib.charCount(s.toString()) + "|"+lib.countword(s.toString()) + "|"+lib.lineCount(s.toString())+ "|");
             
         }
         catch (IOException e)
