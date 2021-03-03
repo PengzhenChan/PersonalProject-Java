@@ -4,20 +4,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class Lib {
     Map<String, Integer> map = new HashMap<String, Integer>();
-    public List<Map.Entry<String, Integer>> countWord(String str)
+    public List<Map.Entry<String, Integer>> countmostWord(String str)
     {
 
         String[] word = str.split("\\s+");
         for (int i = 0; i < word.length; i++)
         {
             word[i] = word[i].toLowerCase();
+            System.out.println(word[i]);
         }
-        String regex = "^[a-z]{4,}.*";
         List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Map.Entry<String, Integer> mapping2, Map.Entry<String, Integer> mapping1)
             {
                 return mapping1.getValue().compareTo(mapping2.getValue());
+            }
+        });
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> mapping2, Map.Entry<String, Integer> mapping1)
+            {
+                return mapping2.getKey().compareTo(mapping1.getKey());
             }
         });
         //按照出现次数降序输出（前10）

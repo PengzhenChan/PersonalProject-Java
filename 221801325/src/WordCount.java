@@ -12,7 +12,7 @@ public class WordCount
         String path = root+File.separator+"src"+File.separator+"input.txt";
         try
         {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("input1.txt"));
             StringBuffer s =  new StringBuffer();
            // RandomAccessFile randomAccessFile = new RandomAccessFile("input.txt", "r");
             String line=null;
@@ -20,14 +20,15 @@ public class WordCount
             while ((line = bufferedReader.readLine()) != null)
             {
                 num_of_line++;
-                s.append(line);
+                s.append(line+"\n");
             }
+           // output("output.txt",s.toString(),1);
             double endTime2 = System.currentTimeMillis();//获取结束时间
-
+            System.out.println(s.toString() );//输出程序运行时间
             output("output.txt","characters",lib.charCount(s.toString()));
             output("output.txt","words:",lib.countword(s.toString()));
             output("output.txt","lines:",num_of_line);
-            List<Map.Entry<String, Integer>> list = lib.countWord(s.toString());
+            List<Map.Entry<String, Integer>> list = lib.countmostWord(s.toString());
             double endTime3 = System.currentTimeMillis();//获取结束时间
             double a=(endTime2 - endTime1)/(endTime3 - endTime1);
             double b=(endTime3 - endTime2)/(endTime3 - endTime1);
@@ -41,7 +42,7 @@ public class WordCount
                     output("output.txt",mapping.getKey(),mapping.getValue());
                 }
             }
-            //System.out.println(lib.charCount(s) + "|"+lib.countword(s) + "|"+num_of_line + "|");
+            System.out.println(lib.charCount(s.toString()) + "|"+lib.countword(s.toString()) + "|"+num_of_line + "|");
             
         }
         catch (IOException e)
