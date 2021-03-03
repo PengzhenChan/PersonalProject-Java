@@ -28,10 +28,24 @@ public class WordCount {
 
     public static void main(String[] args) {
         if (args.length != 2) {
-            throw new RuntimeException();
+            System.out.println("input error");
+            System.out.println("java WordCount filepath(.txt) filepath(.txt)");
         } else {
-            print(new CountCore(args[0]));
-            write(new CountCore(args[0]), args[1]);
+            String[] split = args[0].split("\\.");
+            if(split.length==2&&"txt".equals(split[1])){
+                File file = new File(args[0]);
+                if (file.exists()){
+                    print(new CountCore(args[0]));
+                    write(new CountCore(args[0]), args[1]);
+                }else{
+
+                }
+            }else{
+                System.out.println("invalid file name "+args[0]);
+            }
+
+
+
         }
     }
 }
