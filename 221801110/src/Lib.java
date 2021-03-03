@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 public class Lib {
 
@@ -18,7 +19,7 @@ public class Lib {
             readFile.close();
         }
         catch (Exception e){
-            System.out.println("指定输入文件不存在");
+            System.out.println("文件不存在");
         }
         finally {
             return count;
@@ -33,7 +34,6 @@ public class Lib {
         boolean letter_flag=false;
         Reader readFile = null;
         int countWord = 0;
-        String regex="[^A-Za-z0-9]";
         try {
             readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             int tempchar;
@@ -67,7 +67,7 @@ public class Lib {
             readFile.close();
         }
         catch (Exception e){
-            System.out.println("指定输入文件不存在");
+            System.out.println("文件不存在");
         }
         finally {
             return countWord;
@@ -96,6 +96,8 @@ public class Lib {
             String tempString ;
             while ((tempString = bufferedReadFile.readLine()) != null){
                 //去掉空白字符
+                tempString=tempString.replace("\f","");
+                tempString=tempString.replace("\b","");
                 tempString=tempString.replace("\r","");
                 tempString=tempString.replace("\t","");
                 tempString=tempString.replace("\n","");
@@ -106,10 +108,10 @@ public class Lib {
                 }
             }
             readFile.close();
-			bufferedReadFile.close();
+            bufferedReadFile.close();
         }
         catch (Exception e){
-            System.out.println("指定输入文件不存在");
+            System.out.println("文件不存在");
         }
         finally {
             //System.out.println(countSum);
@@ -117,7 +119,5 @@ public class Lib {
             return countSum-countNull;
         }
     }
-
-
 
 }

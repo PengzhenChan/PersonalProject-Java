@@ -51,3 +51,5 @@ java WordCount input.txt output.txt
 - 修复了文件未关闭的bug
 
 ### 第8次commit
+
+- 统计有效行数中新增空白字符种类
