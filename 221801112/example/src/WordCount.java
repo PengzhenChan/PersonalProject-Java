@@ -124,4 +124,77 @@ class WordCount
         }
         return lineNum;
     }
+
+    /**
+     * @Description: 对文件内容分析获得以单词为key,数量为value 的map结果
+     * @Param: [file, inputStream]
+     * @return: java.util.Map<java.lang.String,java.lang.Integer>
+     * @Date: 2021/3/2
+     */
+    private Map<String,Integer> getMapWordNum(File file,FileInputStream inputStream)
+    {
+        Map<String,Integer> map=new HashMap<>();
+        StringBuilder str=new StringBuilder(3);
+        Boolean isWord=true;
+        char tmp='\n';
+
+        for (int i=0;i<=file.length();i++)
+        {
+            try
+            {
+                if (i<file.length())
+                {
+                    tmp=(char)(inputStream.read());
+                }
+                else
+                {
+                    tmp='\n';                }
+//                System.out.print(tmp+"  ");
+                if (Character.isUpperCase(tmp))
+                {
+                    tmp=Character.toLowerCase(tmp);
+                    str.append(tmp);
+                }
+                else if (Character.isLowerCase(tmp))
+                {
+                    str.append(tmp);
+                }
+                else if (Character.isDigit(tmp))
+                {
+                    if (str.length()<4)
+                    {
+                        isWord=false;
+                    }
+                    str.append(tmp);
+                }
+                else if (!(Character.isDigit(tmp)||Character.isLowerCase(tmp))&&str!=null&&str.length()>=4)
+                {
+//                    System.out.println("单词统计中1:"+str.toString());
+                    if (isWord)
+                    {
+                        if (map.containsKey(str.toString()))
+                        {
+//                        System.out.println("单词统计中:"+str.toString());
+                            map.replace(str.toString(),map.get(str.toString())+1);
+                        }
+                        else
+                        {
+                            map.put(str.toString(),1);
+                        }
+                    }
+                    else
+                    {
+                        System.out.println(str.toString()+"不是单词，不进行统计");
+                    }
+                    isWord=true;
+                    str=new StringBuilder(3);
+                }
+
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return map;
+    }
 }
