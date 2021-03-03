@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,8 +125,21 @@ public class CountWord {
                 }
             }
         }
-        for (Map.Entry<String,Integer> entry : wordMap.entrySet()){
-            System.out.println("key = " + entry.getKey() + ",Value = "+ entry.getValue());
+        ArrayList<Map.Entry<String,Integer>> arrayList1 = new ArrayList<Map.Entry<String, Integer>>(wordMap.entrySet());
+        Collections.sort(arrayList1, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> stringIntegerEntry, Map.Entry<String, Integer> t1) {
+                int result=t1.getValue().compareTo(stringIntegerEntry.getValue());
+                if (result!=0){
+                    return result;
+                }
+                else {
+                    return t1.getKey().compareTo(stringIntegerEntry.getKey());
+                }
+            }
+        });
+        for (Map.Entry<String, Integer> t : arrayList1) {
+            System.out.println(t.getKey() + ":" + t.getValue());
         }
     }
 }
