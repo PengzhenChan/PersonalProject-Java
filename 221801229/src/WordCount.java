@@ -19,11 +19,19 @@ public class WordCount
         String path = args[0];
         String pathname = System.getProperty("user.dir") + '\\' + path;
         File file = fileUtil.getFile(pathname);
+        path = args[1];
+        pathname = System.getProperty("user.dir") + '\\' + path;
+        File file1 = fileUtil.getFile(pathname);
 
-        int lineCount = lib.charCount(file);
-        lineCount = lib.lineCount(file);
+        int charcount = lib.charCount(file);
+        int wordscount = lib.wordsCount(file);
+        int linecount = lib.lineCount(file);
 
-        System.out.println(lineCount);
+        List<Map.Entry<String, Integer>> list = lib.wordsNumCount(file);
+
+        lib.writeFile(file1,charcount, linecount, wordscount, list);
+
+        System.out.println("finished");
 
     }
 }

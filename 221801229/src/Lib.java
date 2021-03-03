@@ -14,6 +14,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  * 作者： 221801229 Shy
@@ -58,6 +60,7 @@ public class Lib
                 linenum ++;
             }
         }
+
         inputStreamReader.close();
         return linenum;
     }
