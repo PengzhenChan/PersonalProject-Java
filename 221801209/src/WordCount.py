@@ -6,8 +6,8 @@ if __name__ == '__main__':
         print("python WordCount.py input.txt output.txt")
     s = ""
     try:
-        with open(sys.argv[1], "r", encoding="utf-8") as f:
-            s = f.read()
+        with open(sys.argv[1], "rb") as f:
+            s = str(f.read(), encoding="utf-8")
     except FileNotFoundError:
         print("File not found:" + sys.argv[1])
         exit()
