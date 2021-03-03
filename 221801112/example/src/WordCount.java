@@ -225,4 +225,30 @@ class WordCount
         }
         return map;
     }
+
+    /**
+     * @Description: 对map进行按value大小，及key字典序降序排序
+     * @Param: [map]
+     * @return: java.util.Map<java.lang.String,java.lang.Integer>
+     * @Date: 2021/3/2
+     */
+    private List<Map.Entry<String,Integer>> sortMapByValue(Map<String,Integer> map)
+    {
+        //将hashMap转化为list
+        List<Map.Entry<String,Integer>> list = new ArrayList<>(map.entrySet());
+        //进行排序
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>()
+        {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2)
+            {
+                if (o1.getValue() == o2.getValue())
+                {
+                    return o1.getKey().compareTo(o2.getKey());
+                }
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        return list;
+    }
 }
