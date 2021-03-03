@@ -10,7 +10,6 @@ public class Frequency {
     //定义一个map集合保存单词和单词出现的个数
     private TreeMap<String,Integer> tm;
 
-
     public Frequency(String path) {
         this.path = path;
 
@@ -21,7 +20,7 @@ public class Frequency {
         try {
             readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             bufferedReadFile = new BufferedReader(readFile);
-            
+
             tm = new TreeMap<String,Integer>();
             //读取文件
             while ((tempString=bufferedReadFile.readLine())!=null){
@@ -57,7 +56,8 @@ public class Frequency {
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
             @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                return (o2.getValue().compareTo(o1.getValue()) ); //降序排序,当o2小于、等于、大于o1时，返回-1,0,1
+                //降序排序,当o2小于、等于、大于o1时，返回-1,0,1
+            	return (o2.getValue().compareTo(o1.getValue()) ); 
             }
         });
 

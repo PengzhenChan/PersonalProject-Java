@@ -30,6 +30,7 @@ public class Lib {
     //传入参数：文件名
     //返回值：单词数量
     public static int numOfWord(String filename) {
+        /* 旧方法
         File file = new File(filename);
         boolean letter_flag=false;
         Reader readFile = null;
@@ -62,7 +63,6 @@ public class Lib {
                     i = 0;
                 }
 
-                //System.out.println(ch+":"+ i);
             }
             readFile.close();
         }
@@ -71,7 +71,38 @@ public class Lib {
         }
         finally {
             return countWord;
+        }*/
+
+        File file = new File(filename);
+        Reader readFile = null;
+        BufferedReader bufferedReadFile = null;
+        int countWord = 0;
+        String tempString;
+        String[] words;
+        try {
+            readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
+            bufferedReadFile = new BufferedReader(readFile);
+            while ((tempString = bufferedReadFile.readLine()) != null){
+                tempString = tempString.toLowerCase();
+                String reg1 = "[^a-zA-Z0-9]+";
+                String reg2 ="[a-z]{4}[a-z0-9]*";
+                //将读取的文本进行分割
+                String[] str = tempString.split(reg1);
+                for (String s: str){
+                    if (s.matches(reg2)){
+                        countWord++;
+                    }
+                }
+            }
+            bufferedReadFile.close();
         }
+        catch (Exception e){
+            System.out.println("文件不存在");
+        }
+        finally {
+            return countWord;
+        }
+
     }
 
 
@@ -82,7 +113,7 @@ public class Lib {
         File file = new File(filename);
         Reader readFile = null;
         BufferedReader bufferedReadFile = null;
-        int countSum = 1;//由于要计算空行，初始化行数为1
+        int countSum = 0;//总行数
         int countNull = 0;//空行数
         try {
             readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");

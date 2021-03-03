@@ -60,3 +60,8 @@ java WordCount input.txt output.txt
 
 ### 第10次commit
 
+- 实现统计文件的单词频率的全部功能（排序）
+
+### 第11次commit
+
+- 修复文件的单词数量功能的bug（改成利用正则表达式实现）
