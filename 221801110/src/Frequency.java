@@ -4,10 +4,10 @@ import java.util.*;
 
 public class Frequency {
 
-    //Ö¸¶¨ÎÄ¼şÂ·¾¶ºÍÎÄ¼şÃû
+    //æŒ‡å®šæ–‡ä»¶è·¯å¾„å’Œæ–‡ä»¶å
     private static String path;
 
-    //¶¨ÒåÒ»¸ömap¼¯ºÏ±£´æµ¥´ÊºÍµ¥´Ê³öÏÖµÄ¸öÊı
+    //å®šä¹‰ä¸€ä¸ªmapé›†åˆä¿å­˜å•è¯å’Œå•è¯å‡ºç°çš„ä¸ªæ•°
     private TreeMap<String,Integer> tm;
 
     public Frequency(String path) {
@@ -22,16 +22,16 @@ public class Frequency {
             bufferedReadFile = new BufferedReader(readFile);
 
             tm = new TreeMap<String,Integer>();
-            //¶ÁÈ¡ÎÄ¼ş
+            //è¯»å–æ–‡ä»¶
             while ((tempString=bufferedReadFile.readLine())!=null){
                 tempString = tempString.toLowerCase();
                 String reg1 = "[^a-zA-Z0-9]";
                 String reg2 ="[a-z]{4}[a-z0-9]*";
-                //½«¶ÁÈ¡µÄÎÄ±¾½øĞĞ·Ö¸î
+                //å°†è¯»å–çš„æ–‡æœ¬è¿›è¡Œåˆ†å‰²
                 String[] str = tempString.split(reg1);
                 for (String s: str){
                     if (s.matches(reg2)){
-                        //ÅĞ¶Ï¼¯ºÏÖĞÊÇ·ñÒÑ¾­´æÔÚ¸Ãµ¥´Ê£¬Èç¹û´æÔÚÔò¸öÊı¼Ó1£¬·ñÔò½«µ¥´ÊÌí¼Óµ½¼¯ºÏÖĞ£¬ÇÒ¸öÊıÖÃÎª1
+                        //åˆ¤æ–­é›†åˆä¸­æ˜¯å¦å·²ç»å­˜åœ¨è¯¥å•è¯ï¼Œå¦‚æœå­˜åœ¨åˆ™ä¸ªæ•°åŠ 1ï¼Œå¦åˆ™å°†å•è¯æ·»åŠ åˆ°é›†åˆä¸­ï¼Œä¸”ä¸ªæ•°ç½®ä¸º1
                         if (!tm.containsKey(s)){
                             tm.put(s,1);
                         }
@@ -44,7 +44,7 @@ public class Frequency {
             bufferedReadFile.close();
         }
         catch (Exception e){
-            System.out.println("ÎÄ¼ş²»´æÔÚ");
+            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
         }
         finally {
             printResult(tm);
@@ -56,8 +56,8 @@ public class Frequency {
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
             @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                //½µĞòÅÅĞò,µ±o2Ğ¡ÓÚ¡¢µÈÓÚ¡¢´óÓÚo1Ê±£¬·µ»Ø-1,0,1
-            	return (o2.getValue().compareTo(o1.getValue()) ); 
+                //é™åºæ’åºï¼Œæ•…o2 cmp o1ï¼Œå› ä¸ºo2>o1æ—¶è¿”å›1ï¼Œo2<o1æ—¶è¿”å›-1
+                return (o2.getValue().compareTo(o1.getValue()) );
             }
         });
 

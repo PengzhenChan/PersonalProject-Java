@@ -64,4 +64,8 @@ java WordCount input.txt output.txt
 
 ### 第11次commit
 
-- 修复文件的单词数量功能的bug（改成利用正则表达式实现）
+- 修复单词数量功能的bug（改成利用正则表达式实现）
+
+### 第12次commit
+
+- 修复统计行数功能的bug

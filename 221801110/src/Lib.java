@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Lib {
 
-    //Í³¼Æ×Ö·ûÊıÁ¿
-    //´«Èë²ÎÊı£ºÎÄ¼şÃû
-    //·µ»ØÖµ£º×Ö·ûÊıÁ¿
+    //ç»Ÿè®¡å­—ç¬¦æ•°é‡
+    //ä¼ å…¥å‚æ•°ï¼šæ–‡ä»¶å
+    //è¿”å›å€¼ï¼šå­—ç¬¦æ•°é‡
     public static int numOfChar(String filename) {
         File file = new File(filename);
         Reader readFile = null;
@@ -19,18 +19,18 @@ public class Lib {
             readFile.close();
         }
         catch (Exception e){
-            System.out.println("ÎÄ¼ş²»´æÔÚ");
+            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
         }
         finally {
             return count;
         }
     }
 
-    //Í³¼Æµ¥´ÊÊıÁ¿
-    //´«Èë²ÎÊı£ºÎÄ¼şÃû
-    //·µ»ØÖµ£ºµ¥´ÊÊıÁ¿
+    //ç»Ÿè®¡å•è¯æ•°é‡
+    //ä¼ å…¥å‚æ•°ï¼šæ–‡ä»¶å
+    //è¿”å›å€¼ï¼šå•è¯æ•°é‡
     public static int numOfWord(String filename) {
-        /* ¾É·½·¨
+        /* æ—§æ–¹æ³•
         File file = new File(filename);
         boolean letter_flag=false;
         Reader readFile = null;
@@ -38,16 +38,16 @@ public class Lib {
         try {
             readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             int tempchar;
-            boolean flag = false;//±ê¼ÇÊÇ²»ÊÇµ¥´Ê
+            boolean flag = false;//æ ‡è®°æ˜¯ä¸æ˜¯å•è¯
             for (int i = 0; (tempchar=readFile.read()) != -1; ) {
                 char ch = (char)tempchar;
-                //ÊÇ×ÖÄ¸
+                //æ˜¯å­—æ¯
                 if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <='z'){
                     i++;
                     flag = true;
                 }
 
-                //ÊÇÊı×Ö£¬ÅĞ¶ÏÊÇ²»ÊÇÔÚµÚÎå¸ö¼°Ö®ºó³öÏÖ
+                //æ˜¯æ•°å­—ï¼Œåˆ¤æ–­æ˜¯ä¸æ˜¯åœ¨ç¬¬äº”ä¸ªåŠä¹‹åå‡ºç°
                 else if (ch >= '0' && ch <= '9'){
                     i++;
                     if (i < 5) {
@@ -56,7 +56,7 @@ public class Lib {
                     }
                 }
 
-                //·Ö¸î·ûÇé¿ö
+                //åˆ†å‰²ç¬¦æƒ…å†µ
                 else {
                     if (i >= 4 && flag == true) countWord++;
                     flag = false;
@@ -67,18 +67,18 @@ public class Lib {
             readFile.close();
         }
         catch (Exception e){
-            System.out.println("ÎÄ¼ş²»´æÔÚ");
+            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
         }
         finally {
             return countWord;
         }*/
 
         File file = new File(filename);
-        Reader readFile = null;
+		Reader readFile = null;
         BufferedReader bufferedReadFile = null;
         int countWord = 0;
+        
         String tempString;
-        String[] words;
         try {
             readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             bufferedReadFile = new BufferedReader(readFile);
@@ -86,7 +86,7 @@ public class Lib {
                 tempString = tempString.toLowerCase();
                 String reg1 = "[^a-zA-Z0-9]+";
                 String reg2 ="[a-z]{4}[a-z0-9]*";
-                //½«¶ÁÈ¡µÄÎÄ±¾½øĞĞ·Ö¸î
+                //å°†è¯»å–çš„æ–‡æœ¬è¿›è¡Œåˆ†å‰²
                 String[] str = tempString.split(reg1);
                 for (String s: str){
                     if (s.matches(reg2)){
@@ -97,7 +97,7 @@ public class Lib {
             bufferedReadFile.close();
         }
         catch (Exception e){
-            System.out.println("ÎÄ¼ş²»´æÔÚ");
+            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
         }
         finally {
             return countWord;
@@ -106,27 +106,21 @@ public class Lib {
     }
 
 
-    //Í³¼ÆÓĞĞ§ĞĞÊı
-    //´«Èë²ÎÊı£ºÎÄ¼şÃû
-    //·µ»ØÖµ£ºÓĞĞ§ĞĞÊı
+    //ç»Ÿè®¡æœ‰æ•ˆè¡Œæ•°
+    //ä¼ å…¥å‚æ•°ï¼šæ–‡ä»¶å
+    //è¿”å›å€¼ï¼šæœ‰æ•ˆè¡Œæ•°
     public static int numOfLine(String filename) {
         File file = new File(filename);
-        Reader readFile = null;
         BufferedReader bufferedReadFile = null;
-        int countSum = 0;//×ÜĞĞÊı
-        int countNull = 0;//¿ÕĞĞÊı
+        int countSum = 0;//æ€»è¡Œæ•°
+        int countNull = 0;//ç©ºè¡Œæ•°
         try {
-            readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
-            int tempChar;
-            while ((tempChar = readFile.read()) != -1) {
-                if ((char)tempChar == '\n') {
-                    countSum++;
-                }
-            }
             bufferedReadFile = new BufferedReader(new FileReader(file));
             String tempString;
             while ((tempString = bufferedReadFile.readLine()) != null){
-                //È¥µô¿Õ°××Ö·û
+                countSum++;
+
+                //å»æ‰ç©ºç™½å­—ç¬¦
                 tempString=tempString.replace("\f","");
                 tempString=tempString.replace("\b","");
                 tempString=tempString.replace("\r","");
@@ -138,11 +132,10 @@ public class Lib {
                     countNull++;
                 }
             }
-            readFile.close();
             bufferedReadFile.close();
         }
         catch (Exception e){
-            System.out.println("ÎÄ¼ş²»´æÔÚ");
+            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
         }
         finally {
             //System.out.println(countSum);
