@@ -106,6 +106,7 @@ public class Lib {
                 }
             }
             readFile.close();
+			bufferedReadFile.close();
         }
         catch (Exception e){
             System.out.println("指定输入文件不存在");
