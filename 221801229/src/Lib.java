@@ -98,5 +98,44 @@ public class Lib
         return wordsnum;
     }
 
-    
+    //单词频数统计
+    public List<Map.Entry<String, Integer>> wordsNumCount(File file) throws Exception, FileNotFoundException
+    {
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), ENCODING);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+        Map<String, Integer> map = new HashMap<String,Integer>();
+        String str = null;
+
+        while ((str = bufferedReader.readLine()) != null) {
+            //String s = bufferedReader.readLine();
+            String splited[] = str.split(",|\\.| |\\?|\\!|\\'");
+            for (int i = 0; i < splited.length; i++) {
+                if (splited[i].length() >= 4 ) {
+                    String temp = splited[i].substring(0, 4);
+                    temp = temp.replaceAll("[^a-zA-Z]", "");
+                    if (temp.length() >= 4) {
+                        if (map.containsKey(splited[i].toLowerCase())) {
+                            map.put(splited[i].toLowerCase(), map.get(splited[i].toLowerCase())+1);
+                        }
+                        else {
+                            map.put(splited[i].toLowerCase(), 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+        // 通过比较器来实现排序
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                // 降序排序
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        inputStreamReader.close();
+        return list;
+    }
 }
