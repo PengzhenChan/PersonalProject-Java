@@ -1,17 +1,24 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class HandleTxt {
     File in,out;
     private int numbers,lines;
-    String txt;
+    private String txt;
+    private Map<String,Integer> WordsMap;
 
     public HandleTxt(File f1, File f2)throws IOException
     {
         in=f1;
         out=f2;
         Changestr();
+
     }
 
     //将文件内容转为String字符串
@@ -41,36 +48,13 @@ public class HandleTxt {
     {
         int words=0;
 
-        Pattern pattern=Pattern.compile("[a-z]{4}[a-z0-9]*");
+        Pattern pattern=Pattern.compile("(^|[^a-z0-9])([a-z]{4}[a-z0-9]*)");
         Matcher matcher=pattern.matcher(txt);
-        if (matcher.find())
+        while (matcher.find())
         {
-            if ((matcher.start()-1)>= 0)
-            {
-                if (Legalchar(txt.charAt(matcher.start()-1)))
-                {
-                    words++;
-                }
-            }
-            else
-            {
-                words++;
-            }
-        }
-        while (matcher.find()){
-            if (Legalchar(txt.charAt(matcher.start()-1))){
-                words++;
-            }
+            words++;
         }
         return words;
-    }
-
-    //判断前一个单词字符是否为其他字符
-    public boolean Legalchar(char ch)
-    {
-        if((ch>='a'&&ch<='z')||(ch>='0'&&ch<='9'))
-            return false;
-        return true;
     }
 
     public int Getlines()throws IOException
@@ -94,5 +78,34 @@ public class HandleTxt {
             content=br.readLine();
         }
         return line;
+    }
+
+    //排序，并取前十个频率最高的单词的Map
+    public Map<String,Integer> GetTen()
+    {
+        WordsMap=new HashMap<>();//使用Map存储单词及其数目
+        Map<String,Integer> result=new LinkedHashMap<>();
+        String word="";
+
+        Pattern pattern=Pattern.compile("(^|[^a-z0-9])([a-z]{4}[a-z0-9]*)");
+        Matcher matcher=pattern.matcher(txt);
+        while (matcher.find())
+        {
+            word=matcher.group();
+            if (WordsMap.containsKey(word))//Map中已含有此单词
+            {
+                WordsMap.put(word,WordsMap.get(word)+1);
+            }
+            else
+            {
+                WordsMap.put(word,1);
+            }
+
+        }
+        WordsMap.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()
+                .thenComparing(Map.Entry.comparingByKey())).limit(10)
+                .forEachOrdered(x->result.put(x.getKey(),x.getValue()));
+        System.out.println(result);
+        return result;
     }
 }
