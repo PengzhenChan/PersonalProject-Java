@@ -5,7 +5,7 @@ import java.util.*;
 public class CountTool {
 
     /* 统计总字符数 */
-    public int characterCount(StringBuffer str) {
+    public int characterCount(StringBuilder str) {
         //总字符数
         int sum = 0;
         String result = str.toString();
@@ -17,7 +17,7 @@ public class CountTool {
     }
 
     /* 统计单词数 */
-    public int wordsCount(StringBuffer str) {
+    public int wordsCount(StringBuilder str) {
         //转化小写且以' '分割的字符串
         String[] wordStr = this.changeStr(str);
         //计数 利用正则表达式筛选
@@ -31,7 +31,7 @@ public class CountTool {
     }
 
     /* 转化成小写且用空格分割字符串，返回字符串数组 */
-    public String[] changeStr(StringBuffer str) {
+    public String[] changeStr(StringBuilder str) {
         String result = str.toString().toLowerCase();
         //利用正则表达式筛选出不是数字和字母的符号，转化为'.'
         String regex = "[^a-z0-9]";
@@ -63,7 +63,7 @@ public class CountTool {
     }
 
     /* 统计单词频次 */
-    public HashMap<String, Integer> wordsSortCount(StringBuffer str) {
+    public HashMap<String, Integer> wordsSortCount(StringBuilder str) {
 
         //转化为字符串数组
         String[] changedWords = this.changeStr(str);
