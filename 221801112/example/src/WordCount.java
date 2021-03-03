@@ -13,8 +13,12 @@ class WordCount
     public static void main(String[] args)
     {
         WordCount wc = new WordCount();
-        //            wc.outPut(wc.count(args[0]),args[1]);
-        wc.count(args[0]);
+        try {
+            wc.outPut(wc.count(args[0]),args[1]);
+        } catch (FileNotFoundException e) {
+            System.out.println("找不到文件");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -32,6 +36,7 @@ class WordCount
         {
             FileInputStream inputStream=new FileInputStream(file);
             result.append(getCharNum(file,inputStream));
+            result.append("lines: "+getVaildLineNum(file)+"\n");
             System.out.println("程序计算的答案" + result);
             inputStream.close();
         } catch (FileNotFoundException e)
@@ -85,5 +90,38 @@ class WordCount
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * @Description: 统计文件的有效行数
+     * @Param: [file]
+     * @return: int
+     * @Date: 2021/3/2
+     */
+    public int getVaildLineNum(File file)
+    {
+        int lineNum=0;
+        if(file.exists())
+        {
+            try
+            {
+                FileReader fr=new FileReader(file);
+                LineNumberReader lnr=new LineNumberReader(fr);
+                String str;
+                while ((str=lnr.readLine())!=null)
+                {
+                    //统计包含非空白字符的行
+                    if (!(str.isBlank()))
+                        lineNum++;
+                }
+            } catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return lineNum;
     }
 }
