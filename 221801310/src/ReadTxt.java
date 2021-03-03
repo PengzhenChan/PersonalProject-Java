@@ -11,6 +11,7 @@ public class ReadTxt{
             int iAvail = inputStream.available();
             byte[] bytes = new byte[iAvail];
 
+            inputStream.read(bytes);
             content = new String(bytes);
             inputStream.close();
         }
