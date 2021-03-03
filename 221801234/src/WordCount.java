@@ -38,7 +38,7 @@ public class WordCount {
                     print(new CountCore(args[0]));
                     write(new CountCore(args[0]), args[1]);
                 }else{
-
+                    System.out.println(args[0]+" isn't exist");
                 }
             }else{
                 System.out.println("invalid file name "+args[0]);
