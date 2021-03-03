@@ -7,15 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /*
  * 作者： 221801229 Shy
@@ -76,8 +73,8 @@ public class Lib
         Map<String, Integer> map = new HashMap<String,Integer>();
 
         while ((str = bufferedReader.readLine()) != null) {
-            //String s = bufferedReader.readLine();
-            String splited[] = str.split(",|\\.| |\\?|\\!|\\'");
+            //将单词按分隔符分开
+            String splited[] = str.split("[^a-zA-Z0-9]");
             for (int i = 0; i < splited.length; i++) {
                 if (splited[i].length() >= 4 ) {
                     String temp = splited[i].substring(0, 4);
@@ -112,7 +109,7 @@ public class Lib
 
         while ((str = bufferedReader.readLine()) != null) {
             //String s = bufferedReader.readLine();
-            String splited[] = str.split(",|\\.| |\\?|\\!|\\'");
+            String splited[] = str.split("[^a-zA-Z0-9]");
             for (int i = 0; i < splited.length; i++) {
                 if (splited[i].length() >= 4 ) {
                     String temp = splited[i].substring(0, 4);
