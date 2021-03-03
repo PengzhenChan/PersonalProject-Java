@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     frequency = wc.topWord()
     for word in frequency:
-        output += "%s: %d" % (word[0], word[1])
-
+        output += "%s: %d\n" % (word[0], word[1])
+    output = output.strip()
     with open(sys.argv[2], "w", encoding="utf-8") as f:
         f.write(output)
