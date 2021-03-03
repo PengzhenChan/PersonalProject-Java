@@ -15,6 +15,9 @@ public class CountCore {
         map = new TreeMap<>();
         this.inPath = inPath;
     }
+    public int getWordCount(String key){
+        return map.get(key);
+    }
 
     public int getCharCount() {
         int tp;
@@ -33,7 +36,7 @@ public class CountCore {
         return 0;
     }
 
-    public int getWordCount() {
+    public int getWordsCount() {
         int cnt = 0;
         String pattern = "[A-Za-z]{4,}[A-Za-z0-9]*";
         Matcher m = null;
@@ -75,8 +78,8 @@ public class CountCore {
         return 0;
     }
 
-
     public String[] getPopularWord() {
+        getWordsCount();
         String[] list = map.keySet().toArray(new String[0]);
         for (int i = list.length; i >= 0; i--) {
             for (int j = 0; j < i - 1; j++) {
@@ -89,5 +92,4 @@ public class CountCore {
         }
         return list;
     }
-
 }

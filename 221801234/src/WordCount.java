@@ -5,22 +5,22 @@ public class WordCount {
 
     public static void print(CountCore cc) {
         System.out.println("characters: " + cc.getCharCount());
-        System.out.println("words: " + cc.getWordCount());
+        System.out.println("words: " + cc.getWordsCount());
         System.out.println("lines: " + cc.getValidLines());
         String[] popularWord = cc.getPopularWord();
-        for (int i = 0; i < popularWord.length; i++)
-            System.out.println("word" + (i + 1) + ": " + popularWord[i]);
+        for (int i = 0; i < popularWord.length && i < 10; i++)
+            System.out.println("word" + (i + 1) + ": " + popularWord[i] + " count:" + cc.getWordCount(popularWord[i]));
     }
 
     public static void write(CountCore cc, String outPath) {
         try (BufferedWriter writer
                      = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPath), StandardCharsets.UTF_8))) {
             writer.write("characters: " + cc.getCharCount() + '\n');
-            writer.write("words: " + cc.getWordCount() + '\n');
+            writer.write("words: " + cc.getWordsCount() + '\n');
             writer.write("lines: " + cc.getValidLines() + '\n');
             String[] popularWord = cc.getPopularWord();
-            for (int i = 0; i < popularWord.length; i++)
-                writer.write("word" + (i + 1) + ": " + popularWord[i] + '\n');
+            for (int i = 0; i < popularWord.length && i < 10; i++)
+                writer.write("word" + (i + 1) + ": " + popularWord[i] +" count:"+cc.getWordCount(popularWord[i])+ '\n');
         } catch (IOException ie) {
             ie.printStackTrace();
         }
@@ -43,9 +43,6 @@ public class WordCount {
             }else{
                 System.out.println("invalid file name "+args[0]);
             }
-
-
-
         }
     }
 }

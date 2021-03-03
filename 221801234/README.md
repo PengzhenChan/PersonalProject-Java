@@ -105,7 +105,19 @@ public int getValidLines();
  * 获取单词数
  * @return 单词数
  */
-public int getWordCount();
+public int getWordSCount();
+```
+
+#### 获取某个单词出现的次数
+
+```java
+/*获取单词数*/
+/**
+ * 获取单词数
+ * @param key 单词名称
+ * @return 单词数
+ */
+public int getWordCount(String key);
 ```
 
 #### 获取出现次数最多的10个单词
