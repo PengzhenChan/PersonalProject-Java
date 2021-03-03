@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.CheckedOutputStream;
 
@@ -6,27 +7,23 @@ import java.util.zip.CheckedOutputStream;
 public class WordCount{
     public static void main(String[] args){
         String inputFile = "input.txt";
-        String outputFile = "output.txt";
+        String outputFileName = "output.txt";
         String content;
         int asciiCharNum = 0;
         int wordNum = 0;
         int lines = 0;
+        HashMap<String, Integer> hashMap;
 
         content = ReadTxt.readTxt(inputFile);
-//        System.out.println(content);
-
+        asciiCharNum = CountAsciiChar.countChar(content);
+        wordNum = CountWord.countWordNum(content);
         lines = CountLine.countLine(content);
-        System.out.println(lines);
-//        asciiCharNum = CountAsciiChar.countChar(content);
-//        System.out.println(asciiCharNum);
 
-//        wordNum = CountWord.countWordNum(content);
-//        System.out.println(wordNum);
-        HashMap<String, Integer> hashMap = CountFrequency.countFrequency(content);
-        hashMap = CountFrequency.sortHashMap(hashMap);
-//        for(Map.Entry<String, Integer> entry : hashMap.entrySet()){
-//            System.out.println(entry.getKey()+":"+entry.getValue());
-//        }
-        System.out.println(hashMap);
+        hashMap = CountFrequency.countFrequency(content);
+        List<Map.Entry<String, Integer>> list = CountFrequency.sortHashMap(hashMap);
+
+        OutputToTxt.outputToTxt(asciiCharNum, wordNum, lines, list, outputFileName);
+
+        return ;
     }
 }

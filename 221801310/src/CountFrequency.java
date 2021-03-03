@@ -21,7 +21,7 @@ public class CountFrequency {
     }
 
     /*hashMap本身不可排序 所以要先转换为list*/
-    public static HashMap<String, Integer> sortHashMap(HashMap<String, Integer> hashMap){
+    public static List<Map.Entry<String, Integer>> sortHashMap(HashMap<String, Integer> hashMap){
         Set<Map.Entry<String, Integer>> entry = hashMap.entrySet();
         List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(entry);
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -30,12 +30,14 @@ public class CountFrequency {
                 return o2.getValue()-o1.getValue();
             }
         });
-        //再将list转化为LinkedHashMap 不用这步也可以
-        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<String, Integer>();
-        for(Map.Entry<String,Integer> entry1:list){
-            linkedHashMap.put(entry1.getKey(),entry1.getValue());
+        //最多只取10条
+        if(list.size()>10) {
+            return list.subList(0,10);
         }
-        return linkedHashMap;
+        else{
+            return list;
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SplitWord {
 
@@ -13,14 +14,14 @@ public class SplitWord {
         return words;
     }
 
-    /*提取字符串中所有合法单词 以List形式返回 需传入已分隔好的字符串数组*/
+    /*提取字符串中所有合法单词 以List形式返回(小写) 需传入已分隔好的字符串数组*/
     public static  List<String> splitLegalWord(String[] words){
         List<String> legalWords = new ArrayList<String>();
         String regexForMatch = "^[a-zA-Z]{4,}.*";
 
         for(int i=0 ; i<words.length; i++){
             if(words[i].matches(regexForMatch)){
-                legalWords.add(words[i]);
+                legalWords.add(words[i].toLowerCase());
             }
         }
 
