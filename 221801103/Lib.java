@@ -34,7 +34,10 @@ public class Lib
 		{
 			while((ch=targetFile.read())!=-1)
 			{
-				count++;
+				if(ch>=0&&ch<=127)
+				{
+					count++;
+				}
 			}
 			targetFile.close();
 		}
