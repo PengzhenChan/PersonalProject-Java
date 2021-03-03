@@ -15,10 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * 作者： 221801229 Shy
+ * 功能： 词频统计的功能函数聚集类
+ */
 public class Lib
 {
     public static String ENCODING = "UTF-8";
 
+    //统计文件字符数
     public int charCount(File file) throws IOException, FileNotFoundException
     {
         InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), ENCODING);
@@ -27,12 +32,35 @@ public class Lib
         int charnum = 0;
         String str = null;
 
-        while ((str = bufferedReader.readLine()) != null) {
-            //String s = bufferedReader.readLine();
+        while ((str = bufferedReader.readLine()) != null)
+        {
             charnum += str.length();
         }
-        //System.out.println("char:"+charnum);
         inputStreamReader.close();
         return charnum;
     }
+
+    //行数计数器
+    public int lineCount(File file) throws Exception, FileNotFoundException
+    {
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), ENCODING);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+        int linenum = 0;
+        String str = null;
+
+        while ((str = bufferedReader.readLine()) != null)
+        {
+            //删除所有空白字符
+            str.trim();
+            if (!str.isEmpty())
+            {
+                linenum ++;
+            }
+        }
+        inputStreamReader.close();
+        return linenum;
+    }
+
+
 }

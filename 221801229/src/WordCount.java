@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.io.FileWriter;
 
+/*
+ * 作者： 221801229 Shy
+ * 功能： 词频统计主函数入口
+ */
 public class WordCount
 {
 
@@ -16,9 +20,10 @@ public class WordCount
         String pathname = System.getProperty("user.dir") + '\\' + path;
         File file = fileUtil.getFile(pathname);
 
-        int charCount = lib.charCount(file);
+        int lineCount = lib.charCount(file);
+        lineCount = lib.lineCount(file);
 
-        System.out.println(charCount);
+        System.out.println(lineCount);
 
     }
 }
