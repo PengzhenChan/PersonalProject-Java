@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 public class Lib {
     Map<String, Integer> map = new HashMap<String, Integer>();
     public List<Map.Entry<String, Integer>> countWord(String str)
