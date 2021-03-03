@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class WordCount {
     public static void main(String[] args) {
         CountWord countWord = new CountWord("C:\\Users\\Sady哇哈哈\\Desktop\\input.txt");
-        System.out.println(countWord.getWord_count());
+/*        System.out.println(countWord.getChar_count());*/
 /*        String query = "some examples of regex test";
         String[] parts = query.split(" ");
         System.out.println(Arrays.toString(parts));*/
