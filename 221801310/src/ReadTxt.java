@@ -5,18 +5,22 @@ public class ReadTxt{
     public static String readTxt(String fileName){
         //要返回的字符串
         String content = "";
-//        鉴于键盘输入的换行是\r\n 所以一行一行读取自己加\n是错误的
+        String encoding = "UTF-8";
+
         try{
-            InputStream is = new FileInputStream(fileName);
-            int iAvail = is.available();
-            byte[] bytes = new byte[iAvail];
+            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(fileName), encoding);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            //每一行
+            String oneLine;
 
-            System.out.println(is.read(bytes));
-            content = new String(bytes);
-
-            is.close();
-        }catch(IOException e){
-            e.printStackTrace();
+            while((oneLine = bufferedReader.readLine())!=null){
+                content = content + oneLine + "\n";
+            }
+            //减去最后一次多余的换行符
+            content =  content.substring(0, content.length()-1);
+        }
+        catch (IOException e){
+            System.out.println(e.toString());
         }
 
         return content;
