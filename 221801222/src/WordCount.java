@@ -71,12 +71,12 @@ public class WordCount
                     new OutputStreamWriter(
                             new FileOutputStream(outputFileName),
                             "UTF-8"));    //输出设置编码为utf-8
-            output.print("characters:" + chars + '\n');
-            output.print("words:" + words + '\n');
-            output.print("lines:" + lines + '\n');
+            output.print("characters: " + chars + '\n');
+            output.print("words: " + words + '\n');
+            output.print("lines: " + lines + '\n');
             for (Map.Entry<String, Integer> entry : maxCntWords.entrySet())
             {
-                output.print(entry.getKey() + ":" + entry.getValue() + '\n');
+                output.print(entry.getKey() + ": " + entry.getValue() + '\n');
             }
         }
         catch (Exception e)
