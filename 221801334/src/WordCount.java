@@ -5,7 +5,7 @@ import java.io.IOException;
  * 接收命令行参数并执行功能
  * main函数入口
  *
- * @author 李星源
+ * @author 李星源221801334
  * @date 2021/02/23
  */
 public class WordCount {
@@ -30,7 +30,7 @@ public class WordCount {
      */
     private static ExceptionInfo argsLegal(String[] args){
         // 输入参数0个
-        if (args.length == 0){
+        if ((args == null) || (args.length == 0)){
             return ExceptionInfo.PARAMETER_ZERO;
         }
         // 输入参数1个
@@ -44,13 +44,13 @@ public class WordCount {
             return ExceptionInfo.INPUT_FILE_NOT_EXIST;
         }
         // 输入文件后缀名不是.txt
-        if (!inputFile.getName().endsWith(".txt")){
+        if (!args[0].endsWith(".txt")){
             return ExceptionInfo.ILLEGAL_INPUT_FILE;
         }
 
         File outputFile = new File(args[1]);
         // 输出文件后缀名不是.txt
-        if (!inputFile.getName().endsWith(".txt")){
+        if (!args[1].endsWith(".txt")){
             return ExceptionInfo.ILLEGAL_OUTPUT_FILE;
         }
         // 输出文件不存在
