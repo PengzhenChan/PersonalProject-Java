@@ -36,12 +36,11 @@ class WordCount
         try
         {
             FileInputStream inputStream = new FileInputStream(file);
-            result.append(lib.getCharNum(file,inputStream));
-            List<StringBuilder> wordNumList=lib.getWordNum(file,inputStream);
+            result.append(lib.getCharNum(file));
+            List<StringBuilder> wordNumList = lib.getWordNum(file,inputStream);
             result.append(wordNumList.get(0));
             result.append("lines: " + lib.getVaildLineNum(file) + "\n");
             result.append(wordNumList.get(1));
-            System.out.println("程序计算的答案" + result);
             inputStream.close();
         } catch (FileNotFoundException e)
         {
@@ -62,7 +61,6 @@ class WordCount
      */
     public void outPut(String outPut,String outPutPath) throws FileNotFoundException
     {
-        System.out.println("输出文件路径:" + outPutPath);
         File file=new File(outPutPath);
         FileOutputStream outputStream = new FileOutputStream(file);
         try

@@ -1,5 +1,8 @@
 import java.io.*;
+import java.nio.Buffer;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Lib {
     /**
@@ -16,12 +19,14 @@ public class Lib {
             try
             {
                 FileReader fr = new FileReader(file);
-                LineNumberReader lnr = new LineNumberReader(fr);
+                //利用缓冲区提升读取性能
+                BufferedReader br = new BufferedReader(fr);
+                LineNumberReader lnr = new LineNumberReader(br);
                 String str;
-                while ((str=lnr.readLine())!=null)
+                while ((str=lnr.readLine()) != null)
                 {
                     //统计包含非空白字符的行
-                    if (!(str.isBlank()))
+                    if (!(isBlankString(str)))
                         lineNum++;
                 }
             } catch (FileNotFoundException e)
@@ -41,7 +46,7 @@ public class Lib {
      * @return: java.lang.String
      * @Date: 2021/2/28
      */
-    public String getCharNum(File file,FileInputStream inputStream)
+    public String getCharNum(File file)
     {
         return "characters: " + String.valueOf(file.length()) + "\n";
     }
@@ -55,7 +60,7 @@ public class Lib {
     public List<StringBuilder> getWordNum(File file, FileInputStream inputStream)
     {
         Map<String,Integer> map = getMapWordNum(file,inputStream);
-        List<Map.Entry<String,Integer>> list=sortMapByValue(map);
+        List<Map.Entry<String,Integer>> list = sortMapByValue(map);
         StringBuilder str = new StringBuilder();
         int total = 0,index = 0;
 
@@ -63,10 +68,10 @@ public class Lib {
         {
             total += entry.getValue();
             //只统计频率较高的
-            if (index++<10)
+            if (index++ < 10)
             {
                 //System.out.println(entry.getKey()+"  ");
-                str.append(entry.getKey()+": " + entry.getValue()+"\n");
+                str.append(entry.getKey()+": " + entry.getValue() + "\n");
             }
         }
         List<StringBuilder> reslutList = new ArrayList<>();
@@ -86,68 +91,60 @@ public class Lib {
     private Map<String,Integer> getMapWordNum(File file,FileInputStream inputStream)
     {
         Map<String,Integer> map = new HashMap<>();
-        StringBuilder str = new StringBuilder(3);
-        Boolean isWord = true;
-        char tmp='\n';
+        String s=new String(readFile(file));
+        String[] strs = s.split("[^a-zA-Z0-9]");
+        Pattern pattern = Pattern.compile("^[a-z]{4}[a-z0-9]*");
+        Matcher matcher = null;
+        int cnt = 0;
 
-        for (int i = 0;i <= file.length();i++)
+        for (String str : strs)
         {
-            try
-            {
-                if (i<file.length())
-                {
-                    tmp = (char)(inputStream.read());
-                }
-                else
-                {
-                    tmp = '\n';                }
-//                System.out.print(tmp+"  ");
-                if (Character.isUpperCase(tmp))
-                {
-                    tmp = Character.toLowerCase(tmp);
-                    str.append(tmp);
-                }
-                else if (Character.isLowerCase(tmp))
-                {
-                    str.append(tmp);
-                }
-                else if (Character.isDigit(tmp))
-                {
-                    if (str.length() < 4)
-                    {
-                        isWord = false;
-                    }
-                    str.append(tmp);
-                }
-                else if (!(Character.isDigit(tmp) || Character.isLowerCase(tmp)) && str != null&&str.length() >= 4)
-                {
-//                    System.out.println("单词统计中1:"+str.toString());
-                    if (isWord)
-                    {
-                        if (map.containsKey(str.toString()))
-                        {
-//                        System.out.println("单词统计中:"+str.toString());
-                            map.replace(str.toString(),map.get(str.toString()) + 1);
-                        }
-                        else
-                        {
-                            map.put(str.toString(),1);
-                        }
-                    }
-                    else
-                    {
-                        System.out.println(str.toString() + "不是单词，不进行统计");
-                    }
-                    isWord = true;
-                    str = new StringBuilder(3);
-                }
+            str = str.toLowerCase();
+            matcher = pattern.matcher(str);
 
-            } catch (IOException e)
+            if (!str.isEmpty()&&matcher.find())
             {
-                e.printStackTrace();
+                cnt++;
+                Integer t = map.get(str);
+                if (t == null)
+                    t = 0;
+                map.put(str,1+t);
             }
         }
         return map;
+    }
+
+    /**
+    * @Description:  读取文件内容获取String
+    * @Param: [file]
+    * @return: java.lang.String
+    * @Date: 2021/3/3
+    */
+    private static StringBuilder readFile(File file)
+    {
+        BufferedReader reader = null;
+        StringBuilder str = new StringBuilder(1024);
+        int c;
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            while ((c = reader.read())!=-1)
+            {
+                str.append((char) c);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("文件不存在:" + file.getPath());
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return str;
     }
 
     /**
@@ -175,4 +172,16 @@ public class Lib {
         });
         return list;
     }
+
+    /**
+    * @Description:   判断字符串是否为空白字符串
+    * @Param: [str]
+    * @return: boolean
+    * @Date: 2021/3/3
+    */
+    boolean isBlankString(String str)
+    {
+        return str==null||str.trim().isEmpty();
+    }
+
 }

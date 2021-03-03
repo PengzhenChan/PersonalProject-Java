@@ -1,0 +1,13 @@
+characters: 215
+words: 16
+lines: 7
+aaaa: 2
+bbbb: 2
+aaaa213: 1
+aaaaaaaa: 1
+aaaaaaaaaaaaaaa: 1
+cccc21324: 1
+dsadsad1231: 1
+file789: 1
+pppppppppppppp: 1
+sabdjasd23213: 1
