@@ -22,7 +22,7 @@ public class Lib {
 
 
             }
-            charnumber+=(lineCount-1)*2;
+            charnumber+=(lineCount-1);
             //System.out.println("文件字符数为"+charnumber);
            // System.out.println("文件字符数统计成功！");
             File outfile =new File(outputfileName);
@@ -43,7 +43,7 @@ public class Lib {
     }
 
         public void countWords(String inputfileName, String outputfileName) {
-            Map<String,Integer> wordarray=new HashMap<String,Integer>();
+            //Map<String,Integer> wordarray=new HashMap<String,Integer>();
             int wordnumber = 0;
             try {
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(inputfileName));
@@ -68,15 +68,7 @@ public class Lib {
 
 
                             if (wordlength >= 4) {
-                                String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
-
-                                if (wordarray.get(tempword) == null) {
-                                    wordarray.put(tempword, 1);
-                                }
-                                else {
-                                    wordarray.put(tempword, wordarray.get(tempword) + 1);
-                                }
-
+                                wordnumber++;
                             }
                             strindex++;
                             wordlength=0;
@@ -85,19 +77,13 @@ public class Lib {
                     }
 
                     if (wordlength >= 4) {
-                        String tempword = strLine.substring(strindex - wordlength, strindex).toLowerCase();
-
-                        if (wordarray.get(tempword) == null) {
-                            wordarray.put(tempword, 1);
-                        } else {
-                            wordarray.put(tempword, wordarray.get(tempword) + 1);
-                        }
+                        wordnumber++;
                     }
                     lineCount++;
 
 
                 }
-                wordnumber=wordarray.size();
+
 
                 //System.out.println("文件单词数为" + wordnumber);
                 //System.out.println("文件单词数统计成功！");

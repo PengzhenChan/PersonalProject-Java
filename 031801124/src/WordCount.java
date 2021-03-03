@@ -7,13 +7,17 @@ public class WordCount {
     public static void main(String[] args) {
         // write your code here
         Lib lib=new Lib();
-        Scanner scan = new Scanner(System.in);
-        //if (args.length == 2) {
-            //String inputfilename = args[0];
-            //String outputfilename = args[1];
-            System.out.println("测试用，请输入输入文件和输出文件。");
-            String inputfilename = scan.nextLine();
-            String outputfilename = scan.nextLine();
+        //Scanner scan = new Scanner(System.in);
+        String inputfilename="";
+        String outputfilename="";
+        if (args.length == 2) {
+            inputfilename = args[0];
+            outputfilename = args[1];
+        }
+
+            //System.out.println("测试用，请输入输入文件和输出文件。");
+            //String inputfilename = scan.nextLine();
+            //String outputfilename = scan.nextLine();
             try {
                 File inputfile = new File(inputfilename);
                 File outputfile = new File(outputfilename);
