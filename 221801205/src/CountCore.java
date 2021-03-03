@@ -150,7 +150,7 @@ public class CountCore {
     /*
      * 功能：得到频率最高的10个单词
      */
-    public ArrayList<String> getMaxWord(String s){
+    public LinkedHashMap<String, Integer> getMaxWord(String s){
     	LinkedHashMap<String, Integer> countHashMap = getCountHashMap(s);
     	ArrayList<Map.Entry<String,Integer>> list = 
     	    new ArrayList<Map.Entry<String, Integer>>(countHashMap.entrySet());
@@ -165,10 +165,9 @@ public class CountCore {
     		
 		});
     	
-    	ArrayList<String> tmp = new ArrayList<String>();
+    	LinkedHashMap<String, Integer> tmp = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < list.size() && i< 10; i++) {
-            String key = list.get(i).getKey().toString();
-            tmp.add(key);
+            tmp.put(list.get(i).getKey(), list.get(i).getValue());
         }
         return tmp;
 
