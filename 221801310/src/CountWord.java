@@ -9,18 +9,10 @@ public class CountWord {
         int num = 0;
         //存放被分隔符分开的内容
         String[] words;
-        String regexForMatch = "^[a-z]{4,}.*";
 
         //除了字母数字以外的所有字符都作为分隔符
         words = SplitWord.splitWord(text);
-
-        for(int i=0; i<words.length; i++){
-            //将所有字母转化为小写
-            words[i] = words[i].toLowerCase();
-            if(words[i].matches(regexForMatch)){
-                num++;
-            }
-        }
+        num = SplitWord.splitLegalWord(words).size();
 
         return num;
     }
