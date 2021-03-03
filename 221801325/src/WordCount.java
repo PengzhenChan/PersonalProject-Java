@@ -11,7 +11,7 @@ public class WordCount
         Lib lib = new Lib();
         try
         {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("input1.txt"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("input.txt"));
             StringBuffer s =  new StringBuffer();
             int li=0;
             double endTime1 = System.currentTimeMillis();//获取结束时间

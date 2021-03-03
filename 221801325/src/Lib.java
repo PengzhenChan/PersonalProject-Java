@@ -2,7 +2,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-public class Lib {
+public class Lib
+{
     Map<String, Integer> map = new HashMap<String, Integer>();
     public List<Map.Entry<String, Integer>> countmostWord(String str)
     {
@@ -14,20 +15,17 @@ public class Lib {
             System.out.println(word[i]);
         }
         List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>()
+        {
             public int compare(Map.Entry<String, Integer> mapping2, Map.Entry<String, Integer> mapping1)
             {
-                return mapping1.getValue().compareTo(mapping2.getValue());
+                int result = mapping1.getValue().compareTo(mapping2.getValue());
+                if(result!=0){
+                    return result;//即两个Value不相同，就按照Value倒序输出
+                }else{
+                    return mapping2.getKey().compareTo(mapping1.getKey());}//若两个Value相同，就按照Key倒序输出
             }
         });
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> mapping2, Map.Entry<String, Integer> mapping1)
-            {
-                return mapping2.getKey().compareTo(mapping1.getKey());
-            }
-        });
-        //按照出现次数降序输出（前10）
-        Map.Entry<String, Integer> mapping = null;
 
         return list;
     }
@@ -55,7 +53,8 @@ public class Lib {
         return num;
 
     }
-    public int charCount(String string) throws IOException {
+    public int charCount(String string) throws IOException
+    {
         int characters = 0;
         String regex = "\\p{ASCII}";
         Pattern pattern = Pattern.compile(regex);
