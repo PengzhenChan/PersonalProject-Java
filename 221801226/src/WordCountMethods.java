@@ -35,7 +35,7 @@ public class WordCountMethods {
         char[] achar = str.toCharArray();
         
         for (int i = 0;i<achar.length;i++) {
-            //统计ascii code
+            //统计可视ascii code
             if (33 <= achar[i] && achar[i] <= 126) {
                 count++;
             }
@@ -96,22 +96,25 @@ public class WordCountMethods {
      */
     public static int countWords(String str) {
         int words = 0;
+        int num = 0;
         
         String lowerStr = str.toLowerCase();
         Pattern pat = Pattern.compile(UN_ALPHABET_NUM_REGEX);
         Matcher mat = pat.matcher(lowerStr);
         lowerStr = mat.replaceAll(" ");
         String[] word = lowerStr.split("\\s+");
-        for (int i = 0; i < word.length; i++) {
-            String temp = word[i];
-            if (temp.matches(FIRST_FOUR_APLH_REGEX)) {
+        int len = word.length;
+        String tw = null;
+        for (int i = 0; i < len; i++) {
+            tw = word[i];
+            if (tw.matches(FIRST_FOUR_APLH_REGEX)) {
                 words++;
-                if (!map.containsKey(temp)) {
-                    map.put(temp, 1);
+                if (!map.containsKey(tw)) {
+                    map.put(tw, 1);
                 } 
                 else {
-                    int num = map.get(temp);
-                    map.put(temp, num + 1);
+                    num = map.get(tw);
+                    map.put(tw, num + 1);
                 }
             }
         }
