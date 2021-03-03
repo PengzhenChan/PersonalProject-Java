@@ -55,4 +55,35 @@ class WordCount
         return "characters: " + String.valueOf(file.length()) + "\n";
     }
 
+
+    /**
+     * @Description: 将流输出至文件中
+     * @Param: [outPut]
+     * @return: java.lang.String
+     * @Date: 2021/2/28
+     */
+    public void outPut(String outPut,String outPutPath) throws FileNotFoundException
+    {
+        System.out.println("输出文件路径:"+outPutPath);
+        File file=new File(outPutPath);
+        FileOutputStream outputStream=new FileOutputStream(file);
+        try
+        {
+            outputStream.write(outPut.getBytes());
+            outputStream.close();
+        }  catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                outputStream.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 }
