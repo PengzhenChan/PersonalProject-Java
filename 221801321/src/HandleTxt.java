@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HandleTxt {
     File in,out;
@@ -25,6 +27,7 @@ public class HandleTxt {
             sb.append(ch);
         }
         txt=sb.toString();
+        txt=txt.toLowerCase();
     }
 
     //返回文件总字符数
@@ -33,11 +36,42 @@ public class HandleTxt {
         return txt.length();
     }
 
-//    //返回单词总数
-//    public int Getwords()
-//    {
-//
-//    }
+    //返回单词总数
+    public int Getwords()
+    {
+        int words=0;
+
+        Pattern pattern=Pattern.compile("[a-z]{4}[a-z0-9]*");
+        Matcher matcher=pattern.matcher(txt);
+        if (matcher.find())
+        {
+            if ((matcher.start()-1)>= 0)
+            {
+                if (Legalchar(txt.charAt(matcher.start()-1)))
+                {
+                    words++;
+                }
+            }
+            else
+            {
+                words++;
+            }
+        }
+        while (matcher.find()){
+            if (Legalchar(txt.charAt(matcher.start()-1))){
+                words++;
+            }
+        }
+        return words;
+    }
+
+    //判断前一个单词字符是否为其他字符
+    public boolean Legalchar(char ch)
+    {
+        if((ch>='a'&&ch<='z')||(ch>='0'&&ch<='9'))
+            return false;
+        return true;
+    }
 
     public int Getlines()throws IOException
     {
