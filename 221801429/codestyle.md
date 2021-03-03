@@ -60,8 +60,3 @@
 
 &emsp;&emsp; if, for, while等语句的执行语句无论多少都要加括号。<br />
 
-> 例：
-`function(){<br />
-        return;<br />
-}`
-
