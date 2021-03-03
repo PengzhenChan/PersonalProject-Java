@@ -29,16 +29,17 @@ class WordCount
      */
     public String count(String input)
     {
+        Lib lib = new Lib();
         StringBuilder result = new StringBuilder(10);
         //打开输入文件
         File file = new File(input);
         try
         {
             FileInputStream inputStream = new FileInputStream(file);
-            result.append(getCharNum(file,inputStream));
+            result.append(lib.getCharNum(file,inputStream));
             List<StringBuilder> wordNumList=getWordNum(file,inputStream);
             result.append(wordNumList.get(0));
-            result.append("lines: " + getVaildLineNum(file) + "\n");
+            result.append("lines: " + lib.getVaildLineNum(file) + "\n");
             result.append(wordNumList.get(1));
             System.out.println("程序计算的答案" + result);
             inputStream.close();
@@ -50,17 +51,6 @@ class WordCount
             e.printStackTrace();
         }
         return result.toString();
-    }
-
-    /**
-     * @Description:  统计文件的字符数
-     * @Param: [file, inputStream]
-     * @return: java.lang.String
-     * @Date: 2021/2/28
-     */
-    public String getCharNum(File file,FileInputStream inputStream)
-    {
-        return "characters: " + String.valueOf(file.length()) + "\n";
     }
 
 
@@ -95,38 +85,7 @@ class WordCount
         }
     }
 
-    /**
-     * @Description: 统计文件的有效行数
-     * @Param: [file]
-     * @return: int
-     * @Date: 2021/3/2
-     */
-    public int getVaildLineNum(File file)
-    {
-        int lineNum = 0;
-        if (file.exists())
-        {
-            try
-            {
-                FileReader fr = new FileReader(file);
-                LineNumberReader lnr = new LineNumberReader(fr);
-                String str;
-                while ((str=lnr.readLine())!=null)
-                {
-                    //统计包含非空白字符的行
-                    if (!(str.isBlank()))
-                        lineNum ++;
-                }
-            } catch (FileNotFoundException e)
-            {
-                e.printStackTrace();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return lineNum;
-    }
+
 
     /**
      * @Description:  统计文件单词总数已及数量最多的十个单词
@@ -148,7 +107,7 @@ class WordCount
             if (index++<10)
             {
                 //System.out.println(entry.getKey()+"  ");
-                str.append(entry.getKey()+": "+entry.getValue()+"\n");
+                str.append(entry.getKey()+": " + entry.getValue()+"\n");
             }
         }
         List<StringBuilder> reslutList = new ArrayList<>();
