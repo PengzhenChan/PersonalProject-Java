@@ -7,5 +7,8 @@ public class WordCount {
         System.out.println(lib.WordsCount(lib.ReadFile
                 ("D:\\PersonalProject-Java" +
                         "\\221801430\\input.txt")));
+        System.out.println(lib.FileLines(lib.ReadFile
+                ("D:\\PersonalProject-Java" +
+                        "\\221801430\\input.txt")));
     }
 }

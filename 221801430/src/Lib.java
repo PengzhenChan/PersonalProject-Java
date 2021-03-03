@@ -84,4 +84,32 @@ public class Lib {
 
         return true;
     }
+
+    //统计文件行数
+    public int FileLines(BufferedReader bufferedReader) {
+        int rows = 0;
+
+        int ch;
+        char temp = '0';
+        try {
+            while ((ch = bufferedReader.read()) != -1) {
+                char chs = (char) ch;
+
+                if (temp == '\n' && chs == '\r' || temp == '\r'
+                        || temp == '\n') {
+                    rows++;
+                    ch = '0';
+                }
+                temp = (char) ch;
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        rows++;
+        return rows;
+
+    }
 }
