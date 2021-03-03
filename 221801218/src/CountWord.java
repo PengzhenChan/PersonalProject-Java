@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class CountWord {
@@ -12,10 +14,11 @@ public class CountWord {
         inputStream = in;
     }
 
-    public int Count() throws IOException {
+    public int count() throws IOException {
+        InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         String str = "";
         int i;
-        while ((i = inputStream.read()) != -1) {
+        while ((i = reader.read()) != -1) {
             if (Character.isLetterOrDigit(i)) {
                 str = str + (char)i;
             } else {
@@ -27,6 +30,7 @@ public class CountWord {
                         int value = words.get(str.toLowerCase());
                         words.put(str, value + 1);
                     }
+                    System.out.println(str);
                     str = "";
                 }
             }

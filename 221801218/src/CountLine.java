@@ -1,23 +1,22 @@
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public class CountChar {
+public class CountLine {
     FileInputStream inputStream;
     int count = 0;
 
-    public CountChar(FileInputStream in) {
+    public CountLine(FileInputStream in) {
         inputStream = in;
     }
 
     public int count() throws IOException {
         InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        int i;
-        while ((i = reader.read()) != -1) {
-            if (i <= 127) {
-                count++;
-            }
+        BufferedReader bReader = new BufferedReader(reader);
+        while (bReader.readLine() != null) {
+            count++;
         }
         return count;
     }
