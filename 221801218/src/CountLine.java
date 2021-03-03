@@ -15,8 +15,11 @@ public class CountLine {
     public int count() throws IOException {
         InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader bReader = new BufferedReader(reader);
-        while (bReader.readLine() != null) {
-            count++;
+        String line;
+        while ((line = bReader.readLine()) != null) {
+            if (!line.equals("")) {
+                count++;
+            }
         }
         return count;
     }
