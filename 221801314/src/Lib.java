@@ -94,10 +94,6 @@ public class Lib {
         public void readString() {
             stringBuilder = new StringBuilder();
             int value;
-            if (reader == null) {
-                System.out.println("Reader为空");
-                return ;
-            }
             try {
                 while ((value = reader.read()) != -1) {
                     char ch = (char)value;

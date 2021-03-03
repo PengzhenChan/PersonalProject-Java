@@ -69,17 +69,6 @@ public class WordCount{
         Long endTime = System.currentTimeMillis();
         System.out.println("运行用时: " + (endTime - startTime) + "ms");
 
-//        textEditor.readString();
-//        stringBuilder.append("characters: ").append(textEditor.countAscii()).append('\n');
-//        stringBuilder.append("words: ").append(textEditor.countWords()).append('\n');
-//        stringBuilder.append("lines: ").append(textEditor.countLines()).append('\n');
-//        stringBuilder.append(textEditor.countTopWords());
-
-//        try {
-//            Lib.FileIOUtil.bigDateTest("input.txt");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
     }
 }
