@@ -33,4 +33,32 @@ public class HandleTxt {
         return txt.length();
     }
 
+//    //返回单词总数
+//    public int Getwords()
+//    {
+//
+//    }
+
+    public int Getlines()throws IOException
+    {
+        int line=0;
+        BufferedReader br=new BufferedReader(new FileReader(in));
+        String content=br.readLine();
+        StringBuilder sb=new StringBuilder();
+
+        while (content!=null)
+        {
+            for(int i=0;i<content.length();i++)
+            {
+                if(content.charAt(i)!='\t'&&content.charAt(i)!='\n'&&content.charAt(i)!=' '
+                        &&content.charAt(i)!='\r')
+                {
+                    line++;
+                    break;
+                }
+            }
+            content=br.readLine();
+        }
+        return line;
+    }
 }
