@@ -16,6 +16,7 @@ public class WordCount {
         int lines = count.invaluableLines("input.txt");
         HashMap map = count.wordsSortCount(fileBuffer);
         List<Map.Entry<String,Integer>> list = count.sortMap(map);
+        //输出到文件
         io.OutputToFile("output.txt",characters,words,lines,list);
     }
 }
