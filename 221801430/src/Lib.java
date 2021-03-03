@@ -31,16 +31,57 @@ public class Lib {
             while ((ch=bufferedReader.read()) != -1){
                 if (ch <= 127 && ch >= 0){
                     num++;
-                    char ch1 = (char)ch;
-                    System.out.println(ch1);
                 }
-
             }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             return num;
         }
+    }
 
+    //统计文件单词总数
+    public long WordsCount(BufferedReader bufferedReader) {
+        long num = 0L;
+        int one;
+        String str = new String();
+
+        try {
+            while ((one = bufferedReader.read()) != -1) {
+                char ch = (char) one;
+
+                if(ch>='a'&&ch<='z' || ch>='0'&&ch<='9'
+                        || ch>='A'&&ch<='Z'){
+                     str += ch;
+                }
+                else {
+                    if(IsWord(str)) {
+                        num++;
+                    }
+                    String temp = new String();
+                    str = temp;
+                }
+
+            }
+            if(IsWord(str))
+                num++;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return num;
+    }
+
+    //判断单词是否合法
+    public boolean IsWord(String str) {
+
+        for (int i=0;i<str.length();i++) {
+            char ch = str.charAt(i);
+
+            if (i<4 && ch>='0' && str.charAt(i)<='9') {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
