@@ -1,3 +1,4 @@
+import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
 import sun.nio.cs.ext.ISCII91;
 
 import java.io.*;
@@ -6,19 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lib {
-    public static class Core{
-//        public static int getAscii() {
-//
-//        }
-//
-//        public static int getWords() {
-//
-//        }
-//
-//        public static String getTopWords() {
-//
-//        }
-    }
 
     //文件io工具类
     public static class FileIOUtil {
@@ -78,37 +66,12 @@ public class Lib {
             return bufferedReader;
         }
 
-        public static void bigDateTest(String outputPath) throws IOException {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(int k=0;k<100;k++){
-                for (int i = 0; i < 10000; i++) {
-                    stringBuilder.append("aaaa").append(i).append(",");
-                }
-                stringBuilder.append('\n');
-                for (int i = 0; i < 10000; i++) {
-                    stringBuilder.append("bbbb").append(i).append(",");
-                }
-                stringBuilder.append('\n');
-                for (int i = 0; i < 10000; i++) {
-                    for (int j = 0; j < 60; j++) {
-                        stringBuilder.append("maxmax").append(j).append(",");
-                    }
-                    stringBuilder.append('\n');
-                }
-            }
-            String testContent = stringBuilder.toString();
-            System.out.println(testContent.length());
-            BufferedWriter out=new BufferedWriter(new FileWriter(outputPath));
-            out.write(testContent);
-            out.close();
-        }
-
     }
 
     //String处理类
     public static class TextEditor{
         BufferedReader reader = null;
-        int rows = 0;
+        int lines = 0;
         List<String> strings = new ArrayList<>();
         static final int TOP_NUM = 10;
         HashMap<String,Integer> words = new HashMap<String, Integer>();
@@ -141,7 +104,6 @@ public class Lib {
                     stringBuilder.append(ch);
                     if (ch == '\n') {
                         strings.add(stringBuilder.toString());
-//                        System.out.println(content + "|" + content.length());
                         stringBuilder.delete(0, stringBuilder.length());
                     }
                 }
@@ -209,10 +171,9 @@ public class Lib {
          * @return int
          **/
         public int countWords() {
-//            stringBuilder.delete(0,stringBuilder.length());
 
             String word;
-            int rowsSum = 0;
+            int linesSum = 0;
             int wordsSum = 0;
             for (int i = 0; i < strings.size(); i++) {
 //              \w :匹配包括下划线的任何单词字符,等价于 [A-Z a-z 0-9_]
@@ -225,16 +186,12 @@ public class Lib {
                     }
                 }
                 //string.replace用string.trim替换提升效率20%
-//                str = str.replace("\n","");
-//                str = str.replace("\r","");
-//                str = str.replace("\t","");
-//                str = str.replace(" ","");
                 if (!str.trim().isEmpty())
-                    rowsSum++;
+                    linesSum++;
             }
 //            //测试用输出
-//            System.out.println("rowsSum:" + rowsSum);
-            rows = rowsSum;
+//            System.out.println("linesSum:" + linesSum);
+            lines = linesSum;
             return wordsSum;
         }
 
@@ -293,8 +250,8 @@ public class Lib {
          * @Param []
          * @return int
          **/
-        public int countRows() {
-            return this.rows;
+        public int countLines() {
+            return this.lines;
         }
     }
 
