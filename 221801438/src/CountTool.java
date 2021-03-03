@@ -67,9 +67,10 @@ public class CountTool {
 
         //转化为字符串数组
         String[] changedWords = this.changeStr(str);
+
         //将单词以及对应的单词数存储进哈希表中
         HashMap<String, Integer> map = new HashMap<>();
-        //记录是否存储到哈希表中
+        //记录是否存储到哈希表中，默认未存储
         boolean flag = false;
         for (int i = 0; i < changedWords.length; i++) {
             //单词有效才存储
@@ -90,8 +91,11 @@ public class CountTool {
                     }
                 }
                 //未存储到哈希表中
-                if (!flag)
+                if (!flag) {
                     map.put(changedWords[i], 1);
+                }
+                //修改回未存储
+                flag = false;
             }
         }
         return map;
