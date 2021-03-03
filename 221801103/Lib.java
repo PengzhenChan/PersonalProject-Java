@@ -3,6 +3,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Lib
 {
@@ -28,21 +29,12 @@ public class Lib
 		int count=0;
 		BufferedReader targetFile=GetFileInputStream(fileName);
 		
-		if(targetFile==null)
-		{
-			System.out.println("找不到该文件哦~");
-			return 0;
-		}
-		
 		int ch;
 		try
 		{
 			while((ch=targetFile.read())!=-1)
 			{
-				if((ch>=65&&ch<=122)||ch==32||ch==10)
-				{
-					count++;
-				}
+				count++;
 			}
 			targetFile.close();
 		}
@@ -59,11 +51,6 @@ public class Lib
 		HashMap<String,Integer> wordHash=new HashMap<String,Integer>();
 		BufferedReader targetFile=GetFileInputStream(fileName);
 		
-		if(targetFile==null)
-		{
-			System.out.println("找不到该文件哦~");
-			return null;
-		}
 		
 		StringBuilder builder = new StringBuilder();
 	    try 
@@ -87,7 +74,7 @@ public class Lib
 		
 		while(matcher.find())
 		{
-			word=matcher.group().toLowerCase();//转化为小写
+			word=matcher.group(2).toLowerCase();//转化为小写
 			if(wordHash.containsKey(word))
 			{
 				int num=wordHash.get(word);
@@ -100,9 +87,16 @@ public class Lib
 			}
 		}
 		
+		//java8特性，利用stream.sorted()进行排序
+		wordHash = wordHash.entrySet().stream()
+	            .sorted(
+	                Map.Entry.<String, Integer>comparingByValue()
+	                .reversed()
+	                .thenComparing(Map.Entry.comparingByKey()))
+	            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		//将map.entrySet()转换成list
 		List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordHash.entrySet());
-		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() 
+		/*Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() 
 		{
 			//降序排序
 			@Override
@@ -111,7 +105,7 @@ public class Lib
 				//return o1.getValue().compareTo(o2.getValue());
 				return o2.getValue().compareTo(o1.getValue());
 			}
-		});
+		});*/
 		return list;	
 	}
 	
@@ -120,12 +114,6 @@ public class Lib
 	{
 		int count=0;
 		BufferedReader targetFile=GetFileInputStream(fileName);
-		
-		if(targetFile==null)
-		{
-			System.out.println("找不到该文件哦~");
-			return 0;
-		}
 		
 	    StringBuilder builder = new StringBuilder();
 	    try 
@@ -147,27 +135,34 @@ public class Lib
 	    Matcher matcher = linePattern.matcher(str);
 	    while (matcher.find()) 
 	    {
-                count++;
-            }
+            count++;
+        }
 	    return count;
 	}
 	
 	//输出文件
 	public static void OutputFile(String inputFileName,String outputFileName)
 	{
+		int wordSum=0;
 		
 		List<Map.Entry<String, Integer>> list=WordCount(inputFileName);
+		for(Entry<String, Integer> listItem:list)
+		{
+			wordSum+=listItem.getValue();
+		}
 		
 		try
 		{
 			BufferedWriter bufferedWriter=new BufferedWriter(new FileWriter(outputFileName));
 			bufferedWriter.write("characters: "+CharsCount(inputFileName)+"\n");
-			bufferedWriter.write("words: "+list.size()+"\n");
+			bufferedWriter.write("words: "+wordSum+"\n");
 			bufferedWriter.write("Lines: "+LineCount(inputFileName)+"\n");
 			for(Entry<String, Integer> listItem:list)
 			{
 				bufferedWriter.write(listItem.getKey()+":  "+listItem.getValue()+"\n");
 			}
+			bufferedWriter.flush();
+			bufferedWriter.close();
 		}
 		catch(Exception e)
 		{
