@@ -66,7 +66,7 @@ class WordCount:
         """
         s = self.str
         # 去除空白字符\f\n\r\t\v\b
-        spaces = "\t\b"
+        spaces = "\t "
         for space in spaces:
             s = s.replace(space, "")
 
@@ -79,4 +79,5 @@ class WordCount:
             s = tmp
 
         # 标准化完成,行数计算
+        s = s.strip()
         return s.count("\n") + 1
