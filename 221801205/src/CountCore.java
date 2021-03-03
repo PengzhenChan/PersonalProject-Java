@@ -1,4 +1,10 @@
+import java.awt.List;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CountCore {
 	/*
@@ -108,5 +114,63 @@ public class CountCore {
     	if (isRow == true)
     		rowCount ++;
     	return rowCount;
+    }
+    
+    /*
+     * 功能：将只含数字和字母的数组筛选出单词并转换为小写
+     */
+    private ArrayList<String> getLowWords(String s){
+    	ArrayList<String> ss = getWordList(s);
+    	ArrayList<String> lowWords = new ArrayList<String>();
+    	for (String word : ss) {
+    		if (isWord(word)) {
+    			lowWords.add(word.toLowerCase());
+    		}
+    	}
+    	return lowWords;
+    }
+    
+    /*
+     * 功能：统计单词出现次数
+     */
+    private LinkedHashMap<String, Integer> getCountHashMap(String s){
+    	ArrayList<String> lowWords = getLowWords(s);
+    	LinkedHashMap<String, Integer> countHashMap = new LinkedHashMap<String, Integer>();
+    	for (String lowWord : lowWords) {
+    		if (countHashMap.containsKey(lowWord)) {
+    			int count = countHashMap.get(lowWord);
+    			countHashMap.put(lowWord, count + 1);
+    		}
+    		else {
+    			countHashMap.put(lowWord, 1);
+    		}
+    	}
+    	return countHashMap;
+    }
+    /*
+     * 功能：得到频率最高的10个单词
+     */
+    public ArrayList<String> getMaxWord(String s){
+    	LinkedHashMap<String, Integer> countHashMap = getCountHashMap(s);
+    	ArrayList<Map.Entry<String,Integer>> list = 
+    	    new ArrayList<Map.Entry<String, Integer>>(countHashMap.entrySet());
+    	//排序
+    	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+
+			@Override
+			public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+				return o2.getValue() != o1.getValue() ? 
+				    (o2.getValue() - o1.getValue()) : (o1.getKey()).toString().compareTo(o2.getKey());
+			}
+    		
+		});
+    	
+    	ArrayList<String> tmp = new ArrayList<String>();
+        for (int i = 0; i < list.size() && i< 10; i++) {
+            String key = list.get(i).getKey().toString();
+            tmp.add(key);
+        }
+        return tmp;
+
     }
 }
