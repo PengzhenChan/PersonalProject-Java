@@ -62,5 +62,41 @@ public class Lib
         return linenum;
     }
 
+    //单词数统计
+    public int wordsCount(File file) throws Exception
+    {
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), ENCODING);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 
+        int wordsnum = 0;
+        String str = null;
+        Map<String, Integer> map = new HashMap<String,Integer>();
+
+        while ((str = bufferedReader.readLine()) != null) {
+            //String s = bufferedReader.readLine();
+            String splited[] = str.split(",|\\.| |\\?|\\!|\\'");
+            for (int i = 0; i < splited.length; i++) {
+                if (splited[i].length() >= 4 ) {
+                    String temp = splited[i].substring(0, 4);
+                    temp = temp.replaceAll("[^a-zA-Z]", "");
+                    if (temp.length() >= 4) {
+                        if (map.containsKey(splited[i].toLowerCase())) {
+                            map.put(splited[i].toLowerCase(), map.get(splited[i].toLowerCase())+1);
+                        }
+                        else {
+                            map.put(splited[i].toLowerCase(), 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        wordsnum = map.size();
+
+        //System.out.println("words:"+wordsnum);
+        inputStreamReader.close();
+        return wordsnum;
+    }
+
+    
 }
