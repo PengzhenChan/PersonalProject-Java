@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -7,8 +8,8 @@ public class CountChar {
     FileInputStream inputStream;
     int count = 0;
 
-    public CountChar(FileInputStream in) {
-        inputStream = in;
+    public CountChar(String fileName) throws FileNotFoundException {
+        inputStream = new FileInputStream(fileName);
     }
 
     public int count() throws IOException {

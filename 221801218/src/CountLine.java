@@ -1,15 +1,12 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public class CountLine {
     FileInputStream inputStream;
     int count = 0;
 
-    public CountLine(FileInputStream in) {
-        inputStream = in;
+    public CountLine(String fileName) throws FileNotFoundException {
+        inputStream = new FileInputStream(fileName);
     }
 
     public int count() throws IOException {

@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -10,8 +11,8 @@ public class CountWord {
 
     int count = 0;
 
-    public CountWord(FileInputStream in) {
-        inputStream = in;
+    public CountWord(String fileName) throws FileNotFoundException {
+        inputStream = new FileInputStream(fileName);
     }
 
     public int count() throws IOException {
@@ -30,7 +31,6 @@ public class CountWord {
                         int value = words.get(str.toLowerCase());
                         words.put(str, value + 1);
                     }
-                    System.out.println(str);
                     str = "";
                 }
             }
@@ -38,7 +38,7 @@ public class CountWord {
         return count;
     }
 
-    public LinkedHashMap<String, Integer> MostFreqWord() {
+    public LinkedHashMap<String, Integer> mostFreqWord() {
         if (words.isEmpty()) {
             return null;
         }
@@ -58,7 +58,7 @@ public class CountWord {
 
         LinkedHashMap<String, Integer> topWords = new LinkedHashMap<>();
 
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < count && i < 10; i++){
             topWords.put(list.get(i).getKey(), list.get(i).getValue());
         }
 
