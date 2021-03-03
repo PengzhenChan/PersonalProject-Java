@@ -78,17 +78,41 @@ public class CountCore {
         return 0;
     }
 
-    public String[] getPopularWord() {
-        String[] list = map.keySet().toArray(new String[0]);
-        for (int i = list.length; i >= 0; i--) {
-            for (int j = 0; j < i - 1; j++) {
-                if (map.get(list[j]) < map.get(list[j + 1])) {
+    void quick_sort(String[] list, int l, int r) {
+        if(l>=r) return;
+        int i = l, j = r;
+        int k = i+1;
+        int x=map.get(list[l]);
+        if(k<j){
+            while (k<=j) {
+                if (map.get(list[k]) < x){
                     String tp = list[j];
-                    list[j] = list[j + 1];
-                    list[j + 1] = tp;
+                    list[j] = list[k];
+                    list[k] = tp;
+                    j--;
+                }
+                else if (map.get(list[k]) > x){
+                    String tp = list[i];
+                    list[i] = list[k];
+                    list[k] = tp;
+                    k++;
+                    i++;
+                }else{
+                    k++;
                 }
             }
+            if(r-l>20){
+                quick_sort(list, l, i - 1);
+            }else{
+                quick_sort(list, l, i - 1);
+                quick_sort(list, j + 1, r);
+            }
         }
+    }
+
+    public String[] getPopularWord() {
+        String[] list = map.keySet().toArray(new String[0]);
+        quick_sort(list, 0, list.length - 1);
         return list;
     }
 }
