@@ -14,12 +14,14 @@ public class CountWord {
     Map<String,Integer> wordMap;
     int char_count;
     int word_count;
+    int empty_count;
     CountWord(String fileName){
         this.fileName = fileName;
         wordMap = new HashMap<>();
 /*        CalCharCount();*/
 /*        CalWordCount();*/
-        CalMaxWord();
+/*        CalMaxWord();*/
+        CalRows();
     }
 
     void CalCharCount(){
@@ -142,5 +144,32 @@ public class CountWord {
         for (Map.Entry<String, Integer> t : arrayList1) {
             System.out.println(t.getKey() + ":" + t.getValue());
         }
+    }
+    void CalRows(){
+        Charset c = Charset.forName("UTF-8");
+        ArrayList<String> arrayList = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader(fileName,c);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String str;
+            while ((str = bufferedReader.readLine()) != null) {
+                arrayList.add(str);
+            }
+            bufferedReader.close();
+            fileReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int count=0;
+        String[] strArrayTrue = (String[]) arrayList.toArray(new String[0]);
+        for(String str : strArrayTrue) {
+            String regex = "[^\\s]+";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(str);
+            if (matcher.find()){
+                count++;
+            }
+        }
+        empty_count=count;
     }
 }
