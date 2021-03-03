@@ -39,6 +39,7 @@ class WordCount
             List<StringBuilder> wordNumList=getWordNum(file,inputStream);
             result.append(wordNumList.get(0));
             result.append("lines: " + getVaildLineNum(file) + "\n");
+            result.append(wordNumList.get(1));
             System.out.println("程序计算的答案" + result);
             inputStream.close();
         } catch (FileNotFoundException e)
@@ -136,15 +137,20 @@ class WordCount
     public List<StringBuilder> getWordNum(File file, FileInputStream inputStream)
     {
         Map<String,Integer> map = getMapWordNum(file,inputStream);
+        List<Map.Entry<String,Integer>> list=sortMapByValue(map);
         StringBuilder str = new StringBuilder();
         int total = 0,index = 0;
 
-        for (Map.Entry<String,Integer> entry:map.entrySet())
+        for (Map.Entry<String,Integer> entry:list)
         {
             total += entry.getValue();
+            //只统计频率较高的
+            if (index++<10)
+            {
+                //System.out.println(entry.getKey()+"  ");
+                str.append(entry.getKey()+": "+entry.getValue()+"\n");
+            }
         }
-//        //统计单词总数
-//        str.insert(0,"words: "+total+"\n");
         List<StringBuilder> reslutList = new ArrayList<>();
         //统计单词总数
         reslutList.add(new StringBuilder("words: " + total + "\n"));
