@@ -77,4 +77,36 @@ public class CountCore {
     	}
     	return cnt;
     }
+    
+    /*
+     * 功能：判断字符是否为可显示字符
+     * 参数：字符
+     * 返回值：boolean
+     */
+    private boolean canSee(char x) {
+    	return (x < 127 && x > 32);
+    }
+    
+    /*
+     * 功能：统计字符串行数
+     * 参数：字符串
+     * 返回值：行数
+     */
+    public int getRowCount(String s) {
+    	boolean isRow = false;
+    	int rowCount = 0;
+    	char[] c = s.toCharArray();
+    	for (int i = 0; i < s.length(); i ++) {
+    		if (canSee(c[i])) {
+    			isRow = true;
+    		}
+    		if (c[i] == '\n' && isRow == true) {
+    			rowCount ++;
+    			isRow = false;
+    		}
+    	}
+    	if (isRow == true)
+    		rowCount ++;
+    	return rowCount;
+    }
 }
