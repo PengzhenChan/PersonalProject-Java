@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WordCount {
-    public static void main(String[] args) {
-        CountWord countWord = new CountWord("input.txt");
+    public static void main(String[] args) throws IOException {
+        CountWord countWord = new CountWord("input.txt","output.txt");
 /*        System.out.println(countWord.getChar_count());*/
 /*        String query = "some examples of regex test";
         String[] parts = query.split(" ");

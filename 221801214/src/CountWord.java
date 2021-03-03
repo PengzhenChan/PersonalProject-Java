@@ -1,54 +1,57 @@
 import javafx.css.Match;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CountWord {
-    String fileName;
+    String inputFileName;
+    String outputFileName;
     Map<String,Integer> wordMap;
+    ArrayList<Map.Entry<String,Integer>> arrayList1;
     int char_count;
     int word_count;
-    int empty_count;
-    CountWord(String fileName){
-        this.fileName = fileName;
+    int rows_count;
+    CountWord(String inputFileName,String outputFileName) throws IOException {
+        this.inputFileName = inputFileName;
+        this.outputFileName = outputFileName;
         wordMap = new HashMap<>();
-/*        CalCharCount();*/
-/*        CalWordCount();*/
-/*        CalMaxWord();*/
+        CalCharCount();
+        CalWordCount();
+        CalMaxWord();
         CalRows();
+        PrintfFile();
     }
 
     void CalCharCount(){
         Charset c = Charset.forName("UTF-8");
         ArrayList<String> arrayList = new ArrayList<>();
+        int count=0;
         try {
-            FileReader fileReader = new FileReader(fileName,c);
+            FileReader fileReader = new FileReader(inputFileName,c);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
+            String s = null;
             while ((str = bufferedReader.readLine()) != null) {
+                s=str;
                 arrayList.add(str);
+                str = str.replaceAll("\t"," ");
+                count+=str.length();
+                count+=2;
+                System.out.println(str.length()+2);
+            }
+            if (!s.equals("")){
+                count-=2;
             }
             bufferedReader.close();
             fileReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int count=0;
-        String[] strArrayTrue = (String[]) arrayList.toArray(new String[0]);
-        for(String str : strArrayTrue) {
-            //t转换成空格来计算
-            str = str.replaceAll("\t"," ");
-            count+=str.length();
-            count++;
-        }
-        count--;
         this.char_count = count;
+        System.out.println(char_count);
     }
     int getChar_count(){
         return char_count;
@@ -57,7 +60,7 @@ public class CountWord {
         Charset c = Charset.forName("UTF-8");
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader(fileName,c);
+            FileReader fileReader = new FileReader(inputFileName,c);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
@@ -80,10 +83,10 @@ public class CountWord {
             }
         }
         word_count=count;
-/*        System.out.println(word_count);*/
+        System.out.println(word_count);
     }
     Boolean ifTrueWold(String wold){
-        String regex = "[a-zA-Z]{4}([a-zA-Z0-9])*";
+        String regex = "^[a-zA-Z]{4,}([a-zA-Z0-9])*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(wold);
         if (matcher.find()){
@@ -99,7 +102,7 @@ public class CountWord {
         String word;
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader(fileName,c);
+            FileReader fileReader = new FileReader(inputFileName,c);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
@@ -128,7 +131,7 @@ public class CountWord {
                 }
             }
         }
-        ArrayList<Map.Entry<String,Integer>> arrayList1 = new ArrayList<Map.Entry<String, Integer>>(wordMap.entrySet());
+        arrayList1 = new ArrayList<Map.Entry<String, Integer>>(wordMap.entrySet());
         Collections.sort(arrayList1, new Comparator<Map.Entry<String, Integer>>() {
             @Override
             public int compare(Map.Entry<String, Integer> stringIntegerEntry, Map.Entry<String, Integer> t1) {
@@ -137,7 +140,8 @@ public class CountWord {
                     return result;
                 }
                 else {
-                    return t1.getKey().compareTo(stringIntegerEntry.getKey());
+                    return stringIntegerEntry.getKey().compareTo(t1.getKey());
+/*                    return t1.getKey().compareTo(stringIntegerEntry.getKey());*/
                 }
             }
         });
@@ -149,7 +153,7 @@ public class CountWord {
         Charset c = Charset.forName("UTF-8");
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader(fileName,c);
+            FileReader fileReader = new FileReader(inputFileName,c);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
@@ -170,6 +174,31 @@ public class CountWord {
                 count++;
             }
         }
-        empty_count=count;
+        rows_count=count;
+        System.out.println(rows_count);
+    }
+    void PrintfFile() throws IOException {
+        File fout = new File(outputFileName);
+        FileOutputStream fos = new FileOutputStream(fout);
+        OutputStreamWriter osw = new OutputStreamWriter(fos);
+        osw.write("characters: " + char_count + "\n");
+        osw.write("words: " + word_count + "\n");
+        osw.write("lines: " + rows_count+ "\n");
+        if (arrayList1.size()<10){
+            for (Map.Entry<String, Integer> t : arrayList1) {
+                osw.write(t.getKey() + ": " + t.getValue() + "\n");
+            }
+        }
+        else {
+            int i=0;
+            for (Map.Entry<String, Integer> t : arrayList1) {
+                i++;
+                osw.write(t.getKey() + ": " + t.getValue() + "\n");
+                if (i>9){
+                    break;
+                }
+            }
+        }
+        osw.close();
     }
 }
