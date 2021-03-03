@@ -74,10 +74,7 @@ public static void print(CountCore cc);
  * 构造函数
  * @param inPath 需要读取的文件名
  */
-CountCore(String inPath) {
-        map = new TreeMap<>();
-        this.inPath = inPath;
-}
+CountCore(String inPath);
 ```
 
 #### 获取字符数
