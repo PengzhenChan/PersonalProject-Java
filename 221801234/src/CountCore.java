@@ -79,7 +79,6 @@ public class CountCore {
     }
 
     public String[] getPopularWord() {
-        getWordsCount();
         String[] list = map.keySet().toArray(new String[0]);
         for (int i = list.length; i >= 0; i--) {
             for (int j = 0; j < i - 1; j++) {

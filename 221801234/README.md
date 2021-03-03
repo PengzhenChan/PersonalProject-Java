@@ -45,21 +45,22 @@
 
 ### WordCount
 
-#### 命令行输出
+#### 文件输出
+
+```java
+/**
+* 文件输出
+* @param cc 计算核心类
+* @param outPath 输出文件路径
+*/
+public static void print(CountCore cc, String outPath);
+```
+
+#### 控制台输出
 
 ```java
 /**
 * 命令行输出
-* @param cc 计算核心类
-*/
-public static void print(CountCore cc);
-```
-
-#### 文件写入
-
-```java
-/**
-* 文件写入
 * @param cc 计算核心类
 */
 public static void print(CountCore cc);
