@@ -79,26 +79,26 @@ public class WordCount
         return num;
     }
 
-    public static int countLines(String inputPath) 
+    public static int countLines(String inputPath)
     {
         int lines = 0;
 
-        try 
+        try
         {
             BufferedReader br = new BufferedReader(new FileReader(inputPath));
             String tmp;
             
-            while ((tmp = br.readLine()) != null) 
+            while ((tmp = br.readLine()) != null)
             {
-                if (!tmp.equals("")) 
+                if (!tmp.trim().equals(""))
                 {
                     lines++;
                 }
-            } 
+            }
 
             br.close();
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
