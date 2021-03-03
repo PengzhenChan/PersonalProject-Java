@@ -1,4 +1,10 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class WordCount {
     public static void main(String[] args) throws IOException {
@@ -12,24 +18,24 @@ public class WordCount {
         } catch (FileNotFoundException e) {
             System.out.println("错误位于WordCount类main方法,原因可能是未能正确创建output.txt文件");
         }
-        try {
-            bw.write(CountChar.countChar(inputPath));
-            bw.write(CountWord.countWord(inputPath));
-            bw.write(CountLine.countLine(inputPath));
-        } catch (IOException e) {
-            System.out.println("错误位于WordCount类main方法,原因可能是文件流读写异常");
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        List<GetMyTask> taskList = new ArrayList<>();
+        for(int i=1;i<5;i++){
+            taskList.add(new GetMyTask(inputPath,i));
         }
-        String[] wordStr = CountWordRate.countWordRate(inputPath);
-        for(int i = 0;i < 10;i++){
-            if(wordStr[i]!=null){
+        try{
+            List<Future<String>> futureList = executorService.invokeAll(taskList);
+            for(Future<String> future : futureList){
                 try {
-                    bw.write(wordStr[i]);
+                    bw.write(future.get());
                 } catch (IOException e) {
                     System.out.println("错误位于WordCount类main方法,原因可能是文件流读写异常");
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
-            }else{
-                break;
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         try {
             bw.flush();

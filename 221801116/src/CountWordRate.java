@@ -3,7 +3,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class CountWordRate {
-    public static String[] countWordRate(String path){
+    public static String countWordRate(String path){
         Map<String,Integer> dictionary = new HashMap<>();
         BufferedReader br = null;
         try {
@@ -47,15 +47,18 @@ public class CountWordRate {
             }
         });
 
-        String[] mostWord = new String[10];
+        String mostWord = null;
         for(int i = 0;i < 10;i++){
             if(i>mapList.size()-1)
                 break;
-            mostWord[i] = mapList.get(i).toString().replace('=',':')+"\n";
+            if(mostWord==null){
+                mostWord = mapList.get(i).toString().replace('=',':')+"\n";
+            }else{
+                mostWord += mapList.get(i).toString().replace('=',':')+"\n";
+            }
+
         }
-
         return mostWord;
-
     }
 
     public static boolean isThatWord(String content){
