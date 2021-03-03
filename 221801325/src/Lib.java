@@ -20,10 +20,14 @@ public class Lib
             public int compare(Map.Entry<String, Integer> mapping2, Map.Entry<String, Integer> mapping1)
             {
                 int result = mapping1.getValue().compareTo(mapping2.getValue());
-                if(result!=0){
+                if(result!=0)
+                {
                     return result;//即两个Value不相同，就按照Value倒序输出
-                }else{
-                    return mapping2.getKey().compareTo(mapping1.getKey());}//若两个Value相同，就按照Key倒序输出
+                }
+                else
+                    {
+                    return mapping2.getKey().compareTo(mapping1.getKey());
+                    }//若两个Value相同，就按照Key倒序输出
             }
         });
 
