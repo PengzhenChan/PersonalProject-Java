@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /* 用于字符统计 */
 public class CountTool {
@@ -68,6 +66,7 @@ public class CountTool {
     public HashMap<String, Integer> wordsSortCount(StringBuffer str) {
         //转化为字符串数组
         String[] changedWords = this.changeStr(str);
+        //将单词以及对应的单词数存储进哈希表中
         HashMap<String, Integer> map = new HashMap<>();
         for (int i = 0; i < changedWords.length; i++) {
             //单词有效才存储
@@ -91,5 +90,19 @@ public class CountTool {
             }
         }
         return map;
+    }
+
+    /* 对哈希表进行排序 */
+    public List<Map.Entry<String,Integer>> sortMap(HashMap<String,Integer> map) {
+        List<Map.Entry<String,Integer>> list = new ArrayList<Map.Entry<String,Integer>>(map.entrySet());
+        Collections.sort(list,new Comparator<Map.Entry<String,Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                if (o1.getValue().equals(o2.getValue()))
+                    return o1.getKey().compareTo(o2.getKey());
+                return o2.getValue()-o1.getValue();
+            }
+        });
+        return list;
     }
 }
