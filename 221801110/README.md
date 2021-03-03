@@ -53,3 +53,10 @@ java WordCount input.txt output.txt
 ### 第8次commit
 
 - 统计有效行数中新增空白字符种类
+
+### 第9次commit
+
+- 实现统计文件的单词频率的部分功能（分割字符串创建集合统计单词）
+
+### 第10次commit
+
