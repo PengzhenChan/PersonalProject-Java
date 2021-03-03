@@ -89,7 +89,7 @@ public class WordCount {
                         break;
                     }
                 }
-                if (b == -1) {
+                if (b == -1) {//如果是末尾，结束
                     break;
                 }
                 //是单词和不是单词，两种处理路线
@@ -102,7 +102,9 @@ public class WordCount {
                         str = str + (char) b;
                         b = reader.read();
                     }
-                } else {//如果不是末尾，也不是分割符，补齐单词。
+                } else if (b != -1 && !Character.isLetterOrDigit((char)b)) {//不是单词而且b是分割符，回到循环开头
+                    continue;
+                } else {//不是单词，且b不是末尾也不是分割符，则补齐单词
                     b = reader.read();
                     while (b != -1 && Character.isLetterOrDigit((char)b)) {
                         b = reader.read();
