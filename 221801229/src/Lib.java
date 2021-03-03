@@ -138,4 +138,48 @@ public class Lib
         inputStreamReader.close();
         return list;
     }
+
+    //写入文件
+    public void writeFile(File file,int charcount,int linecount,int wordscount,List<Map.Entry<String, Integer>> list) throws Exception
+    {
+        StringBuilder result = new StringBuilder("");
+
+        result.append("characters:");
+        result.append(charcount+linecount-1);
+        result.append("\r\n");
+        result.append("words:");
+        result.append(wordscount);
+        result.append("\r\n");
+        result.append("lines:");
+        result.append(linecount);
+        result.append("\r\n");
+
+        int count = 0;
+
+        for(Map.Entry<String, Integer> map : list) {
+            count++;
+            result.append(map.getKey() + ":" + map.getValue());
+
+            if (count>9) {
+                break;
+            }
+
+            result.append("\r\n");
+        }
+
+
+        if (!file.exists()) {
+            System.out.println("not found result.txt");
+            System.out.println("create result.txt");
+            file.createNewFile();
+        }
+
+        FileWriter filewriter = new FileWriter(file.getAbsoluteFile());
+        //System.out.println("absolutely path:"+file.getAbsolutePath());
+        BufferedWriter bufferedWriter = new BufferedWriter(filewriter);
+
+        bufferedWriter.write(result.toString());
+
+        bufferedWriter.close();
+    }
 }
