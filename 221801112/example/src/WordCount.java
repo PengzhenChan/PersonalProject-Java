@@ -34,9 +34,11 @@ class WordCount
         File file = new File(input);
         try
         {
-            FileInputStream inputStream=new FileInputStream(file);
+            FileInputStream inputStream = new FileInputStream(file);
             result.append(getCharNum(file,inputStream));
-            result.append("lines: "+getVaildLineNum(file)+"\n");
+            List<StringBuilder> wordNumList=getWordNum(file,inputStream);
+            result.append(wordNumList.get(0));
+            result.append("lines: " + getVaildLineNum(file) + "\n");
             System.out.println("程序计算的答案" + result);
             inputStream.close();
         } catch (FileNotFoundException e)
@@ -69,9 +71,9 @@ class WordCount
      */
     public void outPut(String outPut,String outPutPath) throws FileNotFoundException
     {
-        System.out.println("输出文件路径:"+outPutPath);
+        System.out.println("输出文件路径:" + outPutPath);
         File file=new File(outPutPath);
-        FileOutputStream outputStream=new FileOutputStream(file);
+        FileOutputStream outputStream = new FileOutputStream(file);
         try
         {
             outputStream.write(outPut.getBytes());
@@ -100,19 +102,19 @@ class WordCount
      */
     public int getVaildLineNum(File file)
     {
-        int lineNum=0;
-        if(file.exists())
+        int lineNum = 0;
+        if (file.exists())
         {
             try
             {
-                FileReader fr=new FileReader(file);
-                LineNumberReader lnr=new LineNumberReader(fr);
+                FileReader fr = new FileReader(file);
+                LineNumberReader lnr = new LineNumberReader(fr);
                 String str;
                 while ((str=lnr.readLine())!=null)
                 {
                     //统计包含非空白字符的行
                     if (!(str.isBlank()))
-                        lineNum++;
+                        lineNum ++;
                 }
             } catch (FileNotFoundException e)
             {
@@ -126,6 +128,32 @@ class WordCount
     }
 
     /**
+     * @Description:  统计文件单词总数已及数量最多的十个单词
+     * @Param: [file, inputStream]
+     * @return: java.lang.String
+     * @Date: 2021/3/2
+     */
+    public List<StringBuilder> getWordNum(File file, FileInputStream inputStream)
+    {
+        Map<String,Integer> map = getMapWordNum(file,inputStream);
+        StringBuilder str = new StringBuilder();
+        int total = 0,index = 0;
+
+        for (Map.Entry<String,Integer> entry:map.entrySet())
+        {
+            total += entry.getValue();
+        }
+//        //统计单词总数
+//        str.insert(0,"words: "+total+"\n");
+        List<StringBuilder> reslutList = new ArrayList<>();
+        //统计单词总数
+        reslutList.add(new StringBuilder("words: " + total + "\n"));
+        //统计单词频数
+        reslutList.add(str);
+        return reslutList;
+    }
+
+    /**
      * @Description: 对文件内容分析获得以单词为key,数量为value 的map结果
      * @Param: [file, inputStream]
      * @return: java.util.Map<java.lang.String,java.lang.Integer>
@@ -133,26 +161,26 @@ class WordCount
      */
     private Map<String,Integer> getMapWordNum(File file,FileInputStream inputStream)
     {
-        Map<String,Integer> map=new HashMap<>();
-        StringBuilder str=new StringBuilder(3);
-        Boolean isWord=true;
+        Map<String,Integer> map = new HashMap<>();
+        StringBuilder str = new StringBuilder(3);
+        Boolean isWord = true;
         char tmp='\n';
 
-        for (int i=0;i<=file.length();i++)
+        for (int i = 0;i <= file.length();i++)
         {
             try
             {
                 if (i<file.length())
                 {
-                    tmp=(char)(inputStream.read());
+                    tmp = (char)(inputStream.read());
                 }
                 else
                 {
-                    tmp='\n';                }
+                    tmp = '\n';                }
 //                System.out.print(tmp+"  ");
                 if (Character.isUpperCase(tmp))
                 {
-                    tmp=Character.toLowerCase(tmp);
+                    tmp = Character.toLowerCase(tmp);
                     str.append(tmp);
                 }
                 else if (Character.isLowerCase(tmp))
@@ -161,13 +189,13 @@ class WordCount
                 }
                 else if (Character.isDigit(tmp))
                 {
-                    if (str.length()<4)
+                    if (str.length() < 4)
                     {
-                        isWord=false;
+                        isWord = false;
                     }
                     str.append(tmp);
                 }
-                else if (!(Character.isDigit(tmp)||Character.isLowerCase(tmp))&&str!=null&&str.length()>=4)
+                else if (!(Character.isDigit(tmp) || Character.isLowerCase(tmp)) && str != null&&str.length() >= 4)
                 {
 //                    System.out.println("单词统计中1:"+str.toString());
                     if (isWord)
@@ -175,7 +203,7 @@ class WordCount
                         if (map.containsKey(str.toString()))
                         {
 //                        System.out.println("单词统计中:"+str.toString());
-                            map.replace(str.toString(),map.get(str.toString())+1);
+                            map.replace(str.toString(),map.get(str.toString()) + 1);
                         }
                         else
                         {
@@ -184,10 +212,10 @@ class WordCount
                     }
                     else
                     {
-                        System.out.println(str.toString()+"不是单词，不进行统计");
+                        System.out.println(str.toString() + "不是单词，不进行统计");
                     }
-                    isWord=true;
-                    str=new StringBuilder(3);
+                    isWord = true;
+                    str = new StringBuilder(3);
                 }
 
             } catch (IOException e)
