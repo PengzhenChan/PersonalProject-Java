@@ -26,8 +26,8 @@ class WordCount:
         """
         s = self.str
         s = s.lower()
-        self.words = re.findall("([a-z]{4,}[a-z0-9]*)", s)
-
+        if not self.words:
+            self.words = re.findall("([a-z]{4,}[a-z0-9]*)", s)
         return len(self.words)
 
     def topWord(self):
