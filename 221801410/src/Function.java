@@ -26,13 +26,14 @@ public class Function {
         {
             if (readFile.isFile() && readFile.exists())
             {
-                String wordLine;
                 FileInputStream fileIn = new FileInputStream(readFile);
                 int readChar =0;
                 while((readChar = fileIn.read())!=-1)       //每读入一个字符，字符数自增1
                 {
                     charNum++;
                 }
+                
+                fileIn.close();
             }
             
         }
@@ -62,9 +63,11 @@ public class Function {
                 {
                     if(!IsEmptyLine(wordLine))
                     {
-                        lineNum++; 
+                        lineNum++;
+                        /*
                         System.out.println(wordLine);
                         System.out.println("行数"+lineNum+"长度"+wordLine.length());
+                        */
                     }
                 }
             }
@@ -110,7 +113,9 @@ public class Function {
                                 char[] ch = new char[1];
                                 ch[0] = (char)readChar;
                                 word += ch[0];
+                                /*
                                 System.out.println("字符"+ch[0]+"拼接"+word);
+                                */
                                 wordLength++;
                             }
                             else
@@ -123,7 +128,9 @@ public class Function {
                             char[] ch = new char[1];
                             ch[0] = (char)readChar;
                             word += ch[0];
+                            /*
                             System.out.println("字符"+ch[0]+"拼接"+word);
+                            */
                             wordLength++;
                         }
                     }
@@ -159,7 +166,7 @@ public class Function {
         return wordNum;
     }
     
-    public void CountFrequentWord(File readFile)
+    public Vector<Word> CountFrequentWord(File readFile)
     {
         int wordLength=0;          //用于判断是否为一个单词，既4个英文字母开头
         int resetWord=0;           //用于判断是否重新开始一个单词读入 
@@ -215,16 +222,20 @@ public class Function {
                             if(index!=-1)
                             {
                                 allWords.get(index).AddFrequent();
+                                /*
                                 System.out.println("该单词已存在："
                                                         +allWords.get(index).GetWords()+"次数是："
                                                             +allWords.get(index).GetFrequent());
+                                */
                             }
                             else 
                             {
                                 noRepeatWordNum++;        //用于计数总共有多少个单词存入了已经
                                 Word aWord = new Word(word,1);
                                 allWords.add(aWord);
+                                /*
                                 System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
+                                */
                             }
                         }
                         isNotWord = 0;
@@ -246,26 +257,32 @@ public class Function {
                     if(index!=-1)
                     {
                         allWords.get(index).AddFrequent();
+                        /*  输出已存在的该单词及频率
                         System.out.println("该单词已存在："
                                                 +allWords.get(index).GetWords()+"次数是："
                                                     +allWords.get(index).GetFrequent());
+                        */
                     }
                     else 
                     {
                         noRepeatWordNum++;        //用于计数总共有多少个单词存入了已经
                         Word aWord = new Word(word,1);
                         allWords.add(aWord);
+                        /*  测试用输出存了那些单词
                         System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
+                        */
                     }
                 }
                 
                 Comparator<Word> cmp = new CompareRule();
                 Collections.sort(allWords,cmp);
+                /*  测试用输出所有单词及频率
                 System.out.println("以下是按照频率输出：");
                 for(int i = 0;i<allWords.size();i++)
                 {
                     System.out.println(allWords.get(i).GetWords()+":"+allWords.get(i).GetFrequent());
                 }
+                */
             }
             
         }
@@ -274,6 +291,7 @@ public class Function {
             System.out.println("没有找到文件");
             e.printStackTrace();
         }
+        return allWords;
     }
     
     public int FindWord(Vector<Word> allWords,String word)
