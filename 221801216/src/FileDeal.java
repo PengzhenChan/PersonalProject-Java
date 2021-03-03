@@ -25,9 +25,9 @@ public class FileDeal
 	}
 	
 	//文件写入
-	public void WriteToFile(String str) throws IOException 
+	public void WriteToFile(String str,String file) throws IOException 
 	{ 
-		File writename = new File("output.txt");
+		File writename = new File(file);
 		//创建新文件
 		writename.createNewFile(); 
 		BufferedWriter out = new BufferedWriter(new FileWriter(writename));

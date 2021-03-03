@@ -1,7 +1,8 @@
 import java.util.*;
 import java.util.Map.Entry;
 
-public class WordDeal // 该类用于进行文件中的单词等处理
+//该类用于进行文件中的单词等处理
+public class WordDeal 
 {
 	
 	private int charNum; //统计字符数
@@ -23,7 +24,7 @@ public class WordDeal // 该类用于进行文件中的单词等处理
 		while (i<(content.length())) 
 		{
 			c = content.charAt(i);
-			if (c >= 32 && c <= 126  || c == '\n' || c == '\t') 
+			if (c >= 32 && c <= 126  || c == '\n' || c == '\t' || c == '\r') 
 			{
 				charNum++;
 			}

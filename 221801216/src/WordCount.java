@@ -5,18 +5,18 @@ public class WordCount
 {
 
 	public static void main(String[] args) throws IOException 
-	{
-		//测试用
-		System.out.println("请输入文件名字");
-		
+	{		
 		//定义所需数据结构
-		Scanner sc = new Scanner(System.in);
-		String file = sc.next();
+		Scanner in = new Scanner(System.in);
+		String fileString = in.nextLine();
+		String [] total = fileString.split("[\\s+]");
+		String infile = total[0].toString();
+		String outfile=total[1].toString();
 		FileDeal fd = new FileDeal();
 		String[] wFreq;
 		List wordFreq;
 		
-		String content = fd.ReadFile(file);
+		String content = fd.ReadFile(infile);
 		WordDeal wd = new WordDeal(content);
 		
 		// 调用类中的方法获取相应的数值
@@ -32,6 +32,6 @@ public class WordCount
 			w = w + wFreq[i] + "\n";
 		}
 		System.out.println(w);
-		fd.WriteToFile(w);
+		fd.WriteToFile(w,outfile);
 	}
 }
