@@ -13,12 +13,16 @@ public class Lib {
         file = new File(fileName);
         BufferedReader reader = null;
         try {
+            if (!file.exists())
+                file.createNewFile();
+
             reader = new BufferedReader(new FileReader(file));
             in = new FileInputStream(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
         finally {
+
             return reader;
         }
     }
@@ -54,7 +58,7 @@ public class Lib {
 
                 if(ch>='a'&&ch<='z' || ch>='0'&&ch<='9'
                         || ch>='A'&&ch<='Z'){
-                     str += ch;
+                    str += ch;
                 }
                 else {
                     if(str != null && IsWord(str)) {
@@ -112,7 +116,7 @@ public class Lib {
         return rows;
     }
 
-    //统计单词出现的次数
+    // 统计单词出现的次数
     public void WordsNum(BufferedReader bufferedReader,int n) {
         int one;
         String str = new String();
@@ -197,7 +201,7 @@ public class Lib {
 
     //根据频数排序，字符串数组大小10，将最大10个存入
     public void SortWords(String[] words , int[] counts) {
-        System.out.println("单词"+words[0]+words[1]);
+
         for (int i = 0; i < counts.length && words[i] != null; i++) {
 
             for (int j = i+1 ; j<counts.length && words[j] != null; j++){
@@ -242,8 +246,16 @@ public class Lib {
 
     //输出单词及其频数
     public void ShowWords(int n) {
-        for (int i=0; i<10 && i<n && sortCount[i] != 0; i++){
-            System.out.println(sortWords[i]+" "+sortCount[i]);
+        for (int i = 0; i < 10 && i < n && sortCount[i] != 0; i++) {
+            System.out.println(sortWords[i] + ":" + sortCount[i]);
         }
+    }
+
+    public String[] GetWords() {
+        return sortWords;
+    }
+
+    public int[] GetCount() {
+        return sortCount;
     }
 }
