@@ -108,5 +108,36 @@ public class Lib
 			wordnumbers += hashMap.get(word);
 		}
 	}
+    
+    public void resultShow() {   //将结果显示 
+		result += "characters:"+characters;
+		result += "\nwords:"+wordnumbers;
+		result += "\nlines:"+wordlines;
+	    int i=1;
+	    for (Map.Entry<String, Integer> word : list) {
+	      //      result += "\nword"+i+":"+word.getKey()+"("+word.getValue()+")";
+	    	 result += "\nword"+i+":"+word.getKey();
+	            if (++i>10)
+	            	break;
+	        }
+	    File file = new File(outputTxt);
+	    if (!file.exists()) {
+	    	System.out.println("没有找到相关文件");
+	    	return ;
+	    }
+	    try {
+	    	PrintWriter pw = new PrintWriter(file);
+	    	pw.print(result);
+	    	System.out.println(result);
+	    	pw.close();
+	    }
+	    catch (FileNotFoundException a) {
+	    	System.out.println("没有找到统计结果的输出函数");
+	    }
+	    finally {
+	    
+	    }
+	   // System.out.println("运行结束");
+	}
 }
 
