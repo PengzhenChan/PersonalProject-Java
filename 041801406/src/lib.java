@@ -4,10 +4,6 @@ import java.util.*;
 public class Lib {
     static CountData cd=new CountData();
     static CountData openFile(File input) {
-        int myCountLine = 0;
-        int myWordCount = 0;
-        HashMap<String, Integer> myWordCountMap = new HashMap<String, Integer>();
-        List<Map.Entry<String, Integer>> list = null;
         if (! input.exists()) {
             return null;
         }
@@ -17,20 +13,10 @@ public class Lib {
                 BufferedReader br = new BufferedReader(fr);
                 String s = "";
                 while ((s = br.readLine()) != null) {
-                    myCountLine++;
-                    myWordCount += countWord(s);
-                    myWordCountMap.putAll(getWordFrequency(s));
+                    cd.setCountLine();
+                    cd.setCountWord(countWord(s));
+                    cd.setGetWordFrequency(getWordFrequency(s));
                 }
-                list = new ArrayList<Map.Entry<String, Integer>>(myWordCountMap.entrySet());
-                list.sort(new Comparator<Map.Entry<String, Integer>>() {
-                    @Override
-                    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                        return o2.getValue().compareTo(o1.getValue());
-                    }
-                });
-                cd.setCountLine(myCountLine);
-                cd.setCountWord(myWordCount);
-                cd.setGetWordFrequency(list);
                 return cd;
             }
             catch (IOException e) {
