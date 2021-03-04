@@ -23,7 +23,7 @@ public class Lib {
                 BufferedReader br = new BufferedReader(fr);
                 LineNumberReader lnr = new LineNumberReader(br);
                 String str;
-                while ((str=lnr.readLine()) != null)
+                while ((str = lnr.readLine()) != null)
                 {
                     //统计包含非空白字符的行
                     if (!(isBlankString(str)))
@@ -70,7 +70,6 @@ public class Lib {
             //只统计频率较高的
             if (index++ < 10)
             {
-                //System.out.println(entry.getKey()+"  ");
                 str.append(entry.getKey()+": " + entry.getValue() + "\n");
             }
         }
