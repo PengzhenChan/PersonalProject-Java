@@ -2,6 +2,28 @@ import java.io.*;
 import java.util.*;
 
 public class lib {
+    static boolean openFile(File file) {
+        if (! file.exists()) {
+            return false;
+        }
+        else {
+            try {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String s = "";
+                while ((s = br.readLine()) != null) {
+
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                return false;
+            }
+        }
+    }
+
     static int countChar(File file) {
         int myCountChar = 0;
         if (! file.exists()) {
@@ -61,7 +83,6 @@ public class lib {
                 BufferedReader br = new BufferedReader(fr);
                 String s;
                 String word = "";
-                /*不使用.read()来判断 因为会读取首字母*/
                 while ((s = br.readLine()) != null) {
                     for (int i = 0; i < s.length(); i++) {
                         if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
@@ -103,7 +124,6 @@ public class lib {
                 BufferedReader br = new BufferedReader(fr);
                 String s;
                 String word = "";
-                /*不使用.read()来判断 因为会读取首字母*/
                 while ((s = br.readLine()) != null) {
                     for (int i = 0; i < s.length(); i++) {
                         if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
