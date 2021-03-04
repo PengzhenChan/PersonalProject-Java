@@ -13,23 +13,15 @@ public class WordCount {
         if(args.length!=2){
             System.out.println("Required ARGS NUM Error");
         }
-        else
-        new WordCount(args[0],args[1]);
+        else {
+            new WordCount(args[0], args[1]);
+        }
     }
-    public WordCount(String a,String b)throws Exception{
-        outfiletxt=b;
-        infiletxt=a;
+    public WordCount(String a,String b) throws IOException {
+        outfiletxt = b;
+        infiletxt = a;
         //infile="inputFile.txt";
-        infile = new File(infiletxt);
-        outfile =new File(outfiletxt);
-        in();
-        lib =new Lib(str);
-        //System.out.println(str);
-        System.out.println(lib.getLines());
-        System.out.println(lib.getChars());
-        System.out.println(lib.getWordsNum());
-        lib.getTopWords();
-        out();
+        run();
     }
     public void in() throws IOException {
         try {
@@ -41,7 +33,7 @@ public class WordCount {
                 stringBuilder.append('\n');
             }
             str=stringBuilder.toString();
-        }catch (Exception e){
+        }catch (IOException e){
             e.printStackTrace();
         }
         finally{
@@ -62,5 +54,22 @@ public class WordCount {
             bw.close();
         }
     }
-
+    public void run() throws IOException {
+        try {
+            infile = new File(infiletxt);
+            outfile = new File(outfiletxt);
+            if (!infile.exists()) {
+                System.out.println("File Not Exist Error!");
+                return;
+            }
+            else {
+                in();
+                lib = new Lib(str);
+                out();
+            }
+        }catch(IOException e){
+            e.printStackTrace();
+            System.out.println("ERROR!");
+        }
+    }
 }

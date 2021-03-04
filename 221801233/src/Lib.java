@@ -37,7 +37,7 @@ public class Lib {
         while(matcher.find()){
             String key=matcher.group(0);
             Integer value=hashMap.get(key);
-            System.out.println(key);
+            //System.out.println(key);
             if(value!=null){
                 hashMap.put(key,value+1);
             }
@@ -75,7 +75,7 @@ public class Lib {
              Object val = entry.getValue();
              i++;
              returnword+=key+":"+val+"\n";
-             System.out.println(key + ":" + val);
+             //System.out.println(key + ":" + val);
          }
          return returnword;
     }
