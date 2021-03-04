@@ -36,11 +36,11 @@ public class Lib
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(" ");
         stringBuffer.append(string);
-        String regex = "\\s[a-z]{4}[a-z0-9]*";
+        String regex = "([^a-z0-9])([a-z]{4}[a-z0-9]*)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(stringBuffer.toString());
         while(matcher.find())
-        {   String temp=matcher.group().trim();
+        {   String temp=matcher.group(2).trim();
             num++;
             if (map.containsKey(temp)) {
                 map.put(temp, map.get(temp) + 1);
@@ -55,27 +55,40 @@ public class Lib
     }
     public long charCount(String string) throws IOException
     {
-        long characters = 0;
-        String regex = "\\p{ASCII}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(string);
-        while (matcher.find()) {
-            characters++;
-        }
+        long characters = string.length();
+//        String regex = "\\p{ASCII}";
+//        Pattern pattern = Pattern.compile(regex);
+//        Matcher matcher = pattern.matcher(string);
+//        while (matcher.find()) {
+//            characters++;
+//        }
         return characters;
     }
     public  long lineCount(String string)
     {
         long num_of_line=0;
-        String[] line = string.split("\r\n|\r|\n");
-        for (int i = 0;i<line.length;i++)
-        {
-            if(!line[i].equals("")&&line[i]!=null)
-            {
-                num_of_line++;
-            }
 
+        String regex = "(.*)(\\S)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+        double star3 = System.currentTimeMillis();//获取结束时间
+        while (matcher.find())
+        {
+            if (matcher.group(1)!=null&&!matcher.group(1).equals("")&&!matcher.group(2).equals('\t'))
+            num_of_line++;
         }
+        double end3 = System.currentTimeMillis();//获取结束时间
+        System.out.println("计算行数共耗时" + (end3 - star3) + "毫秒");//输出程序运行时间
+//
+//        String[] line = string.split("\r\n|\r|\n");
+//        for (int i = 0;i<line.length;i++)
+//        {
+//            if(!line[i].equals("")&&line[i]!=null)
+//            {
+//                num_of_line++;
+//            }
+//
+//        }
         return num_of_line;
     }
     public String openFile(String path) throws IOException
@@ -85,7 +98,7 @@ public class Lib
         int li=0;
         double endTime1 = System.currentTimeMillis();//获取结束时间
         while ((li=bufferedReader.read())!= -1)
-        {   //System.out.print(line );
+        {
 
             char c= (char)li;
             s.append(c);
