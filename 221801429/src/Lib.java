@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +18,7 @@ public class Lib {
       返回类型：String
       异常处理：IO异常
      */
-    public static String txtToString(String filePath) throws IOException {
+    public static String txtToString(String filePath){
         System.out.println("读取文件！");
         File file = new File(filePath);
         String context = "";
@@ -30,7 +29,7 @@ public class Lib {
             inputStream.read(buffer);
             inputStream.close();
             context = new String(buffer, "UTF-8");
-        } catch (IOException e){
+        } catch (Exception e){
             e.printStackTrace();
             System.out.println("读取文件失败！");
             return null;

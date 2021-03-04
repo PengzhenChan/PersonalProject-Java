@@ -7,24 +7,30 @@ import java.util.Map;
 
 public class WordCount {
     public static void main(String[] args) {
-        String context = "";
-        String result = "";
-        List<Map.Entry<String,Integer>> maxFrequency;
-        int countChar, countWord, countLine;
-
-       // String inputFile = args[0];
-        //String outputFile = args[1];
-
-        String inputFile = "1.txt";
-        String outputFile = "2.txt";
-
-
-        try {
-            context = Lib.txtToString(inputFile);
-        } catch (IOException e){
-            System.out.println("txt文件转字符串失败！");
+        if(args.length!=2||!args[0].endsWith(".txt")||!args[1].endsWith(".txt")){
+            System.out.println("输入非法参数，程序结束！");
             return;
         }
+
+        //文件文本内容
+        String context = "";
+
+        //将要写入文件的内容
+        String result = "";
+
+        //字符数、单词数、有效行数
+        int countChar, countWord, countLine;
+
+        //存放频率前10的单词和出现次数
+        List<Map.Entry<String,Integer>> maxFrequency;
+
+        String inputFile = args[0];
+        String outputFile = args[1];
+
+        //String inputFile = "1.txt";
+        //String outputFile = "2.txt";
+
+        context = Lib.txtToString(inputFile);
         if(context == null|| context.equals("")){
             System.out.println("待读取文本内容为空！");
             return;
