@@ -8,7 +8,7 @@ public class Function {
     
     public boolean IsEmptyLine(String wordLine)
     {
-        if(wordLine.replaceAll("\\s*", "").equals(""))   //Ìæ»»µôÊäÈëĞĞµÄ¿Õ¸ñ¡¢ÖÆ±í¡¢»»Ò³·ûºóÊÇ·ñÎª¿Õ
+        if(wordLine.replaceAll("\\s*", "").equals(""))   //æ›¿æ¢æ‰è¾“å…¥è¡Œçš„ç©ºæ ¼ã€åˆ¶è¡¨ã€æ¢é¡µç¬¦åæ˜¯å¦ä¸ºç©º
         {
             return true;
         }
@@ -20,7 +20,7 @@ public class Function {
     
     public int CountChar(File readFile)
     {
-        int charNum=0;      //ÓÃÓÚÍ³¼Æ×Ö·ûÊı
+        int charNum=0;      //ç”¨äºç»Ÿè®¡å­—ç¬¦æ•°
         
         try
         {
@@ -28,7 +28,7 @@ public class Function {
             {
                 FileInputStream fileIn = new FileInputStream(readFile);
                 int readChar =0;
-                while((readChar = fileIn.read())!=-1)       //Ã¿¶ÁÈëÒ»¸ö×Ö·û£¬×Ö·ûÊı×ÔÔö1
+                while((readChar = fileIn.read())!=-1)       //æ¯è¯»å…¥ä¸€ä¸ªå­—ç¬¦ï¼Œå­—ç¬¦æ•°è‡ªå¢1
                 {
                     charNum++;
                 }
@@ -39,7 +39,7 @@ public class Function {
         }
         catch(Exception e)
         {
-            System.out.println("Ã»ÓĞÕÒµ½ÎÄ¼ş");
+            System.out.println("æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶");
             e.printStackTrace();
         }
         
@@ -49,7 +49,7 @@ public class Function {
     
     public int CountLine(File readFile)
     {
-        int lineNum=0;      //ÓÃÓÚÍ³¼ÆÓĞĞ§ĞĞÊı
+        int lineNum=0;      //ç”¨äºç»Ÿè®¡æœ‰æ•ˆè¡Œæ•°
         try
         {
             if (readFile.isFile() && readFile.exists())
@@ -64,10 +64,6 @@ public class Function {
                     if(!IsEmptyLine(wordLine))
                     {
                         lineNum++;
-                        /*
-                        System.out.println(wordLine);
-                        System.out.println("ĞĞÊı"+lineNum+"³¤¶È"+wordLine.length());
-                        */
                     }
                 }
             }
@@ -75,7 +71,7 @@ public class Function {
         }
         catch(Exception e)
         {
-            System.out.println("Ã»ÓĞÕÒµ½ÎÄ¼ş");
+            System.out.println("æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶");
             e.printStackTrace();
         }
         
@@ -84,10 +80,10 @@ public class Function {
     
     public int CountWord(File readFile)
     {
-        int wordNum=0;      //ÓÃÓÚÍ³¼Æµ¥´ÊÊı
-        int wordLength=0;          //ÓÃÓÚÅĞ¶ÏÊÇ·ñÎªÒ»¸öµ¥´Ê£¬¼È4¸öÓ¢ÎÄ×ÖÄ¸¿ªÍ·
-        int resetWord=0;           //ÓÃÓÚÅĞ¶ÏÊÇ·ñÖØĞÂ¿ªÊ¼Ò»¸öµ¥´Ê¶ÁÈë 
-        int isNotWord=0;            //ÓëwordLength¹²Í¬×÷ÓÃ£¬ÅĞ¶ÏÊÇ²»ÊÇÒ»¸öµ¥´Ê
+        int wordNum=0;      //ç”¨äºç»Ÿè®¡å•è¯æ•°
+        int wordLength=0;          //ç”¨äºåˆ¤æ–­æ˜¯å¦ä¸ºä¸€ä¸ªå•è¯ï¼Œæ—¢4ä¸ªè‹±æ–‡å­—æ¯å¼€å¤´
+        int resetWord=0;           //ç”¨äºåˆ¤æ–­æ˜¯å¦é‡æ–°å¼€å§‹ä¸€ä¸ªå•è¯è¯»å…¥ 
+        int isNotWord=0;            //ä¸wordLengthå…±åŒä½œç”¨ï¼Œåˆ¤æ–­æ˜¯ä¸æ˜¯ä¸€ä¸ªå•è¯
         
         try
         {
@@ -96,9 +92,9 @@ public class Function {
                 String wordLine;
                 FileInputStream fileIn = new FileInputStream(readFile);
                 int readChar=0;
-                String word="";     //ÓÃÓÚÆ´½Ó¶ÁÈëµÄ×Ö·û³ÉÎªµ¥´Ê
+                String word="";     //ç”¨äºæ‹¼æ¥è¯»å…¥çš„å­—ç¬¦æˆä¸ºå•è¯
                 
-                while((readChar = fileIn.read())!=-1)       //Ã¿¶ÁÈëÒ»¸ö×Ö·û£¬×Ö·ûÊı×ÔÔö1
+                while((readChar = fileIn.read())!=-1)       //æ¯è¯»å…¥ä¸€ä¸ªå­—ç¬¦ï¼Œå­—ç¬¦æ•°è‡ªå¢1
                 {
                     resetWord = 0;
                     
@@ -113,9 +109,6 @@ public class Function {
                                 char[] ch = new char[1];
                                 ch[0] = (char)readChar;
                                 word += ch[0];
-                                /*
-                                System.out.println("×Ö·û"+ch[0]+"Æ´½Ó"+word);
-                                */
                                 wordLength++;
                             }
                             else
@@ -128,9 +121,6 @@ public class Function {
                             char[] ch = new char[1];
                             ch[0] = (char)readChar;
                             word += ch[0];
-                            /*
-                            System.out.println("×Ö·û"+ch[0]+"Æ´½Ó"+word);
-                            */
                             wordLength++;
                         }
                     }
@@ -159,7 +149,7 @@ public class Function {
         }
         catch(Exception e)
         {
-            System.out.println("Ã»ÓĞÕÒµ½ÎÄ¼ş");
+            System.out.println("æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶");
             e.printStackTrace();
         }
         
@@ -168,9 +158,9 @@ public class Function {
     
     public Vector<Word> CountFrequentWord(File readFile)
     {
-        int wordLength=0;          //ÓÃÓÚÅĞ¶ÏÊÇ·ñÎªÒ»¸öµ¥´Ê£¬¼È4¸öÓ¢ÎÄ×ÖÄ¸¿ªÍ·
-        int resetWord=0;           //ÓÃÓÚÅĞ¶ÏÊÇ·ñÖØĞÂ¿ªÊ¼Ò»¸öµ¥´Ê¶ÁÈë 
-        int isNotWord=0;            //ÓëwordLength¹²Í¬×÷ÓÃ£¬ÅĞ¶ÏÊÇ²»ÊÇÒ»¸öµ¥´Ê
+        int wordLength=0;          //ç”¨äºåˆ¤æ–­æ˜¯å¦ä¸ºä¸€ä¸ªå•è¯ï¼Œæ—¢4ä¸ªè‹±æ–‡å­—æ¯å¼€å¤´
+        int resetWord=0;           //ç”¨äºåˆ¤æ–­æ˜¯å¦é‡æ–°å¼€å§‹ä¸€ä¸ªå•è¯è¯»å…¥ 
+        int isNotWord=0;            //ä¸wordLengthå…±åŒä½œç”¨ï¼Œåˆ¤æ–­æ˜¯ä¸æ˜¯ä¸€ä¸ªå•è¯
         
         Vector<Word> allWords = new Vector<Word>();
         int noRepeatWordNum = 0;
@@ -181,9 +171,9 @@ public class Function {
                 String wordLine;
                 FileInputStream fileIn = new FileInputStream(readFile);
                 int readChar=0;
-                String word="";     //ÓÃÓÚÆ´½Ó¶ÁÈëµÄ×Ö·û³ÉÎªµ¥´Ê
+                String word="";     //ç”¨äºæ‹¼æ¥è¯»å…¥çš„å­—ç¬¦æˆä¸ºå•è¯
                 
-                while((readChar = fileIn.read())!=-1)       //Ã¿¶ÁÈëÒ»¸ö×Ö·û£¬×Ö·ûÊı×ÔÔö1
+                while((readChar = fileIn.read())!=-1)       //æ¯è¯»å…¥ä¸€ä¸ªå­—ç¬¦ï¼Œå­—ç¬¦æ•°è‡ªå¢1
                 {
                     resetWord = 0;
                     
@@ -218,24 +208,16 @@ public class Function {
                         if(wordLength>=4 && isNotWord !=1)
                         {
                             word = word.toLowerCase();
-                            int index = FindWord(allWords,word);    //²éÕÒÓĞÊÇ·ñÖØ¸´£¬ÖØ¸´Ôò·µ»ØÏÂ±ê
+                            int index = FindWord(allWords,word);    //æŸ¥æ‰¾æœ‰æ˜¯å¦é‡å¤ï¼Œé‡å¤åˆ™è¿”å›ä¸‹æ ‡
                             if(index!=-1)
                             {
                                 allWords.get(index).AddFrequent();
-                                /*
-                                System.out.println("¸Ãµ¥´ÊÒÑ´æÔÚ£º"
-                                                        +allWords.get(index).GetWords()+"´ÎÊıÊÇ£º"
-                                                            +allWords.get(index).GetFrequent());
-                                */
                             }
                             else 
                             {
-                                noRepeatWordNum++;        //ÓÃÓÚ¼ÆÊı×Ü¹²ÓĞ¶àÉÙ¸öµ¥´Ê´æÈëÁËÒÑ¾­
+                                noRepeatWordNum++;        //ç”¨äºè®¡æ•°æ€»å…±æœ‰å¤šå°‘ä¸ªå•è¯å­˜å…¥äº†å·²ç»
                                 Word aWord = new Word(word,1);
                                 allWords.add(aWord);
-                                /*
-                                System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
-                                */
                             }
                         }
                         isNotWord = 0;
@@ -249,46 +231,31 @@ public class Function {
                     }
                 }
                 
-                /*·ÀÖ¹×îºóÒ»´Î¶ÁÈëµÄÊÇºÏÀíµÄ×Ö·û£¬µ¼ÖÂ×îºóÒ»¸öµ¥´ÊÃ»ÓĞ¼ÆÈëÊı¾İ*/
+                /*é˜²æ­¢æœ€åä¸€æ¬¡è¯»å…¥çš„æ˜¯åˆç†çš„å­—ç¬¦ï¼Œå¯¼è‡´æœ€åä¸€ä¸ªå•è¯æ²¡æœ‰è®¡å…¥æ•°æ®*/
                 if(wordLength>=4 && isNotWord != 1)
                 {
                     word = word.toLowerCase();
-                    int index = FindWord(allWords,word);    //²éÕÒÓĞÊÇ·ñÖØ¸´£¬ÖØ¸´Ôò·µ»ØÏÂ±ê
+                    int index = FindWord(allWords,word);    //æŸ¥æ‰¾æœ‰æ˜¯å¦é‡å¤ï¼Œé‡å¤åˆ™è¿”å›ä¸‹æ ‡
                     if(index!=-1)
                     {
                         allWords.get(index).AddFrequent();
-                        /*  Êä³öÒÑ´æÔÚµÄ¸Ãµ¥´Ê¼°ÆµÂÊ
-                        System.out.println("¸Ãµ¥´ÊÒÑ´æÔÚ£º"
-                                                +allWords.get(index).GetWords()+"´ÎÊıÊÇ£º"
-                                                    +allWords.get(index).GetFrequent());
-                        */
                     }
                     else 
                     {
-                        noRepeatWordNum++;        //ÓÃÓÚ¼ÆÊı×Ü¹²ÓĞ¶àÉÙ¸öµ¥´Ê´æÈëÁËÒÑ¾­
+                        noRepeatWordNum++;        //ç”¨äºè®¡æ•°æ€»å…±æœ‰å¤šå°‘ä¸ªå•è¯å­˜å…¥äº†å·²ç»
                         Word aWord = new Word(word,1);
                         allWords.add(aWord);
-                        /*  ²âÊÔÓÃÊä³ö´æÁËÄÇĞ©µ¥´Ê
-                        System.out.println(allWords.get(noRepeatWordNum-1).GetWords());
-                        */
                     }
                 }
                 
                 Comparator<Word> cmp = new CompareRule();
                 Collections.sort(allWords,cmp);
-                /*  ²âÊÔÓÃÊä³öËùÓĞµ¥´Ê¼°ÆµÂÊ
-                System.out.println("ÒÔÏÂÊÇ°´ÕÕÆµÂÊÊä³ö£º");
-                for(int i = 0;i<allWords.size();i++)
-                {
-                    System.out.println(allWords.get(i).GetWords()+":"+allWords.get(i).GetFrequent());
-                }
-                */
             }
             
         }
         catch(Exception e)
         {
-            System.out.println("Ã»ÓĞÕÒµ½ÎÄ¼ş");
+            System.out.println("æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶");
             e.printStackTrace();
         }
         return allWords;

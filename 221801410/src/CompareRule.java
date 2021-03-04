@@ -4,13 +4,13 @@ public class CompareRule implements Comparator<Word>
 {
     public int compare(Word aWord,Word bWord)
     {
-        if(aWord.GetFrequent() > bWord.GetFrequent())   //´ÊÆµ´óµÄÔÚÇ°
+        if(aWord.GetFrequent() > bWord.GetFrequent())   //è¯é¢‘å¤§çš„åœ¨å‰
         {
             return -1;
         }
         else if(aWord.GetFrequent() == bWord.GetFrequent())
         {
-            if(aWord.GetWords().compareTo(bWord.GetWords()) < 0)    //×ÖµäĞòĞ¡µÄÔÚÇ°
+            if(aWord.GetWords().compareTo(bWord.GetWords()) < 0)    //å­—å…¸åºå°çš„åœ¨å‰
             {
                 return -1;
             }

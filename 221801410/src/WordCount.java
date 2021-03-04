@@ -1,9 +1,9 @@
 /************************************************************
 * FileName: WordCount.cpp
 * 
-* Author: 221801410»ÆïÙ
+* Author: 221801410é»„é•”
 * 
-* Function List: 1.Í³¼Æ×Ö·ûÊı 2.Í³¼Æµ¥´ÊÊı 3.Í³¼Æ×î¶àµÄ10¸öµ¥´Ê¼°Æä´ÊÆµ
+* Function List: 1.ç»Ÿè®¡å­—ç¬¦æ•° 2.ç»Ÿè®¡å•è¯æ•° 3.ç»Ÿè®¡æœ€å¤šçš„10ä¸ªå•è¯åŠå…¶è¯é¢‘
 * 
 ************************************************************/
 
@@ -22,14 +22,11 @@ public class WordCount
         File readFile = new File(fileName);
         Function functionMethod = new Function();
         charNum=functionMethod.CountChar(readFile);
-        //System.out.println("×Ü×Ö·ûÊı"+charNum);
         lineNum = functionMethod.CountLine(readFile);
-        //System.out.println("ÓĞĞ§ĞĞÊı"+lineNum);
         wordNum = functionMethod.CountWord(readFile);
-        //System.out.println("µ¥´ÊÊı"+wordNum);
         Vector<Word> allWords = functionMethod.CountFrequentWord(readFile);
         
-        /*Êä³öÎÄ¼ş²¿·Ö*/
+        /*è¾“å‡ºæ–‡ä»¶éƒ¨åˆ†*/
         String outMsg = "";
         outMsg+="characters: "+charNum+"\n";
         outMsg+="words: "+wordNum+"\n";
@@ -59,7 +56,7 @@ public class WordCount
         }
         catch(Exception e)
         {
-            System.out.println("Ã»ÓĞÕÒµ½ÎÄ¼ş");
+            System.out.println("æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶");
             e.printStackTrace();
         }
     }
