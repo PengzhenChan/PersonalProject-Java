@@ -40,6 +40,38 @@ public class Lib {
         this.outputFile = outputFile;
     }
 
+    public int getCharNumber() {
+        return charNumber;
+    }
+
+    public void setCharNumber(int charNumber) {
+        this.charNumber = charNumber;
+    }
+
+    public int getWordNumber() {
+        return wordNumber;
+    }
+
+    public void setWordNumber(int wordNumber) {
+        this.wordNumber = wordNumber;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public Map<String, Integer> getWordsMap() {
+        return wordsMap;
+    }
+
+    public void setWordsMap(Map<String, Integer> wordsMap) {
+        this.wordsMap = wordsMap;
+    }
+
     public String readFile() {
         StringBuilder builder = new StringBuilder();
         try {
@@ -104,38 +136,6 @@ public class Lib {
                 lineNumber--;
             }
         }
-    }
-
-    public int getCharNumber() {
-        return charNumber;
-    }
-
-    public void setCharNumber(int charNumber) {
-        this.charNumber = charNumber;
-    }
-
-    public int getWordNumber() {
-        return wordNumber;
-    }
-
-    public void setWordNumber(int wordNumber) {
-        this.wordNumber = wordNumber;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
-    public Map<String, Integer> getWordsMap() {
-        return wordsMap;
-    }
-
-    public void setWordsMap(Map<String, Integer> wordsMap) {
-        this.wordsMap = wordsMap;
     }
 
     public void writeFile(){
