@@ -3,35 +3,41 @@ import java.util.*;
 
 public class WordCount {
     public static void main(String args[]) {
-        if (args.length >= 2) {
-            File input = new File(args[0]);
-            File output = new File(args[1]);
-            int countChar = lib.countChar(input);
-            int countLine = lib.countLine(input);
-            int countWord = lib.countWord(input);
-            List<Map.Entry<String, Integer>> getWordFrequency = lib.getWordFrequency(input);
-            try {
-                OutputStream os = new FileOutputStream(output);
-                DataOutputStream dos = new DataOutputStream(os);
-                dos.writeUTF("characters:" + countChar + "\n");
-                dos.writeUTF("words:" + countWord + "\n");
-                dos.writeUTF("lines:" + countLine + "\n");
-                if (getWordFrequency.size() < 10) {
-                    for (int i = 0; i < getWordFrequency.size(); i++) {
-                        dos.writeUTF(getWordFrequency.get(i).getKey() + ":" + getWordFrequency.get(i).getValue());
-                        dos.writeUTF("\n");
-                    }
-                }
-                else {
-                    for (int i = 0; i < 10; i++) {
-                        dos.writeUTF(getWordFrequency.get(i).getKey() + ":" + getWordFrequency.get(i).getValue());
-                        dos.writeUTF("\n");
-                    }
+        File input;
+        File output;
+        if (args.length < 2) {
+            input = new File("C:\\Users\\white\\Documents\\GitHub\\HOHO\\041801406\\src\\input.txt");
+            output = new File("C:\\Users\\white\\Documents\\GitHub\\HOHO\\041801406\\src\\output.txt");
+        }
+        else {
+            input = new File(args[0]);
+            output = new File(args[1]);
+        }
+        int countChar = lib.countChar(input);
+        int countLine = lib.countLine(input);
+        int countWord = lib.countWord(input);
+        List<Map.Entry<String, Integer>> getWordFrequency = lib.getWordFrequency(input);
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+            bw.write("characters:" + countChar + "\n");
+            bw.write("words:" + countWord + "\n");
+            bw.write("lines:" + countLine + "\n");
+            if (getWordFrequency.size() < 10) {
+                for (int i = 0; i < getWordFrequency.size(); i++) {
+                    bw.write(getWordFrequency.get(i).getKey() + ":" + getWordFrequency.get(i).getValue());
+                    bw.write("\n");
                 }
             }
-            catch (IOException e) {
-                e.printStackTrace();
+            else {
+                for (int i = 0; i < 10; i++) {
+                    bw.write(getWordFrequency.get(i).getKey() + ":" + getWordFrequency.get(i).getValue());
+                    bw.write("\n");
+                }
             }
+            bw.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

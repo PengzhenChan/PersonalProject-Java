@@ -4,7 +4,7 @@ import java.util.*;
 public class lib {
     static boolean openFile(File file) {
         if (! file.exists()) {
-            return false;
+            return false; 
         }
         else {
             try {
