@@ -3,14 +3,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class CountWordRate {
-    public static String countWordRate(String path){
+    public static String countWordRate(String path) throws FileNotFoundException, UnsupportedEncodingException {
         Map<String,Integer> dictionary = new HashMap<>();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(path),"UTF-8"));
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            System.out.println("错误位于countWordRate方法,原因可能是未找到目标文件\n请重新确认文件位置\n" + "当前文件位置" + path);
-        }
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path),"UTF-8"));
         String str = null;
 
         while(true){
@@ -20,7 +15,7 @@ public class CountWordRate {
                 System.out.println("错误位于countWordRate方法,原因可能是文件读出现问题");
             }
             String[] splitStr = str.split("[^0-9a-zA-Z]");
-            for(int i=0;i<splitStr.length;i++){
+            for(int i = 0;i < splitStr.length;i++){
                 splitStr[i] = splitStr[i].toLowerCase();
                 if(isThatWord(splitStr[i])){
                     if(dictionary.get(splitStr[i])==null){
@@ -31,6 +26,7 @@ public class CountWordRate {
                 }
             }
         }
+
         try {
             br.close();
         } catch (IOException e) {
@@ -52,12 +48,12 @@ public class CountWordRate {
             if(i>mapList.size()-1)
                 break;
             if(mostWord==null){
-                mostWord = mapList.get(i).toString().replace('=',':')+"\n";
+                mostWord = "\n"+mapList.get(i).toString().replace('=',':');
             }else{
-                mostWord += mapList.get(i).toString().replace('=',':')+"\n";
+                mostWord += "\n"+mapList.get(i).toString().replace('=',':');
             }
-
         }
+
         return mostWord;
     }
 
