@@ -139,5 +139,17 @@ public class Lib
 	    }
 	   // System.out.println("运行结束");
 	}
+    
+    public void work() {    //工作
+		try {
+		    calculate();
+		    calculateWordsNumber();
+		    resultShow();
+		}
+		catch (FileNotFoundException file) {
+			System.out.println("文件不存在");
+			return ;
+		}
+	}
 }
 
