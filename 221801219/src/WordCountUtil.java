@@ -1,13 +1,16 @@
 import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class WordCountUtil {
     /**
      * 读取文件并统计字符数
-     * @param filePath: 文件路径
-     * @return: 文件内容
+     * @param filePath 文件路径
+     * @return 文件内容
      */
     public static String readFileByChars(String filePath) {
         File file = new File(filePath);
@@ -37,7 +40,12 @@ public class WordCountUtil {
         return fileContent.toString();
     }
 
-    public static void countWords(String str)
+    /**
+     * 统计文本中的单词
+     * @param str 待处理文本
+     * @return 单词的哈希表
+     */
+    public static HashMap<String, Integer> countWords(String str)
     {
         String pattern = "(^|[^A-Za-z0-9])([a-zA-Z]{4}[a-zA-Z0-9]*)";
 
@@ -54,12 +62,27 @@ public class WordCountUtil {
             temp = m.group(2).toString().toLowerCase();
             wordsCount.merge(temp, 1, Integer::sum);
         }
-
-            for(String obj : wordsCount.keySet()) {
-                Integer value = wordsCount.get(obj);
-                System.out.println(obj + " : " + value);
-            }
+        System.out.println(wordsCount);
+        return wordsCount;
     }
+
+    public static Map<String, Integer> getTop10Words(HashMap<String, Integer> m)
+    {
+        final Map<String, Integer> result = m
+                    .entrySet()
+                    .stream()
+                    .sorted(Map.Entry.<String, Integer> comparingByValue()
+                        .reversed()
+                        .thenComparing(Map.Entry.comparingByKey()))
+                    .limit(10)
+                    .collect(Collectors.toMap(Map.Entry::getKey
+                        , Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+        System.out.println(result);
+        return result;
+    }
+
+
 
 }
 
