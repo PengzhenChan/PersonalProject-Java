@@ -11,6 +11,7 @@ public class Lib {
     private int wordNumber;
     private int lineNumber;
     private Map<String,Integer> wordsMap;
+    List<Map.Entry<String,Integer>> list;
 
     public Lib() {
     }
@@ -110,14 +111,14 @@ public class Lib {
             }
         }
 
-        List<Map.Entry<String,Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordsMap.entrySet());
+        list = new ArrayList<Map.Entry<String, Integer>>(wordsMap.entrySet());
         Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
             @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
                 if(o1.getValue() == o2.getValue()){
                     return o1.getKey().compareTo(o2.getKey());
                 }
-                    return o2.getKey().compareTo(o1.getKey());
+                    return o2.getValue().compareTo(o1.getValue());
             }
         });
     }
@@ -145,7 +146,7 @@ public class Lib {
             writer.write("words: "+wordNumber+"\n");
             writer.write("lines: "+lineNumber+"\n");
             int i = 0;
-            for (Map.Entry<String, Integer> entry : wordsMap.entrySet()) {
+            for (Map.Entry<String, Integer> entry : list) {
                 if(i >= 10){
                     break;
                 }
