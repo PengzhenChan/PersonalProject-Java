@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -18,7 +19,8 @@ public class HandleTxt {
         in=f1;
         out=f2;
         Changestr();
-
+        //GetTen();
+        Ouputxt();
     }
 
     //将文件内容转为String字符串
@@ -57,6 +59,7 @@ public class HandleTxt {
         return words;
     }
 
+    //获取文章的有效行数
     public int Getlines()throws IOException
     {
         int line=0;
@@ -87,25 +90,65 @@ public class HandleTxt {
         Map<String,Integer> result=new LinkedHashMap<>();
         String word="";
 
-        Pattern pattern=Pattern.compile("(^|[^a-z0-9])([a-z]{4}[a-z0-9]*)");
+        Pattern pattern=Pattern.compile("[a-z]{4}[a-z0-9]*");
         Matcher matcher=pattern.matcher(txt);
-        while (matcher.find())
+        if (matcher.find())
         {
             word=matcher.group();
-            if (WordsMap.containsKey(word))//Map中已含有此单词
+            if ((matcher.start()-1)>=0)
             {
-                WordsMap.put(word,WordsMap.get(word)+1);
+                if (Legalchar(txt.charAt(matcher.start()-1)))
+                {
+                    WordsMap.put(word,1);
+                }
             }
             else
             {
                 WordsMap.put(word,1);
             }
-
+        }
+        while (matcher.find())
+        {
+            if (Legalchar(txt.charAt(matcher.start()-1)))
+            {
+                word=matcher.group();
+                if (WordsMap.containsKey(word))//Map中已含有此单词
+                {
+                    WordsMap.put(word,WordsMap.get(word)+1);
+                }
+                else
+                {
+                    WordsMap.put(word,1);
+                }
+            }
         }
         WordsMap.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()
                 .thenComparing(Map.Entry.comparingByKey())).limit(10)
                 .forEachOrdered(x->result.put(x.getKey(),x.getValue()));
         System.out.println(result);
         return result;
+    }
+
+    //判断前一个单词字符是否为其他字符
+    public boolean Legalchar(char ch)
+    {
+        if((ch>='a'&&ch<='z')||(ch>='0'&&ch<='9'))
+            return false;
+        return true;
+    }
+
+    //输出结果至output.txt
+    void Ouputxt()throws IOException
+    {
+        StringBuilder sb=new StringBuilder();
+        Iterator<Map.Entry<String, Integer>> it=GetTen().entrySet().iterator();
+
+        sb.append("characters："+Returnnum()+"\n"+"words："+Getwords()+'\n'
+                +"lines："+Getlines()+'\n');
+        while(it.hasNext())
+        {
+            Map.Entry<String, Integer> entry=it.next();
+            System.out.println(entry.getKey());
+        }
     }
 }
