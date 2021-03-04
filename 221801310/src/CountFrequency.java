@@ -20,6 +20,19 @@ public class CountFrequency {
         return hashMap;
     }
 
+    public static HashMap<String,Integer> countFrequency(List<String> legalWords){
+        HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+        for(String tmp : legalWords){
+            if(!hashMap.containsKey(tmp)){
+                hashMap.put(tmp, 1);
+            }
+            else{
+                hashMap.put(tmp, hashMap.get(tmp)+1);
+            }
+        }
+        return hashMap;
+    }
+
     /*hashMap本身不可排序 所以要先转换为list*/
     public static List<Map.Entry<String, Integer>> sortHashMap(HashMap<String, Integer> hashMap){
         Set<Map.Entry<String, Integer>> entry = hashMap.entrySet();

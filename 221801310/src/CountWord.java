@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class CountWord {
@@ -16,4 +18,9 @@ public class CountWord {
 
         return num;
     }
+
+    public static int countWordNum(HashMap<String,Integer> legalWords){
+        return legalWords.size();
+    }
+
 }

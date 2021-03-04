@@ -1,6 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SplitWord {
 
@@ -18,8 +21,11 @@ public class SplitWord {
     public static  List<String> splitLegalWord(String[] words){
         List<String> legalWords = new ArrayList<String>();
         String regexForMatch = "^[a-zA-Z]{4,}.*";
+//        Pattern pattern = Pattern.compile(regexForMatch);
+//        Matcher matcher = pattern.matcher();
 
         for(int i=0 ; i<words.length; i++){
+            //matches效率极低
             if(words[i].matches(regexForMatch)){
                 legalWords.add(words[i].toLowerCase());
             }
@@ -34,5 +40,31 @@ public class SplitWord {
         return splitLegalWord(words);
     }
 
+    /*
+    * 由于用split方法将String分离耗时过久
+    * 用matches匹配也很久
+    * 就改为直接对String进行匹配
+    * 返回所有合法单词的hashMap，并且value为出现次数
+    * */
+    public static HashMap<String, Integer> findLegal(String text){
+        text = " "+text.toLowerCase();
+        String regex = "([^a-z0-9])([a-z]{4,}[a-z0-9]*)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        HashMap<String, Integer> legalWords = new HashMap<String, Integer>();
+
+        //直接把单词和出现频率一起做了，放到hashMap里
+        while(matcher.find()){
+            String tmp = matcher.group(2).toLowerCase();
+            if(!legalWords.containsKey(tmp)){
+                legalWords.put(tmp,1);
+            }
+            else{
+                legalWords.put(tmp, legalWords.get(tmp)+1);
+            }
+        }
+
+        return legalWords;
+    }
 
 }
