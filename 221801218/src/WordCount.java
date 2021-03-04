@@ -1,7 +1,4 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,7 +32,11 @@ public class WordCount {
                 writer.write(next.getKey() + ": " + next.getValue() + "\n");
             }
             writer.flush();
+        } catch (FileNotFoundException e) {
+            System.out.println("输入文件" + inputFileName + "不存在");
+            e.printStackTrace();
         } catch (IOException e) {
+            System.out.println("文件读写错误");
             e.printStackTrace();
         }
     }
