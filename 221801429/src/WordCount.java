@@ -27,9 +27,6 @@ public class WordCount {
         String inputFile = args[0];
         String outputFile = args[1];
 
-        //String inputFile = "1.txt";
-        //String outputFile = "2.txt";
-
         context = Lib.txtToString(inputFile);
         if(context == null|| context.equals("")){
             System.out.println("待读取文本内容为空！");

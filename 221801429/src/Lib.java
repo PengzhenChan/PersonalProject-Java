@@ -34,7 +34,6 @@ public class Lib {
             System.out.println("读取文件失败！");
             return null;
         }
-        System.out.println(context);
         return context;
     }
 
@@ -44,11 +43,11 @@ public class Lib {
       返回类型：int
      */
     public static int countChar(String context){
-        return context.length();
+        return context.getBytes().length;
     }
 
     /*
-      统计文本非空函数
+      统计文本非空行数
      */
     public static int countLine(String context){
         int count = 0;
