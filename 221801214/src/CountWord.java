@@ -1,4 +1,3 @@
-import javafx.css.Match;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -26,11 +25,11 @@ public class CountWord {
     }
 
     void CalCharCount(){
-        Charset c = Charset.forName("UTF-8");
+/*        Charset c = Charset.forName("UTF-8");*/
         ArrayList<String> arrayList = new ArrayList<>();
         int count=0;
         try {
-            FileReader fileReader = new FileReader(inputFileName,c);
+            FileReader fileReader = new FileReader(inputFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             String s = null;
@@ -57,10 +56,10 @@ public class CountWord {
         return char_count;
     }
     void CalWordCount(){
-        Charset c = Charset.forName("UTF-8");
+/*        Charset c = Charset.forName("UTF-8");*/
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader(inputFileName,c);
+            FileReader fileReader = new FileReader(inputFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
@@ -74,7 +73,6 @@ public class CountWord {
         int count=0;
         String[] strArrayTrue = (String[]) arrayList.toArray(new String[0]);
         for(String str : strArrayTrue) {
-            //利用正则表达式分割每一行的单词
             String[] parts=str.split("\\W");
             for (int i = 0;i<parts.length;i++){
                 if (ifTrueWold(parts[i])){
@@ -98,11 +96,11 @@ public class CountWord {
         return word_count;
     }
     void CalMaxWord(){
-        Charset c = Charset.forName("UTF-8");
+/*        Charset c = Charset.forName("UTF-8");*/
         String word;
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader(inputFileName,c);
+            FileReader fileReader = new FileReader(inputFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
@@ -115,7 +113,6 @@ public class CountWord {
         }
         String[] strArrayTrue = (String[]) arrayList.toArray(new String[0]);
         for(String str : strArrayTrue) {
-            //利用正则表达式分割每一行的单词
             String[] parts=str.split("\\W");
             for (int i = 0;i<parts.length;i++){
                 if (ifTrueWold(parts[i])){
@@ -150,10 +147,10 @@ public class CountWord {
         }
     }
     void CalRows(){
-        Charset c = Charset.forName("UTF-8");
+/*        Charset c = Charset.forName("UTF-8");*/
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader(inputFileName,c);
+            FileReader fileReader = new FileReader(inputFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {

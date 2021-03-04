@@ -7,7 +7,9 @@ import java.util.Arrays;
 
 public class WordCount {
     public static void main(String[] args) throws IOException {
-        CountWord countWord = new CountWord("input.txt","output.txt");
+        String inputFilename = args[0];
+        String outputFilename = args[1];
+        CountWord countWord = new CountWord(inputFilename,outputFilename);
 /*        System.out.println(countWord.getChar_count());*/
 /*        String query = "some examples of regex test";
         String[] parts = query.split(" ");
