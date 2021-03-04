@@ -10,8 +10,8 @@ public class WordCount {
 	static Writer char_writer;
 	public static void main(String[] args) throws Exception {
 		
-		File inputfile=new File("input.txt");
-		File outfile = new File("output.txt");
+		File inputfile=new File(args[0]);
+		File outfile = new File(args[1]);
 		if(!inputfile.exists()) {
 			inputfile.createNewFile();
 		}
@@ -25,10 +25,10 @@ public class WordCount {
 		while((c = char_read.read()) != -1) {
 			res.append((char)c); //获取文本内容
 		}
-		Calcurate.CharCount(res.toString(), char_writer);
-		Calcurate.WordsCount(res.toString(), char_writer);
-		Calcurate.LineCount(res.toString(), char_writer);
-		Calcurate.WordSort(res.toString(), char_writer);
+		Calcurate.CharCount(res.toString().toLowerCase(), char_writer);
+		Calcurate.WordsCount(res.toString().toLowerCase(), char_writer);
+		Calcurate.LineCount(res.toString().toLowerCase(), char_writer);
+		Calcurate.WordSort(res.toString().toLowerCase(), char_writer);
 		char_writer.close();
 	}
 	

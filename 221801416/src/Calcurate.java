@@ -1,8 +1,5 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -58,7 +55,7 @@ public class Calcurate {
     		Map.Entry<String, Integer> item = list.poll();
             String key = item.getKey();
             Integer value = item.getValue();
-            char_writer.write(key + ":" + value + "\n");
+            char_writer.write(key.toLowerCase() + ":" + value + "\n");
             if(count <= 0) break;
             else count--;
           }
