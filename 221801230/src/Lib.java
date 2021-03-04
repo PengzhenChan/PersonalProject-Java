@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -139,5 +136,32 @@ public class Lib {
 
     public void setWordsMap(Map<String, Integer> wordsMap) {
         this.wordsMap = wordsMap;
+    }
+
+    public void writeFile(){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+            charNumCount();
+            wordNumCount();
+            lineNumCount();
+            writer.write("characters: "+charNumber+"\n");
+            writer.write("words: "+wordNumber+"\n");
+            writer.write("lines: "+lineNumber+"\n");
+            int i = 0;
+            for (Map.Entry<String, Integer> entry : wordsMap.entrySet()) {
+                if(i >= 10){
+                    break;
+                }
+                String s = entry.getKey();
+                Integer integer = entry.getValue();
+                writer.write(s + ": " + integer + "\n");
+                i++;
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("输出完毕！");
     }
 }
