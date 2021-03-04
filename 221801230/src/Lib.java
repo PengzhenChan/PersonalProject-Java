@@ -94,8 +94,9 @@ public class Lib {
 
     public void wordNumCount(){
         String str = readFile();
-        String[] words = str.split("[^(a-zA-Z0-9)]");
-        Pattern wordPattern = Pattern.compile("[a-zA-Z]{4}[a-zA-Z0-9]*");
+
+        String[] words = str.split("[^a-zA-Z0-9]");
+        Pattern wordPattern = Pattern.compile("([a-zA-Z]{4}[a-zA-Z0-9]*)");
         for (String word:words){
             Matcher matcher = wordPattern.matcher(word);
             if(matcher.matches()){
@@ -111,18 +112,14 @@ public class Lib {
 
         List<Map.Entry<String,Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordsMap.entrySet());
         Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
-
             @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
                 if(o1.getValue() == o2.getValue()){
                     return o1.getKey().compareTo(o2.getKey());
                 }
-                else{
                     return o2.getKey().compareTo(o1.getKey());
-                }
             }
         });
-
     }
 
     public void lineNumCount(){
