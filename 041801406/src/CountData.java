@@ -21,6 +21,10 @@ public class CountData {
         countLine++;
     }
 
+    void setCountLine(int n) {
+        countLine += n;
+    }
+
     void setCountChar(int n) {
         countChar += n;
     }
@@ -36,18 +40,24 @@ public class CountData {
         }
     }
 
+    /*Used to return the value of countWord;*/
     int getCountWord() {
         return countWord;
     }
 
+    /*Used to return the value of countLine;*/
     int getCountLine() {
         return countLine;
     }
 
+    /*Used to return the value of countChar;*/
     int getCountChar() {
         return countChar;
     }
 
+    /*Used to return the word frequency statistics of the CountData object.
+    This function includes converting map to List and sorting according to
+    word frequency and lexicographic order*/
     List<Map.Entry<String, Integer>> getGetWordFrequency() {
         List<Map.Entry<String, Integer>> list = null;
         list = new ArrayList<Map.Entry<String, Integer>>(getWordFrequency.entrySet());

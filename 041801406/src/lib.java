@@ -2,55 +2,65 @@ import java.io.*;
 import java.util.*;
 
 public class Lib {
-    static CountData cd=new CountData();
-    static CountData openFile(File input) {
-        if (! input.exists()) {
-            return null;
+    static CountData cd = new CountData();
+
+    /*Used to open the file, count the number of words,
+    the number of lines and the word frequency, and store them in the cd object*/
+    static void openFile(File input) {
+        try {
+            FileReader fr = new FileReader(input);
+            BufferedReader br = new BufferedReader(fr);
+            String s = "";
+            while ((s = br.readLine()) != null) {
+                cd.setCountLine();
+                cd.setCountWord(countWord(s));
+                cd.setGetWordFrequency(getWordFrequency(s));
+            }
+            br.close();
+            fr.close();
+            return;
         }
-        else {
-            try {
-                FileReader fr = new FileReader(input);
-                BufferedReader br = new BufferedReader(fr);
-                String s = "";
-                while ((s = br.readLine()) != null) {
-                    cd.setCountLine();
-                    cd.setCountWord(countWord(s));
-                    cd.setGetWordFrequency(getWordFrequency(s));
-                }
-                return cd;
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                return cd;
-            }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            return;
         }
     }
 
-    static void countChar(File file) {
+    /*Used to return the object of CountData;*/
+    static CountData getCd() {
+        return cd;
+    }
+
+    /*Used to open the file to count the number of characters*/
+    static int countChar(File file) {
         int myCountChar = 0;
-        if (! file.exists()) {
-            return ;
+        try {
+            byte[] tem = new byte[20 * 1024];
+            int len = tem.length;
+            int bytes = 0;
+            FileInputStream in = new FileInputStream(file);
+            while ((bytes = in.read(tem, 0, len)) != - 1)
+                myCountChar += bytes;
+            cd.setCountChar(myCountChar);
+            in.close();
         }
-        else {
-            try {
-                byte[] tem = new byte[20 * 1024];
-                int len = tem.length;
-                int bytes = 0;
-                FileInputStream in = new FileInputStream(file);
-                while ((bytes = in.read(tem, 0, len)) != - 1)
-                    myCountChar += bytes;
-                cd.setCountChar(myCountChar);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-            }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            return myCountChar;
         }
     }
 
+    /*Accept a string and count the number of words, and return an int type*/
     static int countWord(String s) {
         int myWordCount = 0;
         String word = "";
@@ -72,7 +82,8 @@ public class Lib {
         return myWordCount;
     }
 
-    static  HashMap<String, Integer> getWordFrequency(String s) {
+    /*Accept a string and count the frequency of words, and return a HashMap*/
+    static HashMap<String, Integer> getWordFrequency(String s) {
         String word = "";
         HashMap<String, Integer> myWordCount = new HashMap<String, Integer>();
         for (int i = 0; i < s.length(); i++) {
@@ -82,6 +93,7 @@ public class Lib {
             }
             else {
                 if (isWord(word)) {
+                    word = word.toLowerCase();
                     if (myWordCount.containsKey(word)) {
                         myWordCount.put(word, myWordCount.get(word) + 1);
                     }
@@ -92,6 +104,7 @@ public class Lib {
             }
         }
         if (isWord(word)) {
+            word = word.toLowerCase();
             if (myWordCount.containsKey(word)) {
                 myWordCount.put(word, myWordCount.get(word) + 1);
             }
@@ -101,6 +114,7 @@ public class Lib {
         return myWordCount;
     }
 
+    /*Used to determine if it is a word,return a boolean type*/
     static boolean isWord(String s) {
         if (s.length() < 4)
             return false;
