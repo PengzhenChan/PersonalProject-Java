@@ -56,7 +56,7 @@ public class WordCount {
         return i;
     }
 
-    //统计单词数量
+    //统计单词数量，并返回 单词对象的ArrayList
     //每一次read都要考虑是否到达了文件末尾
     public static void countWords(String inputFileName, String outputFileName) {
         try {
@@ -78,7 +78,7 @@ public class WordCount {
                         break;
                     }
                     if (Character.isLetter((char)b)) {
-                        str += (char)b;
+                        str += Character.toLowerCase((char)b);
                         //i=3时说明有4个连续的字母，这是一个单词
                         if (i == 3) {
                             isItAWord = true;
@@ -99,9 +99,11 @@ public class WordCount {
                     //如果刚好读到末尾或分割符，那这4个字母就是1个单词,str不做处理
                     //这里如果遇到文件结尾或者分割符，while循环结束
                     while (b != -1 && Character.isLetterOrDigit((char)b)) {
-                        str = str + (char) b;
+                        str = str + Character.toLowerCase((char)b);
                         b = reader.read();
                     }
+                    //将单词存入ArrayList 或者 增加词频，别忘了把str化为小写的
+
                 } else if (b != -1 && !Character.isLetterOrDigit((char)b)) {//不是单词而且b是分割符，回到循环开头
                     continue;
                 } else {//不是单词，且b不是末尾也不是分割符，则补齐单词
@@ -120,5 +122,19 @@ public class WordCount {
             e.printStackTrace();
         }
     }
+
+    //处理单词，加入ArrayList中或者增加词频
+//    public static void handleWord(String str, ArrayList<MyWords> myWordsList) {
+//        for (int i=0; i<myWordsList.size(); i++) {
+//            //if-else:如果找到相同字符串，则
+//            if (myWordsList.get(i).getContent().equals(str)) {
+//                //增加词频
+//                myWordsList.get(i).increaseFrequency();
+//                return;
+//            } else {
+//
+//            }
+//        }
+//    }
 
 }
