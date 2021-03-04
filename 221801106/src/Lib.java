@@ -99,5 +99,14 @@ public class Lib
 		mapValueSort(hashMap);
 		scanner.close();
 	}
+    
+    public void calculateWordsNumber() {    //用来计算单词总数
+		Iterator<String> iterator=hashMap.keySet().iterator();
+		while(iterator.hasNext())
+		{
+			String word=iterator.next();
+			wordnumbers += hashMap.get(word);
+		}
+	}
 }
 
