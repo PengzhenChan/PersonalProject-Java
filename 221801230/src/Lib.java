@@ -2,8 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +79,21 @@ public class Lib {
                 wordsMap.put(w,count+1);
             }
         }
+
+        List<Map.Entry<String,Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordsMap.entrySet());
+        Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
+
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                if(o1.getValue() == o2.getValue()){
+                    return o1.getKey().compareTo(o2.getKey());
+                }
+                else{
+                    return o2.getKey().compareTo(o1.getKey());
+                }
+            }
+        });
+
     }
 
     public void lineNumCount(){
