@@ -53,8 +53,7 @@ public class Lib
 	{
 		HashMap<String,Integer> wordHash=new HashMap<String,Integer>();
 		BufferedReader targetFile=GetFileInputStream(fileName);
-		
-		
+			
 		StringBuilder builder = new StringBuilder();
 	    try 
 	    {
@@ -95,7 +94,7 @@ public class Lib
 	            .sorted(
 	                Map.Entry.<String, Integer>comparingByValue()
 	                .reversed()
-	                .thenComparing(Map.Entry.comparingByKey()))
+	                .thenComparing(Map.Entry.comparingByKey())).limit(10)
 	            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		//将map.entrySet()转换成list
 		List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(wordHash.entrySet());

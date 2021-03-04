@@ -34,8 +34,9 @@ word2: number
 若对核心功能或者需求有变动只需修改Lib.java即可。
 
 ##如何运行
-
+输入java WordCount input.txt output.txt 即可
 ##作业链接
 https://edu.cnblogs.com/campus/fzu/FZUSESPR21/homework/11672
 
 ##博客链接
+https://www.cnblogs.com/xiaosili/p/14479164.html
