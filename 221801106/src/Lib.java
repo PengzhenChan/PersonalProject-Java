@@ -25,5 +25,16 @@ public class Lib
 		outputTxt = out;
 		result = "";
 	}
+    
+    public int isWord(String word) {    //用来判断这个字符串是否为单词
+		if (word.length()<4)
+			return -1;
+		for (int i=0;i<4;i++){
+			char c = word.charAt(i);
+			if (!(c>='a'&&c<='z'||c>='A'&&c<='Z'))
+				return -1;
+		}
+		return 1;
+	}
 }
 
