@@ -69,3 +69,7 @@ java WordCount input.txt output.txt
 ### 第12次commit
 
 - 修复统计行数功能的bug
+
+### 第13次commit
+
+- 完成命令行情况下文件的读取与写入

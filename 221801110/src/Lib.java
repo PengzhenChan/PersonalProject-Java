@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Lib {
 
-    //ç»Ÿè®¡å­—ç¬¦æ•°é‡
-    //ä¼ å…¥å‚æ•°ï¼šæ–‡ä»¶å
-    //è¿”å›å€¼ï¼šå­—ç¬¦æ•°é‡
+    //Í³¼Æ×Ö·ûÊıÁ¿
+    //´«Èë²ÎÊı£ºÎÄ¼şÃû
+    //·µ»ØÖµ£º×Ö·ûÊıÁ¿
     public static int numOfChar(String filename) {
         File file = new File(filename);
         Reader readFile = null;
@@ -19,18 +19,18 @@ public class Lib {
             readFile.close();
         }
         catch (Exception e){
-            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
+            System.err.println("ÎÄ¼ş²»´æÔÚ");
         }
         finally {
             return count;
         }
     }
 
-    //ç»Ÿè®¡å•è¯æ•°é‡
-    //ä¼ å…¥å‚æ•°ï¼šæ–‡ä»¶å
-    //è¿”å›å€¼ï¼šå•è¯æ•°é‡
+    //Í³¼Æµ¥´ÊÊıÁ¿
+    //´«Èë²ÎÊı£ºÎÄ¼şÃû
+    //·µ»ØÖµ£ºµ¥´ÊÊıÁ¿
     public static int numOfWord(String filename) {
-        /* æ—§æ–¹æ³•
+        /* ¾É·½·¨
         File file = new File(filename);
         boolean letter_flag=false;
         Reader readFile = null;
@@ -38,16 +38,16 @@ public class Lib {
         try {
             readFile = new InputStreamReader(new FileInputStream(file),"UTF-8");
             int tempchar;
-            boolean flag = false;//æ ‡è®°æ˜¯ä¸æ˜¯å•è¯
+            boolean flag = false;//±ê¼ÇÊÇ²»ÊÇµ¥´Ê
             for (int i = 0; (tempchar=readFile.read()) != -1; ) {
                 char ch = (char)tempchar;
-                //æ˜¯å­—æ¯
+                //ÊÇ×ÖÄ¸
                 if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <='z'){
                     i++;
                     flag = true;
                 }
 
-                //æ˜¯æ•°å­—ï¼Œåˆ¤æ–­æ˜¯ä¸æ˜¯åœ¨ç¬¬äº”ä¸ªåŠä¹‹åå‡ºç°
+                //ÊÇÊı×Ö£¬ÅĞ¶ÏÊÇ²»ÊÇÔÚµÚÎå¸ö¼°Ö®ºó³öÏÖ
                 else if (ch >= '0' && ch <= '9'){
                     i++;
                     if (i < 5) {
@@ -56,7 +56,7 @@ public class Lib {
                     }
                 }
 
-                //åˆ†å‰²ç¬¦æƒ…å†µ
+                //·Ö¸î·ûÇé¿ö
                 else {
                     if (i >= 4 && flag == true) countWord++;
                     flag = false;
@@ -67,7 +67,7 @@ public class Lib {
             readFile.close();
         }
         catch (Exception e){
-            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
+            System.err.println("ÎÄ¼ş²»´æÔÚ");
         }
         finally {
             return countWord;
@@ -86,7 +86,7 @@ public class Lib {
                 tempString = tempString.toLowerCase();
                 String reg1 = "[^a-zA-Z0-9]+";
                 String reg2 ="[a-z]{4}[a-z0-9]*";
-                //å°†è¯»å–çš„æ–‡æœ¬è¿›è¡Œåˆ†å‰²
+                //½«¶ÁÈ¡µÄÎÄ±¾½øĞĞ·Ö¸î
                 String[] str = tempString.split(reg1);
                 for (String s: str){
                     if (s.matches(reg2)){
@@ -97,7 +97,7 @@ public class Lib {
             bufferedReadFile.close();
         }
         catch (Exception e){
-            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
+            System.err.println("ÎÄ¼ş²»´æÔÚ");
         }
         finally {
             return countWord;
@@ -106,21 +106,21 @@ public class Lib {
     }
 
 
-    //ç»Ÿè®¡æœ‰æ•ˆè¡Œæ•°
-    //ä¼ å…¥å‚æ•°ï¼šæ–‡ä»¶å
-    //è¿”å›å€¼ï¼šæœ‰æ•ˆè¡Œæ•°
+    //Í³¼ÆÓĞĞ§ĞĞÊı
+    //´«Èë²ÎÊı£ºÎÄ¼şÃû
+    //·µ»ØÖµ£ºÓĞĞ§ĞĞÊı
     public static int numOfLine(String filename) {
         File file = new File(filename);
         BufferedReader bufferedReadFile = null;
-        int countSum = 0;//æ€»è¡Œæ•°
-        int countNull = 0;//ç©ºè¡Œæ•°
+        int countSum = 0;//×ÜĞĞÊı
+        int countNull = 0;//¿ÕĞĞÊı
         try {
             bufferedReadFile = new BufferedReader(new FileReader(file));
             String tempString;
             while ((tempString = bufferedReadFile.readLine()) != null){
                 countSum++;
 
-                //å»æ‰ç©ºç™½å­—ç¬¦
+                //È¥µô¿Õ°××Ö·û
                 tempString=tempString.replace("\f","");
                 tempString=tempString.replace("\b","");
                 tempString=tempString.replace("\r","");
@@ -135,7 +135,7 @@ public class Lib {
             bufferedReadFile.close();
         }
         catch (Exception e){
-            System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
+            System.err.println("ÎÄ¼ş²»´æÔÚ");
         }
         finally {
             //System.out.println(countSum);
