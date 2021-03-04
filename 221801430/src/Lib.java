@@ -62,6 +62,7 @@ public class Lib {
                 }
                 else {
                     if(str != null && IsWord(str)) {
+
                         num++;
                     }
                     String temp = null;
@@ -69,8 +70,10 @@ public class Lib {
                 }
 
             }
-            if(IsWord(str))
+            if(!str.equals("") && IsWord(str)){
                 num++;
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }
