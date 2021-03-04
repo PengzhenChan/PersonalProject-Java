@@ -33,5 +33,6 @@ public class WordCount
 		}
 		System.out.println(w);
 		fd.WriteToFile(w,outfile);
+		in.close();
 	}
 }
