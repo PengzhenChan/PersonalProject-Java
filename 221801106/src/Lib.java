@@ -51,5 +51,53 @@ public class Lib
             }
         });
     }
+    
+    public void calculate() throws FileNotFoundException    //进行文章统计计算,得出单词统计的hashMap，并进行排序
+	{
+		File file=new File(inputTxt);
+		if(!file.exists())
+		{
+			System.out.println("文件不存在");
+			return;
+		}
+		Scanner scanner = new Scanner(file);
+		hashMap = new HashMap<String, Integer>();
+		while(scanner.hasNextLine())
+		{
+			String line = scanner.nextLine();
+			if (!line.matches("\\s*"))
+				wordlines++;
+			characters += line.length();
+			characters ++;  //多加换行符一个字符
+			anticle += line;
+			//\w+ : 匹配所有的单词
+			//\W+ : 匹配所有非单词
+			String[] lineWords=line.split("\\W+");    //用非单词符来做分割,网上找的知识点	
+			Set<String> wordSet=hashMap.keySet();
+			
+			for (int i=0;i<lineWords.length;i++) {    //将不是英文的字符串替换成特定字符串，并将所以字段转化为小写
+				lineWords[i] = lineWords[i].toLowerCase();
+				//System.out.println(lineWords[i]);
+				if (isWord(lineWords[i])==-1)
+					lineWords[i] = "221801106";
+			}  
+			
+			for(int i=0;i<lineWords.length;i++){
+				if(wordSet.contains(lineWords[i])){    //如果已经有这个单词了
+					Integer number=hashMap.get(lineWords[i]);
+					number++;
+					hashMap.put(lineWords[i], number);
+				}
+				else{    //如果没有包括这个单词
+					hashMap.put(lineWords[i], 1);  
+				}
+			}		
+		}
+		
+		hashMap.remove("");    //将字段里面的空字符串去掉
+		hashMap.remove("221801106");    //将不是单词的字符段去掉
+		mapValueSort(hashMap);
+		scanner.close();
+	}
 }
 
