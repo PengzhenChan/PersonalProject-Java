@@ -1,11 +1,9 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,34 +11,29 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Lib 
+public class Lib
 {
-    private static final String REGEX = "(?<=[^a-zA-Z0-9])[a-zA-Z]{4}[a-zA-Z0-9]{0,}";
+    private static final String REGEX = "(?<=[^a-zA-Z0-9])[a-zA-Z]{4}[a-zA-Z0-9]*";
+    private final String inputPath;
 
-    private String inputPath;
-
-    public Lib(String inputPath) 
+    public Lib(String inputPath)
     {
         this.inputPath = inputPath;
     }
 
-    public int countCharacters(String inputPath) 
+    public int countCharacters()
     {
         int characters = 0;
         BufferedReader br = null;
-        try 
+        try
         {
             br = new BufferedReader(new FileReader(inputPath));
 
-            while ((br.read()) != -1) 
+            while ((br.read()) != -1)
             {
                 characters++;
             }
 
-        } 
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
         }
         catch (IOException e)
         {
@@ -48,11 +41,12 @@ public class Lib
         }
         finally
         {
-            try 
+            try
             {
+                assert br != null;
                 br.close();
-            } 
-            catch (IOException e) 
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
@@ -61,33 +55,29 @@ public class Lib
         return characters;
     }
 
-    public int countNumberOfWords(String inputPath) 
+    public int countNumberOfWords()
     {
         int num = 0;
         BufferedReader br = null;
-        try 
+        try
         {
             br = new BufferedReader(new FileReader(inputPath));
             String tmp;
-            String text = "";
+            StringBuilder text = new StringBuilder();
 
-            while ((tmp = br.readLine()) != null) 
+            while ((tmp = br.readLine()) != null)
             {
-                text += tmp + "\n";
+                text.append("\n").append(tmp);
             }
 
             Pattern pattern = Pattern.compile(REGEX);
-            Matcher matcher = pattern.matcher(text);
+            Matcher matcher = pattern.matcher(text.toString());
 
-            while (matcher.find()) 
+            while (matcher.find())
             {
                 num++;
             }
 
-        } 
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
         }
         catch (IOException e)
         {
@@ -95,11 +85,12 @@ public class Lib
         }
         finally
         {
-            try 
+            try
             {
+                assert br != null;
                 br.close();
-            } 
-            catch (IOException e) 
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
@@ -108,27 +99,23 @@ public class Lib
         return num;
     }
 
-    public int countLines(String inputPath) 
+    public int countLines()
     {
         int lines = 0;
         BufferedReader br = null;
-        try 
+        try
         {
             br = new BufferedReader(new FileReader(inputPath));
             String tmp;
 
-            while ((tmp = br.readLine()) != null) 
+            while ((tmp = br.readLine()) != null)
             {
-                if (!tmp.trim().equals("")) 
+                if (!tmp.trim().equals(""))
                 {
                     lines++;
                 }
             }
 
-        } 
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
         }
         catch (IOException e)
         {
@@ -136,11 +123,12 @@ public class Lib
         }
         finally
         {
-            try 
+            try
             {
+                assert br != null;
                 br.close();
-            } 
-            catch (IOException e) 
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
@@ -149,44 +137,40 @@ public class Lib
         return lines;
     }
 
-    public List<Map.Entry<String, Integer>> countWordFrequency(String inputPath) 
+    public List<Map.Entry<String, Integer>> countWordFrequency()
     {
         Map<String, Integer> map = new HashMap<>();
-        List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
         BufferedReader br = null;
-        try 
+        try
         {
             br = new BufferedReader(new FileReader(inputPath));
             String tmp;
-            String text = "";
+            StringBuilder text = new StringBuilder();
 
-            while ((tmp = br.readLine()) != null) 
+            while ((tmp = br.readLine()) != null)
             {
-                text += tmp + "\n";
+                text.append("\n").append(tmp);
             }
 
             String word;
             Pattern pattern = Pattern.compile(REGEX);
-            Matcher matcher = pattern.matcher(text);
+            Matcher matcher = pattern.matcher(text.toString());
 
-            while (matcher.find()) 
+            while (matcher.find())
             {
                 word = matcher.group().toLowerCase();
-                if (map.containsKey(word)) 
+                if (map.containsKey(word))
                 {
                     map.put(word, map.get(word) + 1);
-                } 
-                else 
+                }
+                else
                 {
                     map.put(word, 1);
                 }
             }
 
-            list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
-        } 
-        catch (FileNotFoundException e) 
-        {
-            e.printStackTrace();
+            list = new ArrayList<>(map.entrySet());
         }
         catch (IOException e)
         {
@@ -194,11 +178,12 @@ public class Lib
         }
         finally
         {
-            try 
+            try
             {
+                assert br != null;
                 br.close();
-            } 
-            catch (IOException e) 
+            }
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
@@ -207,59 +192,61 @@ public class Lib
         return list;
     }
 
-    public List<Map.Entry<String, Integer>> sortWord(List<Map.Entry<String, Integer>> list) 
+    public List<Map.Entry<String, Integer>> sortWords(List<Map.Entry<String, Integer>> list)
     {
-        list.sort(new Comparator<Map.Entry<String, Integer>>() 
-        {
-            public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) 
+        list.sort((a, b) -> {
+            if (a.getValue().equals(b.getValue()))
             {
-                if (a.getValue() == b.getValue()) 
-                {
-                    return a.getKey().compareTo(b.getKey());
-                }
-                else 
-                {
-                    return b.getValue().compareTo(a.getValue());
-                }
+                return a.getKey().compareTo(b.getKey());
+            }
+            else
+            {
+                return b.getValue().compareTo(a.getValue());
             }
         });
 
         return list;
     }
 
-    public void writeFile(String outputPath) 
+    public String getSortedWordsAndFrequency() {
+        StringBuilder tmp = new StringBuilder();
+        List<Map.Entry<String, Integer>> list = sortWords(countWordFrequency());
+        Iterator<Map.Entry<String, Integer>> iterator = list.iterator();
+        Map.Entry<String, Integer> entry;
+
+        for (int i = 0; iterator.hasNext() && i < 10 ; i++)
+        {
+            entry = iterator.next();
+            tmp.append("\n").append(entry.getKey()).append(": ").append(entry.getValue());
+        }
+
+        return tmp.toString();
+    }
+
+    public void writeFile(String outputPath)
     {
         BufferedWriter bw = null;
-        try 
+        try
         {
             bw = new BufferedWriter(new FileWriter(outputPath));
 
-            bw.write("characters: " + countCharacters(inputPath));
-            bw.write("\nwords: " + countNumberOfWords(inputPath));
-            bw.write("\nlines: " + countLines(inputPath));
-
-            List<Map.Entry<String, Integer>> list = sortWord(countWordFrequency(inputPath));
-            Iterator<Map.Entry<String, Integer>> iterator = list.iterator();
-            Map.Entry<String, Integer> entry;
-
-            for (int i = 0; iterator.hasNext() && i < 10  ; i++) 
-            {
-                entry = iterator.next();
-                bw.write("\n" + entry.getKey() + ": " + entry.getValue());
-            }
-
-        } 
+            bw.write("characters: " + countCharacters());
+            bw.write("\nwords: " + countNumberOfWords());
+            bw.write("\nlines: " + countLines());
+            bw.write(getSortedWordsAndFrequency());
+        }
         catch (IOException e)
         {
             e.printStackTrace();
         }
         finally
         {
-            try 
+            try
             {
+                assert bw != null;
                 bw.close();
             }
-            catch (IOException e) 
+            catch (IOException e)
             {
                 e.printStackTrace();
             }
