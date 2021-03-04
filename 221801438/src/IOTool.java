@@ -26,7 +26,7 @@ public class IOTool {
 
     /* 将结果输出到文件中 */
     public void OutputToFile (String filePath, int sumCharacter, int wordsNum, int lines,
-                              List<Map.Entry<String,Integer>> list) throws IOException {
+                              List<Map.Entry<String, Integer>> list) throws IOException {
         //以UTF-8格式输出到文件中
         FileOutputStream file = new FileOutputStream(filePath);
         OutputStreamWriter writer = new OutputStreamWriter(file,"UTF-8");
