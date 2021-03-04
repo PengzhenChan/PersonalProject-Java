@@ -45,9 +45,9 @@ public class Lib {
         /**
          * @Description 通过文件路径读入文件，返回BufferedReader的流
          * @Author Lvv
-         * @Date 2021/2/28 15:11
+         * @Date 2021/3/4 8:11
          * @Param [filePath]
-         * @return int
+         * @return BufferedReader
          **/
         public static BufferedReader readFile(String filePath) {
             File file = new File(filePath);
@@ -69,7 +69,7 @@ public class Lib {
     }
 
     //String处理类
-    public static class TextEditor{
+    public static class TextEditor {
         BufferedReader reader = null;
         int lines = 0;
         List<String> strings = new ArrayList<>();
@@ -87,9 +87,9 @@ public class Lib {
         /**
          * @Description 用BufferedReader的read方法一个字符一个字符地读，能够读到换行符
          * @Author Lvv
-         * @Date 2021/3/2 15:06
+         * @Date 2021/3/4 8:06
          * @Param []
-         * @return java.util.List<java.lang.String>
+         * @return void
          **/
         public void readString() {
             stringBuilder = new StringBuilder();
@@ -152,7 +152,7 @@ public class Lib {
             String str = word.substring(0,4);
             Pattern p = Pattern.compile(".*\\d+.*");
             Matcher m = p.matcher(str);
-            if (m.matches()){
+            if (m.matches()) {
                 flag = false;   //若有数字则是无效单词
             }
 //            System.out.println(str + "是否是有效单词" + flag);
