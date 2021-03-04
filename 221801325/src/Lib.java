@@ -8,12 +8,7 @@ public class Lib
     public List<Map.Entry<String, Integer>> countmostWord(String str)
     {
 
-        String[] word = str.split("\\s+");
-        for (int i = 0; i < word.length; i++)
-        {
-            word[i] = word[i].toLowerCase();
-            System.out.println(word[i]);
-        }
+
         List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>()
         {
@@ -36,24 +31,25 @@ public class Lib
     public long  countword(String string)
     {
         long num = 0;
-        String[] word = string.split("\\s+");
-        for (int i = 0; i < word.length; i++)
-        {
-            word[i] = word[i].toLowerCase();
-        }
-        String regex = "^[a-z]{4,}.*";
-        for (int i = 0; i < word.length; i++)
-        {
-            String temp = word[i];
-            if (temp.matches(regex))
-            {   num++;
-                if (map.containsKey(temp)) {
-                    map.put(temp, map.get(temp) + 1);
-                } else {
-                    map.put(temp, 1);
-                }
+        double straTime1 = System.currentTimeMillis();//获取结束时间
+        string=string.toLowerCase();
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(" ");
+        stringBuffer.append(string);
+        String regex = "\\s[a-z]{4}[a-z0-9]*";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(stringBuffer.toString());
+        while(matcher.find())
+        {   String temp=matcher.group().trim();
+            num++;
+            if (map.containsKey(temp)) {
+                map.put(temp, map.get(temp) + 1);
+            } else {
+                map.put(temp, 1);
             }
         }
+        double endTime1 = System.currentTimeMillis();//获取结束时间
+        System.out.println("计算单词数量耗时"+(endTime1 - straTime1) +"毫秒");
         return num;
 
     }
@@ -94,6 +90,7 @@ public class Lib
             char c= (char)li;
             s.append(c);
         }
+        bufferedReader.close();
         return s.toString();
     }
     public  void output(String output_file,String style,long num)
