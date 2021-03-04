@@ -10,7 +10,7 @@ import java.util.Map;
 public class OutputToTxt {
 
     /*按照要求输出到Txt文件*/
-    public static void outputToTxt(long num1, int num2, int line, List<Map.Entry<String, Integer>> list, String outputFileName){
+    public static void outputToTxt(long num1, long num2, long line, List<Map.Entry<String, Integer>> list, String outputFileName){
         File outputFile = new File(outputFileName);
 
         try{

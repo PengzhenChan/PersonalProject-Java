@@ -20,6 +20,7 @@ public class CountWord {
     }
 
     public static int countWordNum(HashMap<String,Integer> legalWords){
+        //不行，直接返回size会被截断 因为size()函数返回值是int
         return legalWords.size();
     }
 
