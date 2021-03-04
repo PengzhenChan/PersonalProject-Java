@@ -19,7 +19,6 @@ public class HandleTxt {
         in=f1;
         out=f2;
         Changestr();
-        //GetTen();
         Ouputxt();
     }
 
@@ -125,7 +124,6 @@ public class HandleTxt {
         WordsMap.entrySet().stream().sorted(Map.Entry.<String, Integer> comparingByValue().reversed()
                 .thenComparing(Map.Entry.comparingByKey())).limit(10)
                 .forEachOrdered(x->result.put(x.getKey(),x.getValue()));
-        System.out.println(result);
         return result;
     }
 
@@ -141,14 +139,20 @@ public class HandleTxt {
     void Ouputxt()throws IOException
     {
         StringBuilder sb=new StringBuilder();
-        Iterator<Map.Entry<String, Integer>> it=GetTen().entrySet().iterator();
+        BufferedReader br=null;
+        PrintWriter pw=new PrintWriter(new OutputStreamWriter(new FileOutputStream(out),
+                "UTF-8"));
 
-        sb.append("characters："+Returnnum()+"\n"+"words："+Getwords()+'\n'
-                +"lines："+Getlines()+'\n');
+        Iterator<Map.Entry<String, Integer>> it=GetTen().entrySet().iterator();
+        sb.append("characters: "+Returnnum()+"\n"+"words: "+Getwords()+'\n'
+                +"lines: "+Getlines()+'\n');
         while(it.hasNext())
         {
             Map.Entry<String, Integer> entry=it.next();
-            System.out.println(entry.getKey());
+            sb.append(entry.getKey()+": "+entry.getValue()+"\n");
         }
+        pw.print(sb.toString());
+        pw.flush();
+        pw.close();
     }
 }
