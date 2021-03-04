@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,9 +11,10 @@ public class Lib {
 
     private String inputFile;
     private String outputFile;
-    int charNumber;
-    int wordNumber;
-    int lineNumber;
+    private int charNumber;
+    private int wordNumber;
+    private int lineNumber;
+    private Map<String,Integer> wordsMap;
 
     public Lib() {
     }
@@ -22,6 +25,7 @@ public class Lib {
         lineNumber = 0;
         this.inputFile = inputFile;
         this.outputFile = outputFile;
+        wordsMap = new HashMap<String,Integer>();
     }
 
     public String getInputFile() {
@@ -68,6 +72,12 @@ public class Lib {
             Matcher matcher = wordPattern.matcher(word);
             if(matcher.matches()){
                 wordNumber++;
+                String w = word.toLowerCase();
+                Integer count = wordsMap.get(w);
+                if(count == null){
+                    count = 0;
+                }
+                wordsMap.put(w,count+1);
             }
         }
     }
@@ -83,5 +93,37 @@ public class Lib {
                 lineNumber--;
             }
         }
+    }
+
+    public int getCharNumber() {
+        return charNumber;
+    }
+
+    public void setCharNumber(int charNumber) {
+        this.charNumber = charNumber;
+    }
+
+    public int getWordNumber() {
+        return wordNumber;
+    }
+
+    public void setWordNumber(int wordNumber) {
+        this.wordNumber = wordNumber;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public Map<String, Integer> getWordsMap() {
+        return wordsMap;
+    }
+
+    public void setWordsMap(Map<String, Integer> wordsMap) {
+        this.wordsMap = wordsMap;
     }
 }
