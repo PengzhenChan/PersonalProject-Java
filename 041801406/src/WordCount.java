@@ -15,10 +15,13 @@ public class WordCount {
             input = new File(args[0]);
             output = new File(args[1]);
         }
-        int countChar = Lib.countChar(input);
-        int countLine = Lib.countLine(input);
-        int countWord = Lib.countWord(input);
-        List<Map.Entry<String, Integer>> getWordFrequency = Lib.getWordFrequency(input);
+        CountData cd = new CountData();
+        Lib.countChar(input);
+        cd = Lib.openFile(input);
+        int countChar = cd.getCountChar();
+        int countLine = cd.getCountLine();
+        int countWord = cd.getCountWord();
+        List<Map.Entry<String, Integer>> getWordFrequency = cd.getGetWordFrequency();
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(output));
             bw.write("characters: " + countChar + "\n");

@@ -2,9 +2,14 @@ import java.io.*;
 import java.util.*;
 
 public class Lib {
-    static boolean openFile(File input) {
+    static CountData cd=new CountData();
+    static CountData openFile(File input) {
+        int myCountLine = 0;
+        int myWordCount = 0;
+        HashMap<String, Integer> myWordCountMap = new HashMap<String, Integer>();
+        List<Map.Entry<String, Integer>> list = null;
         if (! input.exists()) {
-            return false;
+            return null;
         }
         else {
             try {
@@ -12,159 +17,102 @@ public class Lib {
                 BufferedReader br = new BufferedReader(fr);
                 String s = "";
                 while ((s = br.readLine()) != null) {
-
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                return false;
-            }
-        }
-    }
-
-    static int countChar(File file) {
-        int myCountChar = 0;
-        if (! file.exists()) {
-            return - 1;
-        }
-        else {
-            try {
-                byte [] tem=new byte[20*1024];
-                int len=tem.length;
-                int bytes=0;
-                FileInputStream in=new FileInputStream(file);
-                while((bytes=in.read(tem,0,len))!=-1)
-                    myCountChar+=bytes;
-                return myCountChar;
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                return myCountChar;
-            }
-        }
-    }
-
-    static int countLine(File file) {
-        int myCountLine = 0;
-        if (! file.exists()) {
-            return - 1;
-        }
-        else {
-            try {
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                while (br.readLine() != null) {
                     myCountLine++;
+                    myWordCount += countWord(s);
+                    myWordCountMap.putAll(getWordFrequency(s));
                 }
-                return myCountLine;
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                return myCountLine;
-            }
-        }
-    }
-
-    static int countWord(File file) {
-        if (! file.exists()) {
-            return - 1;
-        }
-        else {
-            int myWordCount = 0;
-            try {
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                String s;
-                String word = "";
-                while ((s = br.readLine()) != null) {
-                    for (int i = 0; i < s.length(); i++) {
-                        if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
-                                || Character.isLowerCase(s.charAt(i))) {
-                            word += s.charAt(i);
-                        }
-                        else {
-                            if (isWord(word)) {
-                                myWordCount++;
-                            }
-                            word = "";
-                        }
-                    }
-                    if (isWord(word)) {
-                        myWordCount++;
-                    }
-                    word = "";
-                }
-                return myWordCount;
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                return myWordCount;
-            }
-        }
-    }
-
-    static List<Map.Entry<String, Integer>> getWordFrequency(File file) {
-        if (! file.exists()) {
-            return null;
-        }
-        else {
-            HashMap<String, Integer> myWordCount = new HashMap<String, Integer>();
-            List<Map.Entry<String, Integer>> list = null;
-            try {
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                String s;
-                String word = "";
-                while ((s = br.readLine()) != null) {
-                    for (int i = 0; i < s.length(); i++) {
-                        if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
-                                || Character.isLowerCase(s.charAt(i))) {
-                            word += s.charAt(i);
-                        }
-                        else {
-                            if (isWord(word)) {
-                                if (myWordCount.containsKey(word)) {
-                                    myWordCount.put(word, myWordCount.get(word) + 1);
-                                }
-                                else
-                                    myWordCount.put(word, 1);
-                            }
-                            word = "";
-                        }
-                    }
-                    if (isWord(word)) {
-                        if (myWordCount.containsKey(word)) {
-                            myWordCount.put(word, myWordCount.get(word) + 1);
-                        }
-                        else
-                            myWordCount.put(word, 1);
-                    }
-                    word = "";
-                }
-                list = new ArrayList<Map.Entry<String, Integer>>(myWordCount.entrySet());
+                list = new ArrayList<Map.Entry<String, Integer>>(myWordCountMap.entrySet());
                 list.sort(new Comparator<Map.Entry<String, Integer>>() {
                     @Override
                     public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
                         return o2.getValue().compareTo(o1.getValue());
                     }
                 });
-                return list;
+                cd.setCountLine(myCountLine);
+                cd.setCountWord(myWordCount);
+                cd.setGetWordFrequency(list);
+                return cd;
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
             finally {
-                return list;
+                return cd;
             }
         }
+    }
+
+    static void countChar(File file) {
+        int myCountChar = 0;
+        if (! file.exists()) {
+            return ;
+        }
+        else {
+            try {
+                byte[] tem = new byte[20 * 1024];
+                int len = tem.length;
+                int bytes = 0;
+                FileInputStream in = new FileInputStream(file);
+                while ((bytes = in.read(tem, 0, len)) != - 1)
+                    myCountChar += bytes;
+                cd.setCountChar(myCountChar);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+            }
+        }
+    }
+
+    static int countWord(String s) {
+        int myWordCount = 0;
+        String word = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
+                    || Character.isLowerCase(s.charAt(i))) {
+                word += s.charAt(i);
+            }
+            else {
+                if (isWord(word)) {
+                    myWordCount++;
+                }
+                word = "";
+            }
+        }
+        if (isWord(word)) {
+            myWordCount++;
+        }
+        return myWordCount;
+    }
+
+    static  HashMap<String, Integer> getWordFrequency(String s) {
+        String word = "";
+        HashMap<String, Integer> myWordCount = new HashMap<String, Integer>();
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
+                    || Character.isLowerCase(s.charAt(i))) {
+                word += s.charAt(i);
+            }
+            else {
+                if (isWord(word)) {
+                    if (myWordCount.containsKey(word)) {
+                        myWordCount.put(word, myWordCount.get(word) + 1);
+                    }
+                    else
+                        myWordCount.put(word, 1);
+                }
+                word = "";
+            }
+        }
+        if (isWord(word)) {
+            if (myWordCount.containsKey(word)) {
+                myWordCount.put(word, myWordCount.get(word) + 1);
+            }
+            else
+                myWordCount.put(word, 1);
+        }
+        return myWordCount;
     }
 
     static boolean isWord(String s) {
