@@ -87,7 +87,7 @@ public class Lib {
       备注: 无视单词大小写差异
     */
     public static List<Map.Entry<String,Integer>> staticFrequency(String context){
-        HashMap<String, Integer> frequency = new HashMap<String, Integer>();
+        HashMap<String, Integer> frequency = new HashMap<>();
         String text = context.toLowerCase();
         Pattern wordPattern = Pattern.compile("([^A-Za-z0-9]+|^)([a-zA-Z]{4,20}[a-zA-Z0-9]*)");
         Matcher matcher = wordPattern.matcher(text);
@@ -121,11 +121,7 @@ public class Lib {
         });
 
         int length = (list.size()>10)? 10 : list.size();
-        List<Map.Entry<String,Integer>> result = list.subList(0,length);
-        for(int i = 0; i<result.size(); i++){
-            System.out.println(""+result.get(i).getKey()+": "+result.get(i).getValue()+"次");
-        }
-        return result;
+        return list.subList(0,length);
 
         /*测试排序是否正确
         int sum = 0;
