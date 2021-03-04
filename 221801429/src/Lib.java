@@ -1,12 +1,9 @@
-import sun.nio.cs.ext.MacHebrew;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 /*
@@ -38,8 +35,8 @@ public class Lib {
             System.out.println("读取文件失败！");
             return null;
         }
-            System.out.println(context);
-            return context;
+        System.out.println(context);
+        return context;
     }
 
     /*
@@ -84,10 +81,61 @@ public class Lib {
     }
 
     /*
-      未实现代码
-
-    public static void staticWork(String context){
-
-    }
+      功能: 返回按单词频率排序从高到低好的List<Map.Entry>，key为单词，value为频率
+      参数: String
+      返回类型: HashMap<String, Integer>
+      备注: 无视单词大小写差异
     */
+    public static List<Map.Entry<String,Integer>> staticFrequency(String context){
+        HashMap<String, Integer> frequency = new HashMap<String, Integer>();
+        String text = context.toLowerCase();
+        Pattern wordPattern = Pattern.compile("([^A-Za-z0-9]+|^)([a-zA-Z]{4,20}[a-zA-Z0-9]*)");
+        Matcher matcher = wordPattern.matcher(text);
+        while(matcher.find()){
+            String word = matcher.group(2);
+
+            //HashMap尚不存在指定的key
+            if(!frequency.containsKey(word)){
+                frequency.put(word, 1);
+            }
+
+            //已经存在该单词的key
+            else {
+                int countWord = frequency.get(word);
+                countWord++;
+                frequency.put(word, countWord);
+            }
+        }
+
+        List<Map.Entry<String,Integer>> list = new ArrayList<>();
+        list.addAll(frequency.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                if(!o2.getValue().equals(o1.getValue())) {
+                    return o2.getValue().compareTo(o1.getValue());
+                } else {
+                    return o1.getKey().compareTo(o2.getKey());
+                }
+            }
+        });
+
+        int length = (list.size()>10)? 10 : list.size();
+        List<Map.Entry<String,Integer>> result = list.subList(0,length);
+        for(int i = 0; i<result.size(); i++){
+            System.out.println(""+result.get(i).getKey()+": "+result.get(i).getValue()+"次");
+        }
+        return result;
+
+        /*测试排序是否正确
+        int sum = 0;
+        for(Map.Entry<String, Integer> m:frequency.entrySet())
+        {
+            sum += m.getValue();
+            System.out.println(""+m.getKey()+"出现的次数为："+m.getValue()+"次");
+        }
+        System.out.println("攻击单词"+sum);
+       */
+    }
+
 }

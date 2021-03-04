@@ -8,7 +8,7 @@ public class WordCount {
             System.out.println("characters: " + Lib.countChar(context));
             System.out.println("words:" + Lib.countWord(context));
             System.out.println("lines:" + Lib.countLine(context));
-
+            Lib.staticFrequency(context);
         } catch (IOException e){
             System.out.println("txt文件转字符串失败！");
         }
