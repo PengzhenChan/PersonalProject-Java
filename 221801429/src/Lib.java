@@ -19,7 +19,6 @@ public class Lib {
       异常处理：IO异常
      */
     public static String txtToString(String filePath){
-        System.out.println("读取文件！");
         File file = new File(filePath);
         String context = "";
         try{
