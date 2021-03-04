@@ -27,7 +27,7 @@ public class WordCount {
                 FileWriter fileWritter = new FileWriter(outputfile);
                 fileWritter.close();
             } catch (Exception e) {
-                System.out.println("文件打开失败");
+                System.out.println("输入错误，文件打开失败");
                 System.exit(0);
             } finally {
                 //if file doesnt exists, then create it

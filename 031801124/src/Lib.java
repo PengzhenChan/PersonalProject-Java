@@ -16,10 +16,16 @@ public class Lib {
             //System.out.println("文件字符数为"+charnumber);
             // System.out.println("文件字符数统计成功！");
             File inputfile = new File(inputfileName);
-            charnumber = inputfile.length();
+            Reader reader=null;
             File outfile = new File(outputfileName);
-
+            reader= new InputStreamReader(new FileInputStream(inputfile));
             //if file doesnt exists, then create it
+            int tempchar;
+            while ((tempchar=reader.read()) != -1) {
+                if(tempchar<=127&&tempchar>=0){
+                    charnumber++;
+                }
+            }
             if (!outfile.exists()) {
                 outfile.createNewFile();
             }
