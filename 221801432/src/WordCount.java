@@ -19,7 +19,7 @@ class MyWords {
     }
     public MyWords(String str) {
         content = str;
-        frequency = 0;
+        frequency = 1;
     }
 }
 
@@ -58,16 +58,17 @@ public class WordCount {
 
     //统计单词数量，并返回 单词对象的ArrayList
     //每一次read都要考虑是否到达了文件末尾
-    public static void countWords(String inputFileName, String outputFileName) {
+    public static ArrayList countWords(String inputFileName, String outputFileName) {
+        //保存所有单词
+        ArrayList myWordsList = new ArrayList<MyWords>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
             int b = 0;
             //单词数量
             int numOfWords = 0;
-            ArrayList myWordsList = new ArrayList<MyWords>();
             while (true) {
-                //用来存单词
+                //用来保存1个完整单词
                 String str = "";
                 //判断是否为1个单词
                 boolean isItAWord = false;
@@ -102,8 +103,8 @@ public class WordCount {
                         str = str + Character.toLowerCase((char)b);
                         b = reader.read();
                     }
-                    //将单词存入ArrayList 或者 增加词频，别忘了把str化为小写的
-
+                    //将单词存入ArrayList 或者 增加词频
+                    handleWord(str, myWordsList);
                 } else if (b != -1 && !Character.isLetterOrDigit((char)b)) {//不是单词而且b是分割符，回到循环开头
                     continue;
                 } else {//不是单词，且b不是末尾也不是分割符，则补齐单词
@@ -121,20 +122,28 @@ public class WordCount {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return myWordsList;
     }
 
     //处理单词，加入ArrayList中或者增加词频
-//    public static void handleWord(String str, ArrayList<MyWords> myWordsList) {
-//        for (int i=0; i<myWordsList.size(); i++) {
-//            //if-else:如果找到相同字符串，则
-//            if (myWordsList.get(i).getContent().equals(str)) {
-//                //增加词频
-//                myWordsList.get(i).increaseFrequency();
-//                return;
-//            } else {
-//
-//            }
-//        }
-//    }
+    public static void handleWord(String str, ArrayList<MyWords> myWordsList) {
+        for (int i=0; i<myWordsList.size() || myWordsList.size() == 0; i++) {
+            if (myWordsList.size() == 0) {
+                MyWords aWord = new MyWords(str);
+                myWordsList.add(aWord);
+                return;
+            }
+            //if-else:如果找到相同字符串，则
+            if (myWordsList.get(i).getContent().equals(str)) {
+                //增加词频
+                myWordsList.get(i).increaseFrequency();
+                return;
+            } else if (i == myWordsList.size() - 1){
+                MyWords aWord = new MyWords(str);
+                myWordsList.add(aWord);
+                return;
+            }
+        }
+    }
 
 }
