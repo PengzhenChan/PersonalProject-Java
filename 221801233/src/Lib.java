@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 public class Lib {
     private String word;
+    private String Oword;
     HashMap<String,Integer> hashMap;
     private int line;
     long wordsNum;
@@ -13,12 +14,13 @@ public class Lib {
     public Lib(String word){
           wordsNum=0;
           this.word=word;
+          this.Oword=word;
           line=0;
     }
     public int getLines(){
         String s="\\n";
         pattern=Pattern.compile(s);
-        matcher=pattern.matcher(word);
+        matcher=pattern.matcher(Oword);
         while(matcher.find()){
             line++;
         }
@@ -55,18 +57,12 @@ public class Lib {
                 .stream()
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors
-                        .toMap(Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (e1, e2) -> e1,
-                                LinkedHashMap::new));
+                        .toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
          hashMap = hashMap.entrySet()
                 .stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .collect(Collectors
-                        .toMap(Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (e1, e2) -> e1,
-                                LinkedHashMap::new));
+                        .toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
          Iterator iterator=hashMap.entrySet().iterator();
          int i=0;
          while(iterator.hasNext()&&i<10) {
@@ -79,8 +75,4 @@ public class Lib {
          }
          return returnword;
     }
-    public void setWord(String word){
-        this.word=word;
-    }
-
 }
