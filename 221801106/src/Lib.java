@@ -36,5 +36,20 @@ public class Lib
 		}
 		return 1;
 	}
+    
+    public void mapValueSort(HashMap<String, Integer> map) {    //将hashMap转化为list，使用其封装的sort函数进行排序
+        list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+        list.sort(new Comparator<Map.Entry<String, Integer>>(){
+            public int compare(Map.Entry<String, Integer> o1,Map.Entry<String, Integer> o2){   //重写compare函数，复杂度为nlog2（n），先按照value从大到小，
+                if (o1.getValue()<o2.getValue())                                           //value相等的情况下，再按照key从小到大。
+                	return 1;
+                else if (o1.getValue()>o2.getValue())
+                	return -1;
+                else {
+                	return o1.getKey().compareTo(o2.getKey());
+                }
+            }
+        });
+    }
 }
 
