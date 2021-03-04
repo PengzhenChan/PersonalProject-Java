@@ -1,7 +1,5 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -12,8 +10,18 @@ public class CountCore {
     private Map<String, Integer> map;
 
     CountCore(String inPath) {
-        map = new TreeMap<>();
+        map = new HashMap<>();
         this.inPath = inPath;
+        if(inPath==null){
+            return;
+        }
+        File file = new File(inPath);
+        if(!file.exists())
+            this.inPath = null;
+    }
+
+    public String getInPath(){
+        return inPath;
     }
     public int getWordCount(String key){
         return map.get(key);
@@ -30,8 +38,8 @@ public class CountCore {
                 }
             }
             return cnt;
-        } catch (IOException ie) {
-            ie.printStackTrace();
+        } catch (Exception ie) {
+            System.out.println("file is't exist");
         }
         return 0;
     }
@@ -55,8 +63,8 @@ public class CountCore {
                 }
             }
             return cnt;
-        } catch (IOException ie) {
-            ie.printStackTrace();
+        } catch (Exception ie) {
+            System.out.println("file is't exist");
         }
         return 0;
     }
@@ -72,8 +80,8 @@ public class CountCore {
                 }
             }
             return cnt;
-        } catch (IOException ie) {
-            ie.printStackTrace();
+        } catch (Exception ie) {
+            System.out.println("file is't exist");
         }
         return 0;
     }
@@ -131,6 +139,9 @@ public class CountCore {
 
     public String[] getPopularWord() {
         String[] list = map.keySet().toArray(new String[0]);
+        if(list.length==0){
+            return list;
+        }
         quickSort(list, 0, list.length - 1);
         int cnt=0;
         int x=0;
