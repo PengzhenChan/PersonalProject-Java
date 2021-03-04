@@ -15,5 +15,15 @@ public class Lib
     public List<Map.Entry<String, Integer>> list;    //用来记录统计出来的频率排行
     public HashMap<String,Integer> hashMap;    //用来记录所有单词及在文章中出现的频率
     public String result;    //用来记录要输出的结果
+    
+    public Lib(String in,String out) {    //构建函数
+		wordlines = 0;
+		characters = 0;
+		wordnumbers = 0;
+		anticle = "";
+		inputTxt = in;
+		outputTxt = out;
+		result = "";
+	}
 }
 
