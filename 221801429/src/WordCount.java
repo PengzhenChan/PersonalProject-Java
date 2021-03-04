@@ -47,6 +47,14 @@ public class WordCount {
         /*
         文件中输出结果
          */
-
+        try{
+            BufferedWriter out = new BufferedWriter(new FileWriter(outputFile));
+            out.write(result);
+            out.close();
+            System.out.println("写入文件成功！");
+        } catch (IOException e) {
+            System.out.println("写入文件失败！");
+            e.printStackTrace();
+        }
     }
 }
