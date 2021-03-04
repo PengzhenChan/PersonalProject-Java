@@ -75,7 +75,10 @@ public class Lib {
 
     //判断单词是否合法
     public boolean IsWord(String str) {
+        String temp = new String();
         if (str == null)
+            return false;
+        if (str==temp)
             return false;
 
         for (int i=0;i<str.length();i++) {
@@ -128,33 +131,44 @@ public class Lib {
 
                 if(ch>='a'&&ch<='z' || ch>='0'&&ch<='9'
                         || ch>='A'&&ch<='Z'){
+                    if (str == null)
+                    {
+                        String tem = new String();
+                        str = tem;
+                    }
                     str += ch;
+
                 }
                 else{
-                    if (str != null && IsWord(str)) {
+
+                    if (str != "" && IsWord(str)) {
                         String temp = WordChange (str);
 
-                        System.out.println("str"+str);
                         //单词未在数组中，则存入计数
                         if (!IfSame(words , temp , counts) && j<words.length) {
                             words[j] = str;
+                            counts[j]++;
                             j++;
                         }
-                        str = "\0";
-                        System.out.println("words"+words[0]);
-                        SortWords(words, counts);
+
+                        str = null;
+
                     }
                 }
 
             }
 
+            //最后一个单词统计
             if (IsWord(str)) {
                 String temp = WordChange (str);
                 if (!IfSame(words, temp, counts) && j < words.length) {
                     words[j] = str;
+                    counts[j]++;
                     j++;
                 }
             }
+
+            SortWords(words, counts);
 
             ShowWords(words.length);
         }catch (Exception e){
@@ -170,9 +184,10 @@ public class Lib {
 
     //判断在数组中是否有相同的单词,若有相同的单词则计数
     public boolean IfSame(String[] words , String str , int[] nums){
+
         for (int i=0 ; i<words.length && words.length >= 1; i++){
 
-            if (str == words[i]) {
+            if (str.equals(words[i])) {
                 nums[i]++;
                 return true;
             }
@@ -182,8 +197,9 @@ public class Lib {
 
     //根据频数排序，字符串数组大小10，将最大10个存入
     public void SortWords(String[] words , int[] counts) {
-
+        System.out.println("单词"+words[0]+words[1]);
         for (int i = 0; i < counts.length && words[i] != null; i++) {
+
             for (int j = i+1 ; j<counts.length && words[j] != null; j++){
                 if (counts[i]<counts[j]){
                     ChangInt(counts , i , j);
@@ -211,6 +227,7 @@ public class Lib {
         String tempS = new String ();
         tempS = str[j];
         str[j] = str[i];
+        str[i] = tempS;
         return str;
     }
 
@@ -225,7 +242,7 @@ public class Lib {
 
     //输出单词及其频数
     public void ShowWords(int n) {
-        for (int i=0; i<10 && i<n; i++){
+        for (int i=0; i<10 && i<n && sortCount[i] != 0; i++){
             System.out.println(sortWords[i]+" "+sortCount[i]);
         }
     }
