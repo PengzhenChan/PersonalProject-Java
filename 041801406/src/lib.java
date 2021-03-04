@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Calendar;
+import java.util.*;
 
 public class lib {
     static int countChar(File file) {
@@ -64,7 +64,8 @@ public class lib {
                 /*不使用.read()来判断 因为会读取首字母*/
                 while ((s = br.readLine()) != null) {
                     for (int i = 0; i < s.length(); i++) {
-                        if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i)) || Character.isLowerCase(s.charAt(i))) {
+                        if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
+                                || Character.isLowerCase(s.charAt(i))) {
                             word += s.charAt(i);
                         }
                         else {
@@ -86,6 +87,63 @@ public class lib {
             }
             finally {
                 return myWordCount;
+            }
+        }
+    }
+
+    static List<Map.Entry<String, Integer>> getWordFrequency(File file) {
+        if (! file.exists()) {
+            return null;
+        }
+        else {
+            HashMap<String, Integer> myWordCount = new HashMap<String, Integer>();
+            List<Map.Entry<String, Integer>> list = null;
+            try {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                String s;
+                String word = "";
+                /*不使用.read()来判断 因为会读取首字母*/
+                while ((s = br.readLine()) != null) {
+                    for (int i = 0; i < s.length(); i++) {
+                        if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
+                                || Character.isLowerCase(s.charAt(i))) {
+                            word += s.charAt(i);
+                        }
+                        else {
+                            if (isWord(word)) {
+                                if (myWordCount.containsKey(word)) {
+                                    myWordCount.put(word, myWordCount.get(word) + 1);
+                                }
+                                else
+                                    myWordCount.put(word, 1);
+                            }
+                            word = "";
+                        }
+                    }
+                    if (isWord(word)) {
+                        if (myWordCount.containsKey(word)) {
+                            myWordCount.put(word, myWordCount.get(word) + 1);
+                        }
+                        else
+                            myWordCount.put(word, 1);
+                    }
+                    word = "";
+                }
+                list = new ArrayList<Map.Entry<String, Integer>>(myWordCount.entrySet());
+                list.sort(new Comparator<Map.Entry<String, Integer>>() {
+                    @Override
+                    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                        return o2.getValue().compareTo(o1.getValue());
+                    }
+                });
+                return list;
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                return list;
             }
         }
     }
