@@ -65,25 +65,35 @@ public class Lib {
             }
             return bufferedReader;
         }
-
     }
 
+
     public static class Core {
+        /**
+         * @Description
+         * @Author Lvv
+         * @Date 2021/3/4 10:58
+         * @Param [te]
+         * @return int
+         **/
         public static int getCharsNum(TextEditor te) {
             return te.countAscii();
         }
+
         public static int getWordsNum(TextEditor te) {
             return te.countWords();
         }
-        public static String getTopWords(TextEditor te) {
 
+        public static String getTopWords(TextEditor te) {
             return te.countTopWords();
         }
+
         public static int getLinesNum(TextEditor te) {
             te.countWords();
             return te.countLines();
         }
     }
+
 
     //String处理类
     public static class TextEditor {
@@ -94,12 +104,9 @@ public class Lib {
         HashMap<String,Integer> words = new HashMap<String, Integer>();
         List<Map.Entry<String,Integer>> list = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
-
-
         public TextEditor(BufferedReader reader) {
             this.reader = reader;
         }
-
 
         /**
          * @Description 用BufferedReader的read方法一个字符一个字符地读，能够读到换行符
@@ -184,7 +191,6 @@ public class Lib {
          * @return int
          **/
         public int countWords() {
-
             String word;
             int linesSum = 0;
             int wordsSum = 0;
@@ -267,5 +273,4 @@ public class Lib {
             return this.lines;
         }
     }
-
 }
