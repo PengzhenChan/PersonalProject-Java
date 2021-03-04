@@ -34,20 +34,24 @@ public class WordCount{
         charThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                wordCount.charsNum = textEditor.countAscii();
+//                wordCount.charsNum = textEditor.countAscii();
+                wordCount.charsNum = Lib.Core.getCharsNum(textEditor);
             }
         });
         wordsThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                wordCount.wordsNum = textEditor.countWords();
-                wordCount.linesNum = textEditor.countLines();
+//                wordCount.wordsNum = textEditor.countWords();
+//                wordCount.linesNum = textEditor.countLines();
+                wordCount.wordsNum = Lib.Core.getWordsNum(textEditor);
+                wordCount.linesNum = Lib.Core.getLinesNum(textEditor);
             }
         });
         topThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                wordCount.topsStr = textEditor.countTopWords();
+//                wordCount.topsStr = textEditor.countTopWords();
+                wordCount.topsStr = Lib.Core.getTopWords(textEditor);
             }
         });
         charThread.start();

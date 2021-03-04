@@ -68,6 +68,23 @@ public class Lib {
 
     }
 
+    public static class Core {
+        public static int getCharsNum(TextEditor te) {
+            return te.countAscii();
+        }
+        public static int getWordsNum(TextEditor te) {
+            return te.countWords();
+        }
+        public static String getTopWords(TextEditor te) {
+
+            return te.countTopWords();
+        }
+        public static int getLinesNum(TextEditor te) {
+            te.countWords();
+            return te.countLines();
+        }
+    }
+
     //String处理类
     public static class TextEditor {
         BufferedReader reader = null;
