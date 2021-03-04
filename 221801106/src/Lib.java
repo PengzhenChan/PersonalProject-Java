@@ -1,6 +1,10 @@
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.Set;
 import java.io.IOException;
 import java.io.PrintWriter;
  
@@ -15,8 +19,7 @@ public class Lib
     public List<Map.Entry<String, Integer>> list;    //用来记录统计出来的频率排行
     public HashMap<String,Integer> hashMap;    //用来记录所有单词及在文章中出现的频率
     public String result;    //用来记录要输出的结果
-    
-    public Lib(String in,String out) {    //构建函数
+	public Lib(String in,String out) {    //构建函数
 		wordlines = 0;
 		characters = 0;
 		wordnumbers = 0;
@@ -25,19 +28,8 @@ public class Lib
 		outputTxt = out;
 		result = "";
 	}
-    
-    public int isWord(String word) {    //用来判断这个字符串是否为单词
-		if (word.length()<4)
-			return -1;
-		for (int i=0;i<4;i++){
-			char c = word.charAt(i);
-			if (!(c>='a'&&c<='z'||c>='A'&&c<='Z'))
-				return -1;
-		}
-		return 1;
-	}
-    
-    public void mapValueSort(HashMap<String, Integer> map) {    //将hashMap转化为list，使用其封装的sort函数进行排序
+	
+	public void mapValueSort(HashMap<String, Integer> map) {    //将hashMap转化为list，使用其封装的sort函数进行排序
         list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
         list.sort(new Comparator<Map.Entry<String, Integer>>(){
             public int compare(Map.Entry<String, Integer> o1,Map.Entry<String, Integer> o2){   //重写compare函数，复杂度为nlog2（n），先按照value从大到小，
@@ -51,8 +43,19 @@ public class Lib
             }
         });
     }
-    
-    public void calculate() throws FileNotFoundException    //进行文章统计计算,得出单词统计的hashMap，并进行排序
+	
+	public int isWord(String word) {    //用来判断这个字符串是否为单词
+		if (word.length()<4)
+			return -1;
+		for (int i=0;i<4;i++){
+			char c = word.charAt(i);
+			if (!(c>='a'&&c<='z'||c>='A'&&c<='Z'))
+				return -1;
+		}
+		return 1;
+	}
+	
+	public void calculate() throws FileNotFoundException    //进行文章统计计算,得出单词统计的hashMap，并进行排序
 	{
 		File file=new File(inputTxt);
 		if(!file.exists())
@@ -99,8 +102,8 @@ public class Lib
 		mapValueSort(hashMap);
 		scanner.close();
 	}
-    
-    public void calculateWordsNumber() {    //用来计算单词总数
+	
+	public void calculateWordsNumber() {    //用来计算单词总数
 		Iterator<String> iterator=hashMap.keySet().iterator();
 		while(iterator.hasNext())
 		{
@@ -108,8 +111,8 @@ public class Lib
 			wordnumbers += hashMap.get(word);
 		}
 	}
-    
-    public void resultShow() {   //将结果显示 
+	
+	public void resultShow() {   //将结果显示 
 		result += "characters:"+characters;
 		result += "\nwords:"+wordnumbers;
 		result += "\nlines:"+wordlines;
@@ -139,8 +142,8 @@ public class Lib
 	    }
 	   // System.out.println("运行结束");
 	}
-    
-    public void work() {    //工作
+	
+	public void work() {    //工作
 		try {
 		    calculate();
 		    calculateWordsNumber();
