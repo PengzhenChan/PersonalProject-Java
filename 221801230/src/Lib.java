@@ -7,11 +7,13 @@ public class Lib {
 
     private String inputFile;
     private String outputFile;
+    int charNumber;
 
     public Lib() {
     }
 
     public Lib(String inputFile, String outputFile) {
+        charNumber = 0;
         this.inputFile = inputFile;
         this.outputFile = outputFile;
     }
@@ -46,4 +48,18 @@ public class Lib {
         }
         return builder.toString();
     }
+
+    public void charNumCount(){
+        String str = readFile();
+        charNumber = str.length();
+    }
+
+    public void wordNumCount(){
+
+    }
+
+    public void lineNumCount(){
+
+    }
+
 }
