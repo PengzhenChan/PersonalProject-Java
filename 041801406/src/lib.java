@@ -1,14 +1,14 @@
 import java.io.*;
 import java.util.*;
 
-public class lib {
-    static boolean openFile(File file) {
-        if (! file.exists()) {
-            return false; 
+public class Lib {
+    static boolean openFile(File input) {
+        if (! input.exists()) {
+            return false;
         }
         else {
             try {
-                FileReader fr = new FileReader(file);
+                FileReader fr = new FileReader(input);
                 BufferedReader br = new BufferedReader(fr);
                 String s = "";
                 while ((s = br.readLine()) != null) {
@@ -31,13 +31,12 @@ public class lib {
         }
         else {
             try {
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr);
-                while (br.read() != 1) {
-                    String s = br.readLine();
-                    myCountChar += s.length();
-                    myCountChar++;
-                }
+                byte [] tem=new byte[20*1024];
+                int len=tem.length;
+                int bytes=0;
+                FileInputStream in=new FileInputStream(file);
+                while((bytes=in.read(tem,0,len))!=-1)
+                    myCountChar+=bytes;
                 return myCountChar;
             }
             catch (IOException e) {
