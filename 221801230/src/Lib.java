@@ -61,16 +61,24 @@ public class Lib {
     }
 
     public void wordNumCount(){
-
+        String str = readFile();
+        String[] words = str.split("[^(a-zA-Z0-9)]");
+        Pattern wordPattern = Pattern.compile("[a-zA-Z]{4}[a-zA-Z0-9]*");
+        for (String word:words){
+            Matcher matcher = wordPattern.matcher(word);
+            if(matcher.matches()){
+                wordNumber++;
+            }
+        }
     }
 
     public void lineNumCount(){
         String str = readFile();
-        String[] arr = str.split("\n");
-        lineNumber = arr.length;
+        String[] lines = str.split("\n");
+        lineNumber = lines.length;
         Pattern linePattern = Pattern.compile("\\s*");
-        for(String s : arr){
-            Matcher matcher = linePattern.matcher(s);
+        for(String line : lines){
+            Matcher matcher = linePattern.matcher(line);
             if (matcher.matches()){
                 lineNumber--;
             }
