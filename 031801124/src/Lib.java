@@ -75,6 +75,7 @@ public class Lib {
                 if (wordlength >= 4) {
                     wordnumber++;
                 }
+                if(strLine.length()!=0)
                 lineCount++;
 
 
