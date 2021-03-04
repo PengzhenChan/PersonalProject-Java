@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 public class Lib
 {
     Map<String, Integer> map = new HashMap<String, Integer>();
-    public List<Map.Entry<String, Integer>> countmostWord(String str)
+    public List<Map.Entry<String, Integer>> countmostWord( )
     {
 
 
@@ -31,32 +31,29 @@ public class Lib
     public long  countword(String string)
     {
         long num = 0;
-        double straTime1 = System.currentTimeMillis();//获取结束时间
         string=string.toLowerCase();
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(" ");
         stringBuffer.append(string);
-        String regex = "([^a-z0-9])([a-z]{4}[a-z0-9]*)";
+        String regex = "([^a-z0-9])([a-z]{4}[a-z0-9]*)";//正则匹配
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(stringBuffer.toString());
         while(matcher.find())
-        {   String temp=matcher.group(2).trim();
+        {   String temp=matcher.group(2).trim();//取出group（2），既单词，trim为了除去之前加的空格
             num++;
             if (map.containsKey(temp)) {
-                map.put(temp, map.get(temp) + 1);
+                map.put(temp, map.get(temp) + 1);//顺便存入map，方便后续
             } else {
                 map.put(temp, 1);
             }
         }
-        double endTime1 = System.currentTimeMillis();//获取结束时间
-        System.out.println("计算单词数量耗时"+(endTime1 - straTime1) +"毫秒");
         return num;
 
     }
     public long charCount(String string) throws IOException
     {
         long characters = string.length();
-//        String regex = "\\p{ASCII}";
+//        String regex = "\\p{ASCII}";//正则表达式判断是否为合法字符
 //        Pattern pattern = Pattern.compile(regex);
 //        Matcher matcher = pattern.matcher(string);
 //        while (matcher.find()) {
@@ -67,48 +64,23 @@ public class Lib
     public  long lineCount(String string)
     {
         long num_of_line=0;
-
         String regex = "(.*)(\\S)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(string);
-        double star3 = System.currentTimeMillis();//获取结束时间
         while (matcher.find())
         {
-            if (matcher.group(1)!=null&&!matcher.group(1).equals("")&&!matcher.group(2).equals('\t'))
+            if (matcher.group(1)!=null&&!matcher.group(1).equals('\t')&&!matcher.group(1).equals('\n')&&!matcher.group(1).equals('\40'))
             num_of_line++;
         }
-        double end3 = System.currentTimeMillis();//获取结束时间
-        System.out.println("计算行数共耗时" + (end3 - star3) + "毫秒");//输出程序运行时间
-//
-//        String[] line = string.split("\r\n|\r|\n");
-//        for (int i = 0;i<line.length;i++)
-//        {
-//            if(!line[i].equals("")&&line[i]!=null)
-//            {
-//                num_of_line++;
-//            }
-//
-//        }
         return num_of_line;
     }
-    public String openFile(String path) throws IOException
-    {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
-        StringBuffer s =  new StringBuffer();
-        int li=0;
-        double endTime1 = System.currentTimeMillis();//获取结束时间
-        while ((li=bufferedReader.read())!= -1)
-        {
 
-            char c= (char)li;
-            s.append(c);
-        }
-        bufferedReader.close();
-        return s.toString();
-    }
+
+
+
     public  void output(String output_file,String style,long num)
     {
-        // TODO Auto-generated method stub
+
         File txt=new File(output_file);
         try
         {
@@ -122,4 +94,29 @@ public class Lib
             System.out.println("指定输出文件不存在");
         }
     }
+
+
+        public  String readFile(String filePath) {
+            try {
+                File file = new File(filePath);
+                FileInputStream inputStream = new FileInputStream(file);
+                byte[] buffer = new byte[1024];
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int cnt = 0;
+                while ((cnt = inputStream.read(buffer)) > -1)
+                {
+                    baos.write(buffer, 0, cnt);
+                }
+                baos.flush();
+                inputStream.close();
+                baos.close();
+                return baos.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+
+
 }
