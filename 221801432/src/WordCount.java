@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class MyWords {
-    private String content;
+    private final String content;
     private int frequency;
 
     public String getContent() {
@@ -17,6 +17,7 @@ class MyWords {
     public void increaseFrequency() {
         frequency++;
     }
+
     public MyWords(String str) {
         content = str;
         frequency = 1;
@@ -26,12 +27,17 @@ class MyWords {
 public class WordCount {
     //main函数入口
     public static void main(String[] args) {
+        ArrayList<MyWords> myWordsArrayList;
         Scanner scanner = new Scanner(System.in);
         String[] str = scanner.nextLine().split(" ");
         //统计字符数量
         countCharacters(str[0], str[1]);
-        //统计单词数量
-        countWords(str[0],str[1]);
+        //统计单词数量，获得单词序列
+        myWordsArrayList = countWords(str[0], str[1]);
+        //统计有效行数
+        countLines(str[0], str[1]);
+        //统计词频
+        countFrequency(str[1], myWordsArrayList);
     }
 
     //统计字符数量，并返回字符数量
@@ -57,10 +63,9 @@ public class WordCount {
     }
 
     //统计单词数量，并返回 单词对象的ArrayList
-    //每一次read都要考虑是否到达了文件末尾
-    public static ArrayList countWords(String inputFileName, String outputFileName) {
+    public static ArrayList<MyWords> countWords(String inputFileName, String outputFileName) {
         //保存所有单词
-        ArrayList myWordsList = new ArrayList<MyWords>();
+        ArrayList<MyWords> myWordsList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
@@ -125,6 +130,70 @@ public class WordCount {
         return myWordsList;
     }
 
+    //统计行数
+    public static void countLines(String inputFileName, String outputFileName) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
+            int numOfLines = 0;
+            String lineStr;
+            lineStr = reader.readLine();
+            while (lineStr != null) {
+                if (isEmptyLine(lineStr)) {
+                    lineStr = reader.readLine();
+                    continue;
+                } else {
+                    numOfLines++;
+                    lineStr = reader.readLine();
+                }
+            }
+            writer.write("lines:" + numOfLines + "\n");
+            reader.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //统计词频
+    public static void countFrequency(String outputFileName, ArrayList<MyWords> myWordsArrayList) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName, true));
+            for (int i=0; i<myWordsArrayList.size() - 1; i++) {
+                for (int j=i+1; j<myWordsArrayList.size(); j++) {
+                    boolean flag = myWordsArrayList.get(j).getContent().
+                                   compareTo(myWordsArrayList.get(i).getContent()) < 0;
+                    if (flag) {
+                        MyWords tempWord = myWordsArrayList.get(i);
+                        myWordsArrayList.set(i, myWordsArrayList.get(j));
+                        myWordsArrayList.set(j,tempWord);
+                    }
+                }
+            }
+            for( int i=0; i<myWordsArrayList.size() - 1; i++) {
+                for (int j=i+1; j<myWordsArrayList.size(); j++) {
+                    boolean flag = myWordsArrayList.get(j).getFrequency() >
+                                   myWordsArrayList.get(i).getFrequency();
+                    if (flag) {
+                        MyWords tempWord = myWordsArrayList.get(i);
+                        myWordsArrayList.set(i, myWordsArrayList.get(j));
+                        myWordsArrayList.set(j,tempWord);
+                    }
+                }
+            }
+            for (int i=0; i<10; i++) {
+                writer.write(myWordsArrayList.get(i).getContent() + ":" +
+                             myWordsArrayList.get(i).getFrequency() + "\n");
+                if (i == myWordsArrayList.size()-1) {
+                    break;
+                }
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //处理单词，加入ArrayList中或者增加词频
     public static void handleWord(String str, ArrayList<MyWords> myWordsList) {
         for (int i=0; i<myWordsList.size() || myWordsList.size() == 0; i++) {
@@ -146,4 +215,18 @@ public class WordCount {
         }
     }
 
+    //判断是否为空行
+    public static boolean isEmptyLine(String str) {
+        for(int i=0; i<str.length(); i++) {
+            String tempStr = str.substring(i, i+1);
+            boolean flag = tempStr.equals(" ") ||
+                           tempStr.equals("\n") ||
+                           tempStr.equals("\r") ||
+                           tempStr.equals("\t");
+            if (!flag) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
