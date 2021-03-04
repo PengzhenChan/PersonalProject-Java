@@ -28,10 +28,6 @@ public class WordCount {
         String outputFile = args[1];
 
         context = Lib.txtToString(inputFile);
-        if(context == null|| context.equals("")){
-            System.out.println("待读取文本内容为空！");
-            return;
-        }
 
         countChar = Lib.countChar(context);
         countWord = Lib.countWord(context);
@@ -55,7 +51,6 @@ public class WordCount {
             out.write(result);
             out.close();
         } catch (IOException e) {
-            System.out.println("写入文件失败！");
             e.printStackTrace();
         }
 

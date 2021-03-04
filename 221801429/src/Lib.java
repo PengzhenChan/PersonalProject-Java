@@ -1,5 +1,9 @@
-import java.io.File;
-import java.io.FileInputStream;
+import org.omg.IOP.Encoding;
+
+import java.io.*;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,14 +21,33 @@ public class Lib {
       参数：String 文件的的相对路径
       返回类型：String
       异常处理：IO异常
-     */
+
+    //另一种方法
     public static String txtToString(String filePath){
         File file = new File(filePath);
         String context = "";
         try{
             FileInputStream inputStream = new FileInputStream(file);
-            int lenth = inputStream.available();
-            byte[] buffer = new byte[lenth];
+            int length = inputStream.available();
+            byte[] buffer = new byte[length];
+            inputStream.read(buffer);
+            inputStream.close();
+            context = new String(buffer, "UTF-8");
+        } catch (Exception e){
+            e.printStackTrace();
+            System.out.println("读取文件失败！");
+            return null;
+        }
+        System.out.println(context);
+        return context;
+    }*/
+    public static String txtToString(String filePath) {
+        File file = new File(filePath);
+        String context = "";
+        try{
+            FileInputStream inputStream = new FileInputStream(file);
+            int length = inputStream.available();
+            byte[] buffer = new byte[length];
             inputStream.read(buffer);
             inputStream.close();
             context = new String(buffer, "UTF-8");
@@ -35,6 +58,7 @@ public class Lib {
         }
         return context;
     }
+
 
     /*
       功能：返回String文本字符数
