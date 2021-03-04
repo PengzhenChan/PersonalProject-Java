@@ -5,6 +5,8 @@ public class Lib {
     String fileName;
     File file = null;
     InputStream in = null;
+    String[] sortWords;
+    int[] sortCount;
 
     //读取文件内容
     public BufferedReader ReadFile(String fileName) {
@@ -106,7 +108,7 @@ public class Lib {
     }
 
     //统计单词出现的次数
-    public int WordsNum(BufferedReader bufferedReader) {
+    public void WordsNum(BufferedReader bufferedReader) {
         int one;
         String str = new String();
         int n = (int)WordsCount(bufferedReader);
@@ -114,7 +116,7 @@ public class Lib {
         int[] counts = new int [n];
         int j = 0;
 
-        for (int i ; i < n ; i++)
+        for (int i = 0; i < n ; i++)
             counts[i] = 0;
 
         try {
@@ -162,4 +164,37 @@ public class Lib {
     }
 
     //根据频数排序，字符串数组大小10，将最大10个存入
+    public void SortWords(String[] words , int[] counts) {
+        sortWords = new String [11];
+        sortCount = new int [11];
+        int max = 0;
+
+        for (int i = 0 ; i < counts.length ; i++) {
+            for (int j = i ; j<counts.length ; j++){
+                if (counts[i]<counts[j]){
+
+                    ChangInt(counts , i , j);
+                    ChangS(words , i , j);
+
+                }
+            }
+        }
+    }
+
+    //交换数组中元素位置,字符串
+    public String[] ChangS(String[] str , int i, int j) {
+        String tempS = new String ();
+        tempS = str[j];
+        str[j] = str[i];
+        return str;
+    }
+
+    //交换数组中元素位置，整型
+    public int[] ChangInt(int[] counts, int i , int j) {
+        int temp;
+        temp = counts[j];
+        counts[j] = counts[i];
+        counts[i] = temp;
+        return counts;
+    }
 }
