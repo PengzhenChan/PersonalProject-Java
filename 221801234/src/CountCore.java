@@ -85,7 +85,6 @@ public class CountCore {
 
     private void getAllDatas() {
         String s;
-        int cnt1 = 0;
         int cnt2 = 0;
         int cnt3=0;
         String[] s1;
@@ -96,9 +95,6 @@ public class CountCore {
                 cnt2 += s.length();
                 ++cnt2;
                 s=s.trim();
-                if (!"".equals(s)) {
-                    ++cnt1;
-                }
                 Matcher m;
                 if(s.length()>=4){
                     s1 = s.split("[^a-zA-Z0-9]");
@@ -115,12 +111,10 @@ public class CountCore {
                 --cnt2;
             }
             data.setCharacters(cnt2);
-            data.setLines(cnt1);
             data.setWords(cnt3);
         } catch (Exception ie) {
             System.out.println("file is't exist");
         }
-
     }
 
     public int getValidLines() {
@@ -140,8 +134,11 @@ public class CountCore {
                     flag=0;
                 }
             }
-            data.setLines(cnt+1);
-            return cnt+1;
+            if(flag==1){
+                cnt++;
+            }
+            data.setLines(cnt);
+            return cnt;
         } catch (Exception ie) {
             System.out.println("file is't exist");
         }
