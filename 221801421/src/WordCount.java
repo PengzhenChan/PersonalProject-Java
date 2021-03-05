@@ -1,9 +1,12 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class WordCount {
     private static String DIR = System.getProperty("user.dir");
@@ -16,9 +19,12 @@ public class WordCount {
     private long lineNum = 0L;
     private long wordNum = 0L;
 
+    //判断hashMap是否已经填充了
+    private boolean flag = false;
+
     private HashMap<String, Integer> hashMap = new HashMap<>();
 
-    public static String readFromFile(String filename){
+    public static String readFromFile(String filename) {
         BufferedReader reader = null;
         StringBuilder stringBuilder = null;
         int ch = 0;
@@ -43,7 +49,7 @@ public class WordCount {
         return stringBuilder.toString();
     }
 
-    public long charsCount(String str){
+    public long charsCount(String str) {
         long count = 0L;
 
         //题目中说明了没给汉字,所以其实直接用str.length()也行
@@ -57,7 +63,7 @@ public class WordCount {
         return count;
     }
 
-    public long wordsCount(String str){
+    public long wordsCount(String str) {
         long count = 0L;
 
         //为减少重复, 提高性能, 这里直接就在分割后直接存入map,否则词频统计时又要分割一遍单词.
@@ -75,33 +81,55 @@ public class WordCount {
                 count++;
             }
         }
+        flag = true;
 
         return count;
     }
 
-    public long linesCount(String str){
+    public long linesCount(String str) {
         long count = 0L;
 
         Matcher matcher = Pattern.compile(LINE_REGEX).matcher(str);
         while(matcher.find()){
             count++;
         }
+
         return count;
     }
 
-    public void testPrint(){
-        for(Map.Entry<String, Integer> entry : hashMap.entrySet()){
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
-        System.out.println("输出完毕");
+    public Map<String, Integer> getTopK(String str,int k) {
+        //可能有人不想要统计单词数, 直接就打算要词频Top, 会导致hashmap还没填充, 所以需要一个flag
+        if(!flag) wordsCount(str);
+
+        //利用java8的stream进行排序性能更好,这里使用了Map中自带的比较器, 然后使用thenComparing实现同频词字典序排列
+        Map<String, Integer> map = hashMap.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder())
+                        .thenComparing(Map.Entry.comparingByKey()))
+                .limit(k)
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        return map;
     }
 
-    public static void main(String[] args){
+    public void testPrint(String str) {
+        /*for(Map.Entry<String, Integer> entry : hashMap.entrySet()){
+            System.out.println(entry.getKey() + ":" + entry.getValue());
+        }
+        System.out.println("输出完毕");*/
+        Map<String, Integer> map = getTopK(str, 10);
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+            System.out.println(entry.getKey() + ":" + entry.getValue());
+        }
+
+    }
+
+    public static void main(String[] args) {
         WordCount wordCount = new WordCount();
         String str = readFromFile("input.txt");
         //System.out.println(wordCount.charsCount(str));
         //System.out.println(wordCount.linesCount(str));
-        System.out.println(wordCount.wordsCount(str));
-        wordCount.testPrint();
+        //System.out.println(wordCount.wordsCount(str));
+        wordCount.testPrint(str);
     }
 }
