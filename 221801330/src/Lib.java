@@ -139,7 +139,7 @@ public class Lib {
             }
             else {
                 if (WordJudge(word)) {
-                    word = word.toLowerCase();//改为全小写
+                    word = word.toLowerCase();
                     if (hash.containsKey(word)) {
                     	hash.put(word, hash.get(word) + 1);
                     }
@@ -150,7 +150,7 @@ public class Lib {
             }
         }
         if (WordJudge(word)) {
-            word = word.toLowerCase();//改为全小写
+            word = word.toLowerCase();
             if (hash.containsKey(word)) {
             	hash.put(word, hash.get(word) + 1);
             }
@@ -158,5 +158,32 @@ public class Lib {
             	hash.put(word, 1);
         }
         return hash;
+    }
+	
+        static void FileRead(File f1) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(f1));
+            String s = "";
+            for (s = br.readLine();s != null;s = br.readLine()) {
+            	lib.SetWordSum(WordSum(s));
+            	lib.SetLineSum();
+            	System.out.println(lib.GetLineSum());
+            	lib.SetWordFrequency(GetWordFrequency(s));
+            }
+            br.close();
+            return;
+        }
+        catch (FileNotFoundException e) {
+        	System.err.println("发生异常" + e);
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+        	System.err.println("发生异常" + e);
+            e.printStackTrace();
+        }
+    }
+
+    static Lib GetData() {
+        return lib;
     }
 }
