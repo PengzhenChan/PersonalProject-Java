@@ -31,7 +31,10 @@ public class tt{
 				{
 					lines++;			
 				}	
-			}			
+				characters += countCharacters(str);  //对字符统计数累加
+			}	
+			System.out.println(characters);
+			sb.append("characters:" + characters + "\n");
 			System.out.println(lines);
 			sb.append("lines:" + lines + "\n");
 			
@@ -48,5 +51,21 @@ public class tt{
 		long Time=endTime-startTime;
 		System.out.println("耗时:"+Time+"毫秒");
 	}   
+	
+	/**
+	 * 统计字符数
+	 * @param str
+	 * @return count
+	 */
+    public static int countCharacters(String str) 
+    {
+        int count = 0;
+        Pattern p = Pattern.compile("[\\x00-\\x7F]");
+        Matcher m = p.matcher(str);
+        while(m.find()){
+            count++;
+        }
+        return count;
+    }
 	
 }
