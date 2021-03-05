@@ -32,16 +32,16 @@ public class IOTool {
         OutputStreamWriter writer = new OutputStreamWriter(file,"UTF-8");
 
         //输出总字符数
-        String context ="characters:"+sumCharacter+System.getProperty("line.separator");
+        String context ="characters: "+sumCharacter+System.getProperty("line.separator");
         //输出有效单词数
-        context += "words:"+wordsNum+System.getProperty("line.separator");
+        context += "words: "+wordsNum+System.getProperty("line.separator");
         //输出有效行数
-        context += "lines:"+lines+System.getProperty("line.separator");
+        context += "lines: "+lines+System.getProperty("line.separator");
         //输出频次前10的单词数
         int num = 0;
         for(Map.Entry<String,Integer> mapping:list){
             num++;
-            context += mapping.getKey()+":"+mapping.getValue()+System.getProperty("line.separator");
+            context += mapping.getKey()+": "+mapping.getValue()+System.getProperty("line.separator");
             if (num == 10)
                 break;
         }
