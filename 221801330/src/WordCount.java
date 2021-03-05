@@ -3,18 +3,18 @@ import java.util.*;
 
 public class WordCount
 {
-    public static void main(String[] args){
-        File f1;
-        File f2;
-        if (args.length < 2) {
-            f1 = new File("F:/input.txt");
-            f2 = new File("F:/output.txt");
+	public static void main(String[] args){
+		File f1;
+		File f2;
+		if (args.length < 2) {
+            f1 = new File("input.txt");
+            f2 = new File("output.txt");
         }
-        else {
+		else {
             f1 = new File(args[0]);
             f2 = new File(args[1]);
         }
-        Lib lib = new Lib();
+		Lib lib = new Lib();
         Lib.CharSum(f1);
         Lib.FileRead(f1);
         lib = Lib.GetData();
@@ -39,10 +39,10 @@ public class WordCount
             bw.close();
         }
         catch (IOException e) {
-            System.err.println("发生异常" + e);
+        	System.err.println(" error: " + e);
             e.printStackTrace();
         }
         finally {
         }
-    }    
+	}
 }
