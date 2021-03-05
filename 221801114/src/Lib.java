@@ -47,7 +47,7 @@ public class Lib {
         String[] lineStrings = fileString.split("\n|\r\n");
         for (String lineString : lineStrings){
             String[] wordStrings = pattern.split(lineString);
-            for (String word:wordStrings){
+            for (String word : wordStrings){
                 word = word.toLowerCase();
                 if (!word.equals("") && judgeWords(word)){
                     Long count = hashMap.get(word);
@@ -81,7 +81,7 @@ public class Lib {
         });
         int count = 0;
         for(Map.Entry<String,Long> mapping:mappingList){
-            if (++count > 10){
+            if (++ count > 10){
                 break;
             }
             writeToFile(mapping.getKey() + ":" + mapping.getValue(), filePath);
