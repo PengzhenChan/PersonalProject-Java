@@ -10,8 +10,8 @@ public class WordCount {
 	static Writer char_writer;
 	public static void main(String[] args) throws Exception {
 		
-		File inputfile=new File("input.txt");
-		File outfile = new File("output.txt");
+		File inputfile=new File(args[0]);
+		File outfile = new File(args[1]);
 		if(!inputfile.exists()) {
 			inputfile.createNewFile();
 		}
