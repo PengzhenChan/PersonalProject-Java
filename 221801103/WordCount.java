@@ -7,7 +7,6 @@ public class WordCount
 		
 		if(args.length<2)
 		{
-			System.out.println("需要两个参数。");
 			return;
 		}
 		Lib lib=new Lib();
