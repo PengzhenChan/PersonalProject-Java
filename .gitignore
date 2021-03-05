@@ -6,3 +6,6 @@
 *.class
 221801432/ouput.txt
 221801432/tempWord
+*.jar
+*.txt
+221801432/test/WordCountTest.java
