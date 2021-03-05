@@ -26,11 +26,30 @@ public class tt{
 			reader = new BufferedReader(new FileReader(file));
 			StringBuffer sb = new StringBuffer();
 			String str = null;
+			HashMap<String, Integer> wList = new HashMap<String, Integer>();
 			while((str = reader.readLine())!=null){
 				if(!str.equals(""))
 				{
 					lines++;			
 				}	
+				Pattern p = Pattern.compile("[[a-z]{4}[0-9a-z]*]");
+		        Matcher m = p.matcher(str);
+		        if (m.find()){
+		        	sb.append(str);
+		        }
+		        else if (sb.length() != 0) 
+				{
+	                String theword = new String(sb);
+	                if (wList.containsKey(theword)) 
+	                {
+	                	wList.put(theword, wList.get(theword) + 1);
+	                }
+	                else 
+	                {
+	                	wList.put(theword, 1);
+	                }
+	                sb.delete(0,sb.length());
+	            }
 				characters += countCharacters(str);  //对字符统计数累加
 				word += countWords(str);  //对单词统计数累加
 			}	
