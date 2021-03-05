@@ -68,4 +68,29 @@ public class Lib {
 		});
 		return list;
 	}
+	
+	static int CharSum(File f) {
+            int charSum = 0;
+            try {
+                byte[] bytes = new byte[1024];
+                int num;
+                FileInputStream input = new FileInputStream(f);
+                while ((num = input.read(bytes, 0, bytes.length)) != - 1) {
+            	    charSum += num;
+                }
+                lib.SetCharSum(charSum);
+                input.close();
+            }
+            catch (FileNotFoundException e) {
+        	System.err.println("发生异常" + e);
+                e.printStackTrace();
+            }
+            catch (IOException e) {
+        	System.err.println("发生异常" + e);
+                e.printStackTrace();
+            }
+            finally {
+                return charSum;
+        }
+    }
 }
