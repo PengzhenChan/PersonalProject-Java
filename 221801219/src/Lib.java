@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class WordCountUtil {
+public class Lib {
     int charsNumber = 0;
     int wordNumber = 0;
     int lineNumber = 0;
@@ -15,7 +15,7 @@ public class WordCountUtil {
     String inputFilePath="";
     String outputFilePath="";
 
-    WordCountUtil(String inputPath,String outputPath)
+    Lib(String inputPath, String outputPath)
     {
         inputFilePath = inputPath;
         outputFilePath = outputPath;
@@ -29,21 +29,21 @@ public class WordCountUtil {
         File file = new File(inputFilePath);
         //存储文件内容
         StringBuilder fileContent = new StringBuilder();
+        charsNumber = 0;
         try {
             Reader reader = new InputStreamReader(new FileInputStream(file));
             int temp = -1;
             while ((temp = reader.read()) != -1) {
-                if (((char) temp) != '\r') {
-                    fileContent.append((char) temp);
-                    //不考虑汉字
-                    if(temp < 128) {
-                        charsNumber++;
-                    }
+                fileContent.append((char) temp);
+                //不考虑汉字
+                if(temp < 128) {
+                    charsNumber++;
                 }
             }
             content = fileContent.toString();
             reader.close();
         } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
@@ -59,7 +59,7 @@ public class WordCountUtil {
 
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
-
+        wordNumber = 0;
         // 现在创建 matcher 对象
         Matcher m = r.matcher(content);
         wordsCount = new HashMap<String, Integer>();
@@ -81,6 +81,7 @@ public class WordCountUtil {
 
     public void getValueLines()
     {
+        lineNumber = 0;
         Pattern linePattern = Pattern.compile("\\S+");
         Matcher matcher = linePattern.matcher(content);
         while (matcher.find()) {
@@ -107,6 +108,24 @@ public class WordCountUtil {
 
                 bw.write(entry.getKey()+": "+entry.getValue()+'\n');
             }
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void writeFileTest(String filePath, String testStr)
+    {
+        try {
+            File file = new File(filePath);
+
+            if (!file.exists()) {
+                System.out.println("Error!");
+            }
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(testStr);
             bw.close();
 
         } catch (IOException e) {
