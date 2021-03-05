@@ -4,13 +4,11 @@ import java.io.IOException;
 
 public class WordCount {
 	public static void main(String[] args) {
-		String filename1 = "C:/Users/zcdn/Desktop/input.txt";
-		int num1 = CharactersCount.charactersCount(filename1);
-		int num2 = WordsCount.wordsCount(filename1);
-		int num3 = LinesCount.linesCount(filename1);
+		int num1 = CharactersCount.charactersCount(args[0]);
+		int num2 = WordsCount.wordsCount(args[0]);
+		int num3 = LinesCount.linesCount(args[0]);
 		FrequentWordsCount.frequentWordsCount();
-		String filename2 = "output.txt";
-		File file = new File("C:/Users/zcdn/Desktop/" + filename2);
+		File file = new File(args[1]);
 		try {
 			if (!file.exists())
 				file.createNewFile();
