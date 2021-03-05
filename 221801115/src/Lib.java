@@ -13,7 +13,9 @@ import java.util.regex.Pattern;
 
 public class Lib
 {
+    //匹配单词的正则表达式
     private static final String REGEX = "(?<=[^a-zA-Z0-9])[a-zA-Z]{4}[a-zA-Z0-9]*";
+    //输入文件的路径
     private final String inputPath;
 
     public Lib(String inputPath)
@@ -21,6 +23,7 @@ public class Lib
         this.inputPath = inputPath;
     }
 
+    /* 统计文件的字符数 */
     public int countCharacters()
     {
         int characters = 0;
@@ -55,6 +58,7 @@ public class Lib
         return characters;
     }
 
+    /* 统计文件的单词总数 */
     public int countNumberOfWords()
     {
         int num = 0;
@@ -99,6 +103,7 @@ public class Lib
         return num;
     }
 
+    /* 统计文件的有效行数 */
     public int countLines()
     {
         int lines = 0;
@@ -137,6 +142,7 @@ public class Lib
         return lines;
     }
 
+    /* 统计单词频率并返回一个存储对应数据的ArrayList */
     public List<Map.Entry<String, Integer>> countWordFrequency()
     {
         Map<String, Integer> map = new HashMap<>();
@@ -169,7 +175,8 @@ public class Lib
                     map.put(word, 1);
                 }
             }
-
+            
+            //通过ArrayList构造函数把map.entrySet()转换成list
             list = new ArrayList<>(map.entrySet());
         }
         catch (IOException e)
@@ -192,6 +199,7 @@ public class Lib
         return list;
     }
 
+    /* 给单词按着频率优先，字典序其次的顺序排序 */
     public List<Map.Entry<String, Integer>> sortWords(List<Map.Entry<String, Integer>> list)
     {
         list.sort((a, b) -> {
@@ -208,13 +216,14 @@ public class Lib
         return list;
     }
 
+    /* 用迭代器得到一个存储十个单词及其频率的字符串并返回 */
     public String getSortedWordsAndFrequency() {
         StringBuilder tmp = new StringBuilder();
         List<Map.Entry<String, Integer>> list = sortWords(countWordFrequency());
         Iterator<Map.Entry<String, Integer>> iterator = list.iterator();
         Map.Entry<String, Integer> entry;
 
-        for (int i = 0; iterator.hasNext() && i < 10 ; i++)
+        for (int i = 0; iterator.hasNext() && i < 10; i++)
         {
             entry = iterator.next();
             tmp.append("\n").append(entry.getKey()).append(": ").append(entry.getValue());
@@ -223,6 +232,7 @@ public class Lib
         return tmp.toString();
     }
 
+    /* 写入文件 */
     public void writeFile(String outputPath)
     {
         BufferedWriter bw = null;
