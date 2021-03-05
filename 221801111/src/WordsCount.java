@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class WordsCount {
 	public static String[] words = new String[1000];//单词数组 
@@ -15,7 +16,13 @@ public class WordsCount {
 			String tempLine;
 			while ((tempLine = br.readLine()) != null) {
 				if (!tempLine.equals("")) {
-					String[] newStr = tempLine.split("\\s+|\\W+");//分割成数组
+					/*String[] newStr = tempLine.split("\\s+|\\W+");//分割成数组
+					for(String ss : newStr) {
+						if (isLetterDigit(ss)) {
+							str[cnt++] = ss;
+						}*/
+					Pattern pattern = Pattern.compile("\\s+|\\W+");
+					String[] newStr = pattern.split(tempLine);
 					for(String ss : newStr) {
 						if (isLetterDigit(ss)) {
 							str[cnt++] = ss;
@@ -40,7 +47,7 @@ public class WordsCount {
 	    return str.matches(regex);
 	}
 
-	private static boolean isWord(String str) {//判断字符串	是否为单词
+	private static boolean isWord(String str) {//判断字符串是否为单词
 		if (str != null&&str.length() >= 4) {//此处第一次写因为不知道要判断参数是否为空导致空指针异常，找了许多资料才明白
 			char ch1 = str.charAt(0);
 			char ch2 = str.charAt(1);
