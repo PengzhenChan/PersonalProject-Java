@@ -49,7 +49,7 @@ public class WordCount {
         return stringBuilder.toString();
     }
 
-    public long charsCount(String str) {
+    private long charsCount(String str) {
         long count = 0L;
 
         //题目中说明了没给汉字,所以其实直接用str.length()也行
@@ -63,7 +63,7 @@ public class WordCount {
         return count;
     }
 
-    public long wordsCount(String str) {
+    private long wordsCount(String str) {
         long count = 0L;
 
         //为减少重复, 提高性能, 这里直接就在分割后直接存入map,否则词频统计时又要分割一遍单词.
@@ -86,7 +86,7 @@ public class WordCount {
         return count;
     }
 
-    public long linesCount(String str) {
+    private long linesCount(String str) {
         long count = 0L;
 
         Matcher matcher = Pattern.compile(LINE_REGEX).matcher(str);
@@ -97,8 +97,8 @@ public class WordCount {
         return count;
     }
 
-    public Map<String, Integer> getTopK(String str,int k) {
-        //可能有人不想要统计单词数, 直接就打算要词频Top, 会导致hashmap还没填充, 所以需要一个flag
+    private Map<String, Integer> getTopK(String str,int k) {
+        //可能有人不想要统计单词数, 直接就打算要词频TopK, 会导致hashmap还没填充, 所以需要一个flag
         if(!flag) wordsCount(str);
 
         //利用java8的stream进行排序性能更好,这里使用了Map中自带的比较器, 然后使用thenComparing实现同频词字典序排列
@@ -121,15 +121,47 @@ public class WordCount {
         for(Map.Entry<String, Integer> entry : map.entrySet()){
             System.out.println(entry.getKey() + ":" + entry.getValue());
         }
-
     }
 
+    //将计算模块的调用统一用一个方法封装作为暴露给外界的api
+    public String getResult(String str, int k){
+        charNum = charsCount(str);
+        lineNum = linesCount(str);
+        wordNum = wordsCount(str);
+        Map<String, Integer> map = getTopK(str, k);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("characters: " + charNum + "\n")
+                .append("lines: " + lineNum + "\n")
+                .append("words: " + wordNum + "\n");
+
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+            stringBuilder.append(entry.getKey() + ": " + entry.getValue() + "\n");
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public void writeToFile(String filename, String str){
+        BufferedWriter writer = null;
+
+        try{
+            //FileOutputStream若没有目标文件则会自己创建, 没有FileNotFound异常
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(DIR + "\\" + filename), StandardCharsets.UTF_8));
+
+            writer.write(str);
+            writer.flush();
+            writer.close();
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    //文件的输入输出到时候就放在wordCount类里,Lib就当做纯粹的一个处理字符串的模块.
     public static void main(String[] args) {
         WordCount wordCount = new WordCount();
         String str = readFromFile("input.txt");
-        //System.out.println(wordCount.charsCount(str));
-        //System.out.println(wordCount.linesCount(str));
-        //System.out.println(wordCount.wordsCount(str));
-        wordCount.testPrint(str);
+        wordCount.writeToFile("output.txt", wordCount.getResult(str, 10));
     }
 }
