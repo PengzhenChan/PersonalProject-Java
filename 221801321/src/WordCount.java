@@ -1,8 +1,10 @@
+
 import java.io.File;
+import java.io.IOException;
 
 public class WordCount{
     //主函数
-    public static void main(String[] args){
+    public static void main(String[] args)throws IOException {
         if(args.length==0)
         {
             System.out.println("没有参数");
