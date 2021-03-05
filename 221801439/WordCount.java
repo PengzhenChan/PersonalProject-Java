@@ -50,7 +50,10 @@ public class tt{
 	                }
 	                sb.delete(0,sb.length());
 	            }
-		        List<Map.Entry<String, Integer>> words = new ArrayList<Map.Entry<String, Integer>>(
+		       characters += countCharacters(str);  //对字符统计数累加
+				word += countWords(str);  //对单词统计数累加	
+				} 
+			List<Map.Entry<String, Integer>> words = new ArrayList<Map.Entry<String, Integer>>(
 		                wList.entrySet());
 
 		        Collections.sort(words, new Comparator<Map.Entry<String, Integer>>() 
@@ -61,16 +64,27 @@ public class tt{
 		                return - (o1.getValue() - o2.getValue());
 		            }
 		        });
-				characters += countCharacters(str);  //对字符统计数累加
-				word += countWords(str);  //对单词统计数累加
 				
-			}	
 			System.out.println(characters);
 			sb.append("characters:" + characters + "\n");
 			System.out.println(lines);
 			sb.append("lines:" + lines + "\n");
 			System.out.println(word);
 			sb.append("word:" + word + "\n");
+			for(Map.Entry<String,Integer> node:words)
+			{
+				int k=0;
+				if(k < 10)
+				{
+					System.out.println(node.getKey() + ":" + node.getValue() + "\n");
+				    sb.append(node.getKey() + ":" + node.getValue() + "\n");
+				}
+				else 
+				{
+					break;
+				}
+				k++;
+			}
 			
 			reader.close();
 			FileWriter fw = new FileWriter("src/test/output.txt");  //写入文件
