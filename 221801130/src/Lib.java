@@ -52,18 +52,18 @@ public class Lib {
     }
 	
     public static List<HashMap.Entry<String, Integer>> getSortedList(Map<String, Integer> map) {
-         List<Map.Entry<String,Integer>> lstEntry = new ArrayList<>(map.entrySet());
-         List<Map.Entry<String,Integer>> list = new ArrayList<>();
-         Collections.sort(lstEntry,((o1, o2) -> {
-             if (o1.getValue().equals(o2.getValue())) {
-                 return o1.getKey().compareTo(o2.getKey());
-             } else {
-                 return o2.getValue().compareTo(o1.getValue());
-             }
-         }));
-         for (int i = 0; i < 10; i++) {
-             list.add(lstEntry.get(i));
-         }
-         return list;
-     }
+        List<Map.Entry<String,Integer>> lstEntry = new ArrayList<>(map.entrySet());
+        List<Map.Entry<String,Integer>> list = new ArrayList<>();
+        Collections.sort(lstEntry,((o1, o2) -> {
+            if (o1.getValue().equals(o2.getValue())) {
+                return o1.getKey().compareTo(o2.getKey());
+            } else {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        }));
+        for (int i = 0; i < 10; i++) {
+            list.add(lstEntry.get(i));
+        }
+        return list;
+    }
 }
