@@ -5,7 +5,7 @@ import java.util.Map;
 
 //主函数测试
 public class WordCount {
-    @SuppressWarnings("unchecked")
+
     public static void main(String[] args) throws IOException {
         //创建IO工具类
         IOTool io = new IOTool();
@@ -16,7 +16,7 @@ public class WordCount {
         int characters = count.characterCount(fileBuilder);
         int words = count.wordsCount(fileBuilder);
         int lines = count.invaluableLines(args[0]);
-        HashMap map = count.wordsSortCount(fileBuilder);
+        HashMap<String,Integer> map = count.wordsSortCount(fileBuilder);
         List<Map.Entry<String,Integer>> list = count.sortMap(map);
 
         //输出到文件
