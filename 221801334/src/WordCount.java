@@ -56,7 +56,7 @@ public class WordCount {
         // 输出文件不存在
         if (!outputFile.exists()){
             File root = outputFile.getParentFile();
-            if (!root.exists()){
+            if ((root != null) && (!root.exists())){
                 root.mkdirs();
             }
             try {
