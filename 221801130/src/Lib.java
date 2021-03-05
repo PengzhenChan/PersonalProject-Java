@@ -54,6 +54,7 @@ public class Lib {
     public static List<HashMap.Entry<String, Integer>> getSortedList(Map<String, Integer> map) {
         List<Map.Entry<String,Integer>> lstEntry = new ArrayList<>(map.entrySet());
         List<Map.Entry<String,Integer>> list = new ArrayList<>();
+        int count;
         Collections.sort(lstEntry,((o1, o2) -> {
             if (o1.getValue().equals(o2.getValue())) {
                 return o1.getKey().compareTo(o2.getKey());
@@ -61,7 +62,12 @@ public class Lib {
                 return o2.getValue().compareTo(o1.getValue());
             }
         }));
-        for (int i = 0; i < 10; i++) {
+        if (lstEntry.size() < 10) {
+            count = lstEntry.size();
+        } else {
+            count = 10;
+        }
+        for (int i = 0; i < count; i++) {
             list.add(lstEntry.get(i));
         }
         return list;
