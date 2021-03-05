@@ -23,7 +23,7 @@ public class CountChar {
             System.out.println("错误位于countChar方法,原因可能是文件流未能正确的关闭");
         }
 
-        String charCountStr = "characters:"+Integer.toString(charCount);
+        String charCountStr = "characters: "+Integer.toString(charCount);
         return charCountStr;
     }
 }

@@ -24,7 +24,7 @@ public class CountLine {
             System.out.println("错误位于countLine方法,原因可能是文件流未能正确的关闭");
         }
 
-        String lineCountStr = "\n"+"lines:"+Integer.toString(lineCount);
+        String lineCountStr = "\n"+"lines: "+Integer.toString(lineCount);
         return lineCountStr;
     }
 }

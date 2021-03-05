@@ -28,7 +28,7 @@ public class CountWord {
             System.out.println("错误位于countWord法,原因可能是文件流未能正确的关闭");
         }
 
-        String wordCountStr = "\n"+"words:"+Integer.toString(wordCount);
+        String wordCountStr = "\n"+"words: "+Integer.toString(wordCount);
         return wordCountStr;
     }
 }

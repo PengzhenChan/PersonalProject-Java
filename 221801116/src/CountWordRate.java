@@ -48,9 +48,9 @@ public class CountWordRate {
             if(i>mapList.size()-1)
                 break;
             if(mostWord==null){
-                mostWord = "\n"+mapList.get(i).toString().replace('=',':');
+                mostWord = "\n"+mapList.get(i).toString().replace("=",": ");
             }else{
-                mostWord += "\n"+mapList.get(i).toString().replace('=',':');
+                mostWord += "\n"+mapList.get(i).toString().replace("=",": ");
             }
         }
 
