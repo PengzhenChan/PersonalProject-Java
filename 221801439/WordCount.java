@@ -20,7 +20,7 @@ public class WordCount{
 		int characters = 0;
 		int word = 0;
 		long startTime = System.currentTimeMillis();
-		File file = new File("src/test/input.txt");
+		File file = new File(args[0]);
 		BufferedReader reader = null;
 		try{
 			InputStreamReader read = new InputStreamReader( new FileInputStream(file),"utf-8");
@@ -98,7 +98,7 @@ public class WordCount{
 			}
 			
 			reader.close();
-			FileWriter fw = new FileWriter("src/test/output.txt");  //写入文件
+			FileWriter fw = new FileWriter(args[1]);  //写入文件
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(sb.toString());
 			bw.close();
