@@ -6,28 +6,23 @@ import java.io.IOException;
 public class WordCount{
     int charsNum, wordsNum, linesNum;
     String topsStr = "";
-    BufferedReader br = null;
-    String intput, output;
-
-    public WordCount(String input, String output){
-        this.intput = input;
-        this.output = output;
-        br = Lib.FileIOUtil.readFile(input);
-    }
-
-
 
     public static void main(String[] args) {
         String inputPath = args[0];
         String outputPath = args[1];
 
 
-        WordCount wordCount = new WordCount(args[0],args[1]);
+        WordCount wordCount = new WordCount();
         Long startTime = System.currentTimeMillis();
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = Lib.FileIOUtil.readFile(inputPath);
         Lib.TextEditor textEditor = new Lib.TextEditor(bufferedReader);
 
+//        try {
+//            Lib.FileIOUtil.bigDateTest();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         textEditor.readString();
 
         Thread charThread, wordsThread, topThread;
@@ -42,9 +37,9 @@ public class WordCount{
             @Override
             public void run() {
 //                wordCount.wordsNum = textEditor.countWords();
-//                wordCount.linesNum = textEditor.countLines();
                 wordCount.wordsNum = Lib.Core.getWordsNum(textEditor);
-                wordCount.linesNum = Lib.Core.getLinesNum(textEditor);
+                wordCount.linesNum = textEditor.countLines();
+//                wordCount.linesNum = Lib.Core.getLinesNum(textEditor);
             }
         });
         topThread = new Thread(new Runnable() {

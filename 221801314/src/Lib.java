@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lib {
-
     //文件io工具类
     public static class FileIOUtil {
         static InputStream input = null;
@@ -68,9 +67,10 @@ public class Lib {
     }
 
 
+    //核心接口类
     public static class Core {
         /**
-         * @Description
+         * @Description 统计字符数
          * @Author Lvv
          * @Date 2021/3/4 10:58
          * @Param [te]
@@ -80,29 +80,38 @@ public class Lib {
             return te.countAscii();
         }
 
+        /**
+         * @Description 统计单词数
+         * @Author Lvv
+         * @Date 2021/3/4 23:23
+         * @Param [te]
+         * @return int
+         **/
         public static int getWordsNum(TextEditor te) {
             return te.countWords();
         }
 
+        /**
+         * @Description 统计Top10单词
+         * @Author Lvv
+         * @Date 2021/3/4 23:24
+         * @Param [te]
+         * @return java.lang.String
+         **/
         public static String getTopWords(TextEditor te) {
             return te.countTopWords();
-        }
-
-        public static int getLinesNum(TextEditor te) {
-            te.countWords();
-            return te.countLines();
         }
     }
 
 
-    //String处理类
+    //文件String处理类
     public static class TextEditor {
         BufferedReader reader = null;
         int lines = 0;
         List<String> strings = new ArrayList<>();
         static final int TOP_NUM = 10;
-        HashMap<String,Integer> words = new HashMap<String, Integer>();
-        List<Map.Entry<String,Integer>> list = new ArrayList<>();
+        HashMap<String, Integer> words = new HashMap<String, Integer>();
+        List<Map.Entry<String, Integer>> list = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
         public TextEditor(BufferedReader reader) {
             this.reader = reader;
