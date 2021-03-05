@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CountWord {
+public class Lib {
     String inputFileName;
     String outputFileName;
     Map<String,Integer> wordMap;
@@ -13,7 +13,7 @@ public class CountWord {
     int char_count;
     int word_count;
     int rows_count;
-    CountWord(String inputFileName,String outputFileName) throws IOException {
+    Lib(String inputFileName, String outputFileName) throws IOException {
         this.inputFileName = inputFileName;
         this.outputFileName = outputFileName;
         wordMap = new HashMap<>();
@@ -39,7 +39,6 @@ public class CountWord {
                 str = str.replaceAll("\t"," ");
                 count+=str.length();
                 count+=2;
-                System.out.println(str.length()+2);
             }
             if (!s.equals("")){
                 count-=2;
@@ -58,19 +57,26 @@ public class CountWord {
     void CalWordCount(){
 /*        Charset c = Charset.forName("UTF-8");*/
         ArrayList<String> arrayList = new ArrayList<>();
+        int count = 0;
         try {
             FileReader fileReader = new FileReader(inputFileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str;
             while ((str = bufferedReader.readLine()) != null) {
                 arrayList.add(str);
+                String[] parts = str.split("\\W");
+                for (int i = 0;i<parts.length;i++){
+                    if (ifTrueWold(parts[i])){
+                        count++;
+                    }
+                }
             }
             bufferedReader.close();
             fileReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int count=0;
+/*        int count=0;
         String[] strArrayTrue = (String[]) arrayList.toArray(new String[0]);
         for(String str : strArrayTrue) {
             String[] parts=str.split("\\W");
@@ -79,9 +85,8 @@ public class CountWord {
                     count++;
                 }
             }
-        }
+        }*/
         word_count=count;
-        System.out.println(word_count);
     }
     Boolean ifTrueWold(String wold){
         String regex = "^[a-zA-Z]{4,}([a-zA-Z0-9])*";
@@ -138,7 +143,6 @@ public class CountWord {
                 }
                 else {
                     return stringIntegerEntry.getKey().compareTo(t1.getKey());
-/*                    return t1.getKey().compareTo(stringIntegerEntry.getKey());*/
                 }
             }
         });
