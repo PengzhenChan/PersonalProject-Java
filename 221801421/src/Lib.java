@@ -130,8 +130,8 @@ public class Lib {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("characters: " + charNum + "\n")
-                .append("lines: " + lineNum + "\n")
-                .append("words: " + wordNum + "\n");
+                .append("words: " + wordNum + "\n")
+                .append("lines: " + lineNum + "\n");
         for(Map.Entry<String, Integer> entry : map.entrySet()){
             stringBuilder.append(entry.getKey() + ": " + entry.getValue() + "\n");
         }
