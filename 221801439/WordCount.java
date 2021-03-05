@@ -50,8 +50,20 @@ public class tt{
 	                }
 	                sb.delete(0,sb.length());
 	            }
+		        List<Map.Entry<String, Integer>> words = new ArrayList<Map.Entry<String, Integer>>(
+		                wList.entrySet());
+
+		        Collections.sort(words, new Comparator<Map.Entry<String, Integer>>() 
+		        {
+		            @Override
+		            public int compare(Entry<String, Integer> o1,Entry<String, Integer> o2)
+		            {
+		                return - (o1.getValue() - o2.getValue());
+		            }
+		        });
 				characters += countCharacters(str);  //对字符统计数累加
 				word += countWords(str);  //对单词统计数累加
+				
 			}	
 			System.out.println(characters);
 			sb.append("characters:" + characters + "\n");
