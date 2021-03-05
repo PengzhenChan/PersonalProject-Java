@@ -111,15 +111,16 @@ public class Lib
         try
         {
             br = new BufferedReader(new FileReader(inputPath));
-            String tmp;
+            int tmp;
+            String str = "";
 
-            while ((tmp = br.readLine()) != null)
+            while ((tmp = br.read()) != -1)
             {
-                if (!tmp.trim().equals(""))
-                {
-                    lines++;
-                }
+                str += String.valueOf((char)tmp);
             }
+            
+            String[] texts = str.split("\\\\n");
+            lines = texts.length;
 
         }
         catch (IOException e)
