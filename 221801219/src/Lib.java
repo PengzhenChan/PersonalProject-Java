@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Lib {
     //统计字符数
@@ -41,6 +42,7 @@ public class Lib {
         charsNumber = 0;
         try {
             Reader reader = new InputStreamReader(new FileInputStream(file));
+            //存储读入字符
             int temp = -1;
             while ((temp = reader.read()) != -1) {
                 fileContent.append((char) temp);
@@ -53,6 +55,8 @@ public class Lib {
             reader.close();
         } catch (Exception e) {
             System.out.print("e.getMessage()");
+            System.out.print("发生错误，程序关闭。。。");
+            System.exit(0);
         }
     }
 
@@ -67,6 +71,7 @@ public class Lib {
 
         wordNumber = 0;
         wordsCount = new HashMap<String, Integer>();
+        //存储小写后的单词
         String temp;
         while (m.find()) {
             wordNumber++;
@@ -75,7 +80,7 @@ public class Lib {
             //若没有则添加，若有则加一
             wordsCount.merge(temp, 1, Integer::sum);
         }
-        //Stream操作
+        //先进行按值排序，再按键的大小排序
         wordsCount = wordsCount.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()
                         .thenComparing(Map.Entry.comparingByKey()))
@@ -109,6 +114,7 @@ public class Lib {
         try {
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
+            //输出统计数据
             bw.write("characters: " + charsNumber + '\n'
             + "words: " + wordNumber + '\n'
             + "lines: " + lineNumber + '\n');
@@ -118,6 +124,8 @@ public class Lib {
             bw.close();
         } catch (IOException e) {
             System.out.print(e.getMessage());
+            System.out.print("发生错误，程序关闭。。。");
+            System.exit(0);
         }
     }
 }
