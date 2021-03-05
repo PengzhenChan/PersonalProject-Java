@@ -6,12 +6,18 @@ public class WordCount
 
 	public static void main(String[] args) throws IOException 
 	{		
+		
+		if(args.length != 2)
+        {
+            System.out.print("程序只接受两个参数");
+            return;  //退出程序
+        }
+        
+		
 		//定义所需数据结构
-		Scanner in = new Scanner(System.in);
-		String fileString = in.nextLine();
-		String [] total = fileString.split("[\\s+]");
-		String infile = total[0].toString();
-		String outfile=total[1].toString();
+
+		String infile = args[0];
+		String outfile = args[1]; 
 		FileDeal fd = new FileDeal();
 		String[] wFreq;
 		List wordFreq;
@@ -33,6 +39,5 @@ public class WordCount
 		}
 		System.out.println(w);
 		fd.WriteToFile(w,outfile);
-		in.close();
 	}
 }

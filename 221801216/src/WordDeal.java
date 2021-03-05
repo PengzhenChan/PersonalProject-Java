@@ -73,7 +73,7 @@ public class WordDeal
 	public int getLineCount() 
 	{ 
 		//将每一行分开放入一个字符串数组
-		String[] line = content.split("\n"); 
+		String[] line = content.split("\r\n"); 
 		// 找出无效行，统计有效行
 		for (int i = 0; i < line.length; i++) 
 		{ 
@@ -154,7 +154,7 @@ public class WordDeal
 			arr = new String[len];
 			for (Map.Entry<String, Integer> m : list) 
 			{
-				arr[i] = "<" + m.getKey() + ">:" + m.getValue();
+				arr[i] = m.getKey() + ":" + m.getValue();
 				i++;
 			}
 		} 
@@ -165,7 +165,7 @@ public class WordDeal
 			{
 				if (i == 10)
 					break;
-				arr[i] = "<" + m.getKey() + ">:" + m.getValue();
+				arr[i] =  m.getKey() + ":" + m.getValue();
 				i++;
 			}
 		}

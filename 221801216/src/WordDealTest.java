@@ -45,13 +45,17 @@ public class WordDealTest
 	{
 		String text1 = "";
 		String str[]={"word1","word2","file","你好","123file","file123","fil123"};
-		for(int i=0;i<str.length;i++)
+		//测试大文本数据
+		for(int j=0;j<10000;j++)
 		{
-			text1+=str[i]+" ";
+			for(int i=0;i<str.length;i++)
+			{
+				text1+=str[i]+" ";
+			}
 		}
 		WordDeal wd1 = new WordDeal(text1);
 		int wn1 = wd1.getWordCount();
-		assertEquals(4, wn1);
+		assertEquals(40000, wn1);
 	}
 
 
@@ -59,7 +63,7 @@ public class WordDealTest
 	@Test
 	public void testGetLineCount() throws IOException
 	{
-		String text1="abcd\n222\n\n\n\n3123\n\n";
+		String text1="abcd\r\n222\r\n\r\n\r\n\r\n3123\r\n\r\n";
 		WordDeal wd1 = new WordDeal(text1);
 	    int wn2 = wd1.getLineCount();
 	    assertEquals(3, wn2);
@@ -80,7 +84,6 @@ public class WordDealTest
 		List wf1 = wd1.getWordFreq();
 		String[] s1 = wd1.ListToArray(wf1);
 	}
-	
 	
 	
 }
