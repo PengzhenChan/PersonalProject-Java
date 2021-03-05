@@ -17,4 +17,15 @@ public class Lib {
     private String outputFile;
     private HashMap<String, Integer> map = new HashMap<>();       //使用map键值对来保存单词和频率
     private List<Map.Entry<String,Integer>> list;
+
+    Lib (String inputFile,String outputFile) {
+
+        this.countChar = 0;
+        this.countWord = 0;
+        this.countLine = 0;
+        this.outputFile = outputFile;
+        this.inputFile = inputFile;
+        List<Map.Entry<String,Integer>> list = null;
+    }
+
 }
