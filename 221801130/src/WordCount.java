@@ -2,18 +2,21 @@ import java.io.*;
 import java.util.*;
 
 public class WordCount {
-    private static int countChar = 0;
-    private static int countWord = 0;
-    private static int countLine = 0;
+    private static int countChars = 0;
+    private static int countWords = 0;
+    private static int countLines = 0;
     private static Map<String,Integer> map;
+    private static List<Map.Entry<String,Integer>> lstEntry; 
     private String text;
 	
     public WordCount(String fileName) throws IOException {
         map = new HashMap<String, Integer>();
         text = readFile(fileName);
-        countChar = Lib.countChar(text);
-        countWord = Lib.countWords(text, map);
-        countLine = Lib.countLines(text);
+        countChars = Lib.countChars(text);
+        countWords = Lib.countWords(text, map);
+        countLines = Lib.countLines(text);
+	lstEntry = new ArrayList<>(map.entrySet());
+	lstEntry=Lib.getSortedList(map);
     }
 
     public static void main(String[] args) throws IOException {
@@ -44,20 +47,11 @@ public class WordCount {
 	}
 
     public static void writeFile(String Path) throws IOException {
-        List<Map.Entry<String,Integer>> lstEntry = new ArrayList<>(map.entrySet());
-	lstEntry=Lib.getSortedList(map);
-	Iterator<Map.Entry<String,Integer>> iter = lstEntry.iterator();
-	int num = 0;
 	BufferedWriter writer = new BufferedWriter(new FileWriter(Path));
-	StringBuilder str = new StringBuilder("characters: " + countChar + '\n' + "words: " + countWord + '\n'
-	             + "lines: " + countLine + '\n');
-	while (iter.hasNext()) {
-	    Map.Entry<String,Integer> m = (Map.Entry<String,Integer>) iter.next();
-	    str.append(m.getKey()).append(": ").append(m.getValue()).append("\n");
-	    num ++;
-	    if (num == 10)
-	        break;
-	}
+	StringBuilder str = new StringBuilder("characters: " + countChars + '\n' + "words: " + countWords + '\n'
+	               + "lines: " + countLines + '\n');
+	for(Map.Entry<String, Integer> m:lstEntry)
+            str.append(m.getKey()).append(": ").append(m.getValue()).append("\n");
 	writer.write(str.toString());
 	writer.close();
     }
