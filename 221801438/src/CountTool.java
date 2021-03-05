@@ -60,6 +60,10 @@ public class CountTool {
                 sumLines--;
             }
         }
+
+        //关闭文件流
+        file.close();
+
         return sumLines;
     }
 
@@ -101,6 +105,7 @@ public class CountTool {
                 flag = false;
             }
         }
+
         return map;
     }
 
