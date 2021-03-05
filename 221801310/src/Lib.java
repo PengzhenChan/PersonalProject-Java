@@ -7,7 +7,8 @@ import java.util.regex.Pattern;
 /*读取目标文件中的内容 存放到String数组中*/
 public class Lib {
     public static long wordNum;
-    final static int BUFF_SIZE = 0x1000000;
+    static final int BUFF_SIZE = 0x1000000;
+    static final char ofLow = 1<<5;
 
     /***文件读取
     * @Description: 字节流读取文件
@@ -62,12 +63,24 @@ public class Lib {
         return text.length();
     }
 
-    public static int countLine(String text){
-        int num = 0;
-        String[] lines = text.split("\r\n|\r|\n");
-
-        for(int i=0; i<lines.length; i++){
-            if (!lines[i].trim().isEmpty()){
+//    public static long countLine(String text){
+//        int num = 0;
+//        String[] lines = text.split("\r\n|\r|\n");
+//
+//        for(int i=0; i<lines.length; i++){
+//            if (!lines[i].trim().isEmpty()){
+//                num++;
+//            }
+//        }
+//        return num;
+//    }
+    public static long countLine(String text){
+        long num=0;
+        String regex = "(.*)(\\s)";
+        Matcher matcher = regexUtils(regex, text);
+        while (matcher.find()){
+            String tmp = matcher.group(1);
+            if(!tmp.trim().isEmpty()){
                 num++;
             }
         }
@@ -105,10 +118,9 @@ public class Lib {
      */
     public static HashMap<String, Integer> findLegal(String text){
         wordNum = 0;
-        text = " "+text.toLowerCase();
+        text = " " + toLowerStr(text);
         String regex = "([^a-z0-9])([a-z]{4}[a-z0-9]*)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = regexUtils(regex, text);
         HashMap<String, Integer> legalWords = new HashMap<String, Integer>();
 
         //直接把单词和出现频率一起做了，放到hashMap里
@@ -136,5 +148,29 @@ public class Lib {
     public static long countWordNum(){
         return wordNum;
     }
+
+    public static Matcher regexUtils(String regex, String text){
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        return matcher;
+    }
+
+
+
+    public static String toLowerStr(String str){
+        char[] charArray = str.toCharArray();
+        for(int i=0; i<charArray.length; i++){
+            char tmp = charArray[i];
+            if(tmp>='A' && tmp<='Z'){
+                charArray[i] = toLowerChar(tmp);
+            }
+        }
+        return new String(charArray, 0, charArray.length);
+    }
+
+    private static char toLowerChar(char tmp) {
+        return (char) (tmp|ofLow);
+    }
+
 
 }

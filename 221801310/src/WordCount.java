@@ -20,7 +20,7 @@ public class WordCount{
 
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         FutureTask<HashMap<String, Integer>> futureTask1;
-        FutureTask<Integer> futureTask2;
+        FutureTask<Long> futureTask2;
 
         String content;     //文本内容
         long asciiCharNum;
@@ -49,16 +49,16 @@ public class WordCount{
         futureTask1 = new FutureTask<HashMap<String, Integer>>(callable1);
         new Thread(futureTask1).start();     //创建新线程
         //线程2
-        Callable<Integer> callable2 = new Callable<Integer>() {
-            Integer line;
+        Callable<Long> callable2 = new Callable<Long>() {
+            Long line;
             @Override
-            public Integer call() {
+            public Long call() {
                 line = Lib.countLine(content);
                 countDownLatch.countDown();
                 return line;
             }
         };
-        futureTask2 = new FutureTask<Integer>(callable2);
+        futureTask2 = new FutureTask<Long>(callable2);
         new Thread(futureTask2).start();
 
         try {
