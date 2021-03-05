@@ -60,7 +60,7 @@ public class tt{
     public static int countCharacters(String str) 
     {
         int count = 0;
-        Pattern p = Pattern.compile("[\\x00-\\x7F]");
+        Pattern p = Pattern.compile("[&nbsp;-~]");
         Matcher m = p.matcher(str);
         while(m.find()){
             count++;
