@@ -42,7 +42,11 @@ public class WordCount{
 			while((tchar = read.read()) != -1)
 			{
 				char words = (char) tchar;
-				if ((words >= 'a' && words <= 'z')||(words >= 'A' && words <= 'Z')) 
+				if((words >= 'A' && words <= 'Z')) 
+				{
+					words += 32;
+				}
+				if ((words >= 'a' && words <= 'z')) 
 				{
 	               sb.append(words);
 	            } 
