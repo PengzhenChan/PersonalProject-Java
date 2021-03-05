@@ -35,6 +35,11 @@ public class WordCount {
         return stringBuilder.toString();
     }
 
+    /**
+     * 将字符串写入指定文件
+     * @param filename 要写入的文件名，要求与该文件同目录
+     * @param str 要写入的字符串
+     */
     public static void writeToFile(String filename, String str) {
         BufferedWriter writer = null;
 
@@ -52,10 +57,8 @@ public class WordCount {
     }
 
     public static void main(String[] args) {
-        //String str = readFromFile(args[0]);
-        String str = readFromFile("input.txt");
+        String str = readFromFile(args[0]);
         Lib lib = new Lib(str);
-        //writeToFile(args[1], lib.getResult(10));
-        writeToFile("output.txt", lib.getResult(10));
+        writeToFile(args[1], lib.getResult(10));
     }
 }
