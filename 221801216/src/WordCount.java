@@ -32,7 +32,7 @@ public class WordCount
 		wordFreq = wd.getWordFreq();
 		
 		wFreq = wd.ListToArray(wordFreq);
-		String w = "characters:"+charNum+ "\n" +"words:"+ wordCount + "\n" + "lines:"+validLine + "\n";
+		String w = "characters: "+charNum+ "\n" +"words: "+ wordCount + "\n" + "lines: "+validLine + "\n";
 		for (int i = 0; i < wFreq.length; i++) 
 		{
 			w = w + wFreq[i] + "\n";

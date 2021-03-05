@@ -165,7 +165,7 @@ public class WordDeal
 			{
 				if (i == 10)
 					break;
-				arr[i] =  m.getKey() + ":" + m.getValue();
+				arr[i] =  m.getKey() + ": " + m.getValue();
 				i++;
 			}
 		}
