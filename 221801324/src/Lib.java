@@ -148,7 +148,21 @@ public class Lib
     {
         out.close();
     }
-    
+
+    void writeFile() throws IOException
+    {    //最终各类结果输出函数
+        getout();
+        StringBuilder str = new StringBuilder();
+        str.append("characters: "+CountChar+"\n" + "words: "+CountWord+"\n" +"lines: "+CountWord+"\n");
+
+        for(int i = 0;i<(list.size()<10 ? list.size():10);i++)
+        {
+            str.append(list.get(i).getKey()+": "+list.get(i).getValue()+"\n");
+        }
+        out.write(str.toString());
+        out.flush();
+        Closeout();  
+    }
 
 
 }
