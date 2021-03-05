@@ -1,5 +1,4 @@
 import java.io.*;
-import java.nio.Buffer;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,12 +21,21 @@ public class Lib {
                 //利用缓冲区提升读取性能
                 BufferedReader br = new BufferedReader(fr);
                 LineNumberReader lnr = new LineNumberReader(br);
-                String str;
-                while ((str = lnr.readLine()) != null)
+                StringBuilder str = new StringBuilder(10);
+                int ts;
+                while ((ts = lnr.read()) != -1)
                 {
+
                     //统计包含非空白字符的行
-                    if (!(isBlankString(str)))
+                    if ((char)ts=='\n'&&!(isBlankString(str.toString())))
+                    {
                         lineNum++;
+                        str=new StringBuilder(10);
+                    }
+                    else
+                    {
+                        str.append(ts);
+                    }
                 }
             } catch (FileNotFoundException e)
             {
@@ -61,6 +69,7 @@ public class Lib {
     {
         Map<String,Integer> map = getMapWordNum(file,inputStream);
         List<Map.Entry<String,Integer>> list = sortMapByValue(map);
+//        Map<String,Integer> sortMap = sortMapByValueWithTreeMap(map);
         StringBuilder str = new StringBuilder();
         int total = 0,index = 0;
 
@@ -89,7 +98,7 @@ public class Lib {
      */
     private Map<String,Integer> getMapWordNum(File file,FileInputStream inputStream)
     {
-        Map<String,Integer> map = new HashMap<>();
+        Map<String,Integer> map = new TreeMap<>();
         String s=new String(readFile(file));
         String[] strs = s.split("[^a-zA-Z0-9]");
         Pattern pattern = Pattern.compile("^[a-z]{4}[a-z0-9]*");
@@ -172,6 +181,21 @@ public class Lib {
         return list;
     }
 
+    /** 
+    * @Description:  对treeMap进行排序
+    * @Param: [map] 
+    * @return: java.util.Map<java.lang.String,java.lang.Integer> 
+    * @Date: 2021/3/5 
+    */
+    private Map<String,Integer> sortMapByValueWithTreeMap(Map<String,Integer> map)
+    {
+        MyComParator mc=new MyComParator(map);
+        Map<String,Integer> sortMap=new TreeMap<>(mc);
+        sortMap.putAll(map);
+
+        return sortMap;
+    }
+
     /**
     * @Description:   判断字符串是否为空白字符串
     * @Param: [str]
@@ -183,4 +207,31 @@ public class Lib {
         return str==null||str.trim().isEmpty();
     }
 
+    
+    /** 
+    * @Description: 比较器
+    * @Author: 曹鑫
+    * @Date: 2021/3/5 
+    */
+    class MyComParator implements Comparator<String>
+    {
+
+        private Map<String, Integer> map;
+
+
+        public MyComParator(Map<String, Integer> base) {
+            this.map = base;
+        }
+
+        @Override
+        public int compare(String o1, String o2)
+        {
+            Integer v1 = map.get(o1),v2 = map.get(o2);
+            if (v1 == v2)
+            {
+                return o1.compareTo(o2);
+            }
+            return v2.compareTo(v1);
+        }
+    }
 }
