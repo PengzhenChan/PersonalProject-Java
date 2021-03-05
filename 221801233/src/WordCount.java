@@ -10,6 +10,7 @@ public class WordCount {
     BufferedWriter bw;
     Lib lib;
     public  static void main(String args[])throws Exception{
+
         if(args.length!=2){
             System.out.println("Required ARGS NUM Error");
         }
@@ -18,21 +19,27 @@ public class WordCount {
         }
     }
     public WordCount(String a,String b) throws IOException {
+        long start = System.currentTimeMillis();
         outfiletxt = b;
         infiletxt = a;
         //infile="inputFile.txt";
         run();
+        long end = System.currentTimeMillis();
+        //System.out.println(end-start);
     }
     public void in() throws IOException {
         try {
             StringBuilder stringBuilder=new StringBuilder();
             String lineword="";
             br = new BufferedReader(new FileReader(infile));
-            while((lineword=br.readLine())!=null){
-                stringBuilder.append(lineword);
-                stringBuilder.append('\n');
+            while((lineword=br.readLine())!=null&&stringBuilder.length()<10000000){
+                if(!lineword.trim().isEmpty()) {
+                    stringBuilder.append(lineword);
+                    stringBuilder.append('\n');
+                }
             }
             str=stringBuilder.toString();
+
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -43,9 +50,9 @@ public class WordCount {
     public void out() throws IOException {
         try{
             bw=new BufferedWriter(new FileWriter(outfile));
-            bw.write("characters:"+lib.getChars()+"\n");
-            bw.write("Words:"+lib.getWordsNum()+"\n");
-            bw.write("lines:"+lib.getLines()+"\n");
+            bw.write("characters: "+lib.getChars()+"\n");
+            bw.write("words: "+lib.getWordsNum()+"\n");
+            bw.write("lines: "+lib.getLines()+"\n");
             bw.write(lib.getTopWords());
         }catch (IOException e){
             e.printStackTrace();
