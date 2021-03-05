@@ -69,6 +69,8 @@ public class Lib {
 		return list;
 	}
 	
+	static Lib lib = new Lib();
+	
 	static int CharSum(File f) {
             int charSum = 0;
             try {
@@ -126,4 +128,35 @@ public class Lib {
         }
             return wordSum;
         }
+	
+	static HashMap<String, Integer> GetWordFrequency(String s) {
+        String word = "";
+        HashMap<String, Integer> hash = new HashMap<String, Integer>();
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
+                    || Character.isLowerCase(s.charAt(i))) {
+                word += s.charAt(i);
+            }
+            else {
+                if (WordJudge(word)) {
+                    word = word.toLowerCase();//改为全小写
+                    if (hash.containsKey(word)) {
+                    	hash.put(word, hash.get(word) + 1);
+                    }
+                    else
+                        hash.put(word, 1);
+                }
+                word = "";
+            }
+        }
+        if (WordJudge(word)) {
+            word = word.toLowerCase();//改为全小写
+            if (hash.containsKey(word)) {
+            	hash.put(word, hash.get(word) + 1);
+            }
+            else
+            	hash.put(word, 1);
+        }
+        return hash;
+    }
 }
