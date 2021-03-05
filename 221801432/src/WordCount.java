@@ -22,6 +22,7 @@ class MyWords {
         content = str;
         frequency = 1;
     }
+
 }
 
 public class WordCount {

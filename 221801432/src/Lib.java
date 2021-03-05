@@ -13,7 +13,7 @@ public class Lib {
                 i++;
                 b = inputFile.read();
             }
-            String str = "characters:" + i +"\n";
+            String str = "characters: " + i +"\n";
             outputFile.write(str);
             inputFile.close();
             outputFile.close();
@@ -69,7 +69,7 @@ public class Lib {
                 }
             }
 
-            writer.write("words:" + numOfWords + "\n");
+            writer.write("words: " + numOfWords + "\n");
             reader.close();
             writer.close();
 
@@ -95,7 +95,7 @@ public class Lib {
                     lineStr = reader.readLine();
                 }
             }
-            writer.write("lines:" + numOfLines + "\n");
+            writer.write("lines: " + numOfLines + "\n");
             reader.close();
             writer.close();
         } catch (IOException e) {
@@ -129,7 +129,7 @@ public class Lib {
                 }
             }
             for (int i=0; i<10; i++) {
-                writer.write(myWordsArrayList.get(i).getContent() + ":" +
+                writer.write(myWordsArrayList.get(i).getContent() + ": " +
                         myWordsArrayList.get(i).getFrequency() + "\n");
                 if (i == myWordsArrayList.size()-1) {
                     break;
