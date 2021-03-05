@@ -1,7 +1,7 @@
 package test;
 
 import java.io.*;
-import java.util.regex.Matcher;
+import java.util.regex.Matcher; //正则表达式
 import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,14 +32,21 @@ public class tt{
 					lines++;			
 				}	
 			}			
-			System.out.println(lines)；			
+			System.out.println(lines);
+			sb.append("lines:" + lines + "\n");
+			
 			reader.close();
+			FileWriter fw = new FileWriter("src/test/output.txt");  //写入文件
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(sb.toString());
+			bw.close();
+			fw.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		long endTime=System.currentTimeMillis();
 		long Time=endTime-startTime;
-		System.out.println("��ʱ:"+Time+"����");
+		System.out.println("耗时:"+Time+"毫秒");
 	}   
 	
 }
