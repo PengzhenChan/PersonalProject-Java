@@ -22,7 +22,7 @@
 
 ## 作业链接
 
-> 作业地址：https://edu.cnblogs.com/campus/fzu/FZUSESPR21/homework/11672
+> 作业地址：https://www.cnblogs.com/koopi/p/14485051.html
 
 ## 博客链接
 > 博客地址：https://www.cnblogs.com/koopi/
