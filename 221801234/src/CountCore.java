@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,7 +56,6 @@ public class CountCore {
         Matcher m = null;
         String s = null;
         String[] s1;
-
         try (BufferedReader reader =
                      new BufferedReader(new InputStreamReader(new FileInputStream(inPath)))) {
             Pattern r = Pattern.compile(pattern);
@@ -81,40 +79,6 @@ public class CountCore {
             System.out.println("file is't exist");
         }
         return 0;
-    }
-
-    private void getAllDatas() {
-        String s;
-        int cnt2 = 0;
-        int cnt3=0;
-        String[] s1;
-        Pattern r = Pattern.compile("[A-Za-z]{4,}[A-Za-z0-9]*");
-        try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(new FileInputStream(inPath)))) {
-            while ((s = reader.readLine()) != null) {
-                cnt2 += s.length();
-                ++cnt2;
-                s=s.trim();
-                Matcher m;
-                if(s.length()>=4){
-                    s1 = s.split("[^a-zA-Z0-9]");
-                    for (String tp : s1) {
-                        m = r.matcher(tp);
-                        if (tp.length()>=4&&m.matches()) {
-                            ++cnt3;
-                            map.merge(tp.toLowerCase(), 1, Integer::sum);
-                        }
-                    }
-                }
-            }
-            if(cnt2!=0){
-                --cnt2;
-            }
-            data.setCharacters(cnt2);
-            data.setWords(cnt3);
-        } catch (Exception ie) {
-            System.out.println("file is't exist");
-        }
     }
 
     public int getValidLines() {
@@ -224,8 +188,9 @@ public class CountCore {
     public Data getData() {
         if(cnt==0){
             cnt=1;
-            getAllDatas();
+            getCharCount();
             getValidLines();
+            getWordsCount();
             getPopularWord();
         }
         return data;
