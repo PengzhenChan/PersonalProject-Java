@@ -90,7 +90,6 @@ public class CountCore {
             while ((ch = reader.read()) != -1) {
                 if(ch!='\n'){
                     if(ch!='\t'&&ch!='\r'&&ch!=' ')
-                        //非空行
                         flag=1;
                 }
                 if(ch=='\n'&&flag==1){
