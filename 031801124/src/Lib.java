@@ -27,7 +27,7 @@ public class Lib {
                 outfile.createNewFile();
             }
             FileWriter fileWritter = new FileWriter(outfile, true);
-            fileWritter.write("characters:" + Long.toString(charnumber));
+            fileWritter.write("characters: " + Long.toString(charnumber));
             fileWritter.close();
         } catch (Exception e) {
             //e.printStackTrace();
@@ -70,7 +70,7 @@ public class Lib {
                 outfile.createNewFile();
             }
             FileWriter fileWritter = new FileWriter(outfile, true);
-            fileWritter.write("\n" + "words:" + Integer.toString(wordnumber));
+            fileWritter.write("\n" + "words: " + Integer.toString(wordnumber));
             fileWritter.close();
 
         } catch (Exception e) {
@@ -188,7 +188,7 @@ public class Lib {
                 outfile.createNewFile();
             }
             FileWriter fileWritter = new FileWriter(outfile, true);
-            fileWritter.write("\n" + "lines:" + Integer.toString(lineCount));
+            fileWritter.write("\n" + "lines: " + Integer.toString(lineCount));
             fileWritter.close();
         } catch (Exception e) {
             System.out.println("文件打开失败");
