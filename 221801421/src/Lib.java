@@ -21,11 +21,16 @@ public class Lib {
 
     //判断hashMap是否已经填充了
     private boolean flag = false;
+    //最后一行是否是无效行
+    private boolean lastLineFlag = false;
     private HashMap<String, Integer> hashMap = new HashMap<>();
     private String str = "";
 
     public Lib(String str){
         this.str = str;
+
+        //如果最后一行是有效行，上面那个正则表达式其实并无法正常匹配，所以要加一步判断
+        if(str.charAt(str.length()-1) != '\n') lastLineFlag = true;
     }
 
     /**
@@ -39,7 +44,7 @@ public class Lib {
         //题目中说明了没给汉字,所以其实直接用str.length()也行
         char[] ch = str.toCharArray();
         for(int i=0;i<ch.length;i++){
-            if(ch[i] <= 127){
+            if((int)ch[i] <= 127){
                 count++;
             }
         }
@@ -60,6 +65,7 @@ public class Lib {
             count++;
         }
 
+        if(lastLineFlag) count++;
         return count;
     }
 
