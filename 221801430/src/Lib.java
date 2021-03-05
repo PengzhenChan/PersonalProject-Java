@@ -24,7 +24,7 @@ public class Lib {
      * @return BufferReader
      */
     public BufferedReader ReadFile(String fileName) {
-        file = new File(fileName);
+        file = new File (fileName);
         BufferedReader reader = null;
 
         try {
@@ -33,6 +33,7 @@ public class Lib {
 
             reader = new BufferedReader(new FileReader(file));
             in = new FileInputStream(file);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +48,7 @@ public class Lib {
      * @param bufferedReader
      * @return 字符数
      */
-    public long CharCount (BufferedReader bufferedReader) {
+    public long CharCount(BufferedReader bufferedReader) {
         long num = 0L;
         int ch;
 
@@ -83,7 +84,7 @@ public class Lib {
                     str += ch;
                 }
                 else {
-                    if(str != null && IsWord(str)) {
+                    if(str!=null && IsWord(str)) {
                         num++;
                     }
                     String temp = null;
@@ -91,7 +92,8 @@ public class Lib {
                 }
 
             }
-            if(!str.equals("") && IsWord(str)){
+
+            if (IsWord(str)){
                 num++;
             }
 
@@ -109,12 +111,12 @@ public class Lib {
     public boolean IsWord(String str) {
         String temp = new String();
 
-        if (str == null)
+        if (str==null)
             return false;
         if (str==temp)
             return false;
 
-        for (int i=0;i<str.length();i++) {
+        for (int i=0; i<str.length(); i++) {
             char ch = str.charAt(i);
 
             if (i<4 && ch>='0' && str.charAt(i)<='9') {
@@ -138,7 +140,7 @@ public class Lib {
             while ((line = bufferedReader.readLine()) != null) {
                 String temp = line.replaceAll("\\s*","");
 
-                if (line.length() != 0) {
+                if (line.length()!=0) {
                     rows++;
                 }
             }
@@ -164,7 +166,7 @@ public class Lib {
         int[] counts = new int [n];
         int j = 0;
 
-        for (int i = 0; i < n ; i++)
+        for (int i=0; i<n ; i++)
             counts[i] = 0;
 
         try {
@@ -182,11 +184,11 @@ public class Lib {
 
                 }
                 else{
-                    if (str != "" && IsWord(str)) {
+                    if (str!="" && IsWord(str)) {
                         String temp = WordChange (str);
 
                         //单词未在数组中，则存入计数
-                        if (!IfSame(words , temp , counts) && j<words.length) {
+                        if (!IfSame(words, temp, counts) && j<words.length) {
                             words[j] = str;
                             counts[j]++;
                             j++;
@@ -223,9 +225,9 @@ public class Lib {
     }
 
     //判断在数组中是否有相同的单词,若有相同的单词则计数
-    public boolean IfSame(String[] words , String str , int[] nums){
+    public boolean IfSame(String[] words, String str, int[] nums){
 
-        for (int i=0 ; i<words.length && words.length >= 1; i++){
+        for (int i=0; i<words.length && words.length >= 1; i++){
 
             if (str.equals(words[i])) {
                 nums[i]++;
@@ -240,17 +242,17 @@ public class Lib {
      * @param words
      * @param counts
      */
-    public void SortWords(String[] words , int[] counts) {
+    public void SortWords(String[] words, int[] counts) {
 
-        for (int i = 0; i < counts.length && words[i] != null; i++) {
-            for (int j = i+1 ; j<counts.length && words[j] != null; j++){
+        for (int i=0; i<counts.length && words[i]!=null; i++) {
+            for (int j=i+1 ; j<counts.length && words[j]!=null; j++){
 
                 if (counts[i]<counts[j]){
-                    ChangInt(counts , i , j);
-                    ChangS(words , i , j);
+                    ChangInt(counts, i, j);
+                    ChangS(words, i, j);
                 }
 
-                else if (counts[i] == counts[j]) {
+                else if (counts[i]==counts[j]) {
                     if (words[i].compareTo(words[j]) > 0){
                         ChangInt(counts, i, j);
                         ChangS(words, i, j);
@@ -260,14 +262,14 @@ public class Lib {
 
         }
 
-        for (int i = 0; i<10 && i<words.length; i++) {
+        for (int i=0; i<10 && i<words.length; i++) {
             sortWords[i] = words[i];
             sortCount[i] = counts[i];
         }
     }
 
     //交换数组中元素位置,字符串
-    public String[] ChangS(String[] str , int i, int j) {
+    public String[] ChangS(String[] str, int i, int j) {
         String tempS = new String ();
         tempS = str[j];
         str[j] = str[i];
@@ -277,7 +279,7 @@ public class Lib {
     }
 
     //交换数组中元素位置，整型
-    public int[] ChangInt(int[] counts, int i , int j) {
+    public int[] ChangInt(int[] counts, int i, int j) {
         int temp;
         temp = counts[j];
         counts[j] = counts[i];
