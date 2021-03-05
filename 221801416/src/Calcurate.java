@@ -12,7 +12,7 @@ public class Calcurate {
 	
 	//计算字符数
 	public static void CharCount(String res, Writer char_writer) throws IOException{
-		char_writer.write("characters:" + res.length() + "\n");
+		char_writer.write("characters: " + res.length() + "\n");
 	}
 	
 	//计算单词数
@@ -22,13 +22,13 @@ public class Calcurate {
 		for(int i = 0; i < words.length; i++) {
 			if(words[i].matches("[a-z]{4}[a-z0-9]*")) count++;
 		}
-		char_writer.write("words:" + count + "\n");
+		char_writer.write("words: " + count + "\n");
     }
 	
 	//计算行数
     public static void LineCount(String res,  Writer char_writer) throws IOException {
     	String[] lines = res.split("\n");
-    	char_writer.write("lines:" + lines.length + "\n");
+    	char_writer.write("lines: " + lines.length + "\n");
     }
     
     //显示高频词汇
@@ -55,7 +55,7 @@ public class Calcurate {
     		Map.Entry<String, Integer> item = list.poll();
             String key = item.getKey();
             Integer value = item.getValue();
-            char_writer.write(key.toLowerCase() + ":" + value + "\n");
+            char_writer.write(key.toLowerCase() + ": " + value + "\n");
             if(count <= 0) break;
             else count--;
           }
@@ -63,6 +63,9 @@ public class Calcurate {
     static Comparator<Map.Entry<String, Integer>> cmp = new Comparator<Map.Entry<String, Integer>>() {
     	 @Override
     	    public int compare(Map.Entry<String, Integer> item1, Map.Entry<String, Integer> item2){
+    		       if(item2.getValue().compareTo(item1.getValue()) == 0) {
+    		    	   return item2.getKey().compareTo(item1.getKey());
+    		       }
     	            return item2.getValue().compareTo(item1.getValue());    //降序排序
     	    }
     };
