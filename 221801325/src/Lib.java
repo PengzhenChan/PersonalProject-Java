@@ -31,18 +31,14 @@ public class Lib
     public long  countword(String string)
     {
         long num = 0;
-        string=string.toLowerCase();
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(" ");
-        stringBuffer.append(string);
-        String regex = "([^a-z0-9])([a-z]{4}[a-z0-9]*)";//正则匹配
+        String regex = "([^a-zA-Z0-9])([a-zA-Z]{4}[a-zA-Z0-9]*)";//正则匹配
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(stringBuffer.toString());
+        Matcher matcher = pattern.matcher(string);
         while(matcher.find())
-        {   String temp=matcher.group(2).trim();//取出group（2），既单词，trim为了除去之前加的空格
+        {   String temp=matcher.group(2).trim().toLowerCase();//
             num++;
             if (map.containsKey(temp)) {
-                map.put(temp, map.get(temp) + 1);//顺便存入map，方便后续
+                map.put(temp, map.get(temp) + 1);//
             } else {
                 map.put(temp, 1);
             }
@@ -59,7 +55,7 @@ public class Lib
 //        while (matcher.find()) {
 //            characters++;
 //        }
-        return characters;
+        return characters-1;
     }
     public  long lineCount(String string)
     {
@@ -69,7 +65,7 @@ public class Lib
         Matcher matcher = pattern.matcher(string);
         while (matcher.find())
         {
-            if (matcher.group(1)!=null&&!matcher.group(1).equals('\t')&&!matcher.group(1).equals('\n')&&!matcher.group(1).equals('\40'))
+      //      if (matcher.group(1)!=null&&!matcher.group(1).equals('\t')&&!matcher.group(1).equals('\n')&&!matcher.group(1).equals('\40'))
             num_of_line++;
         }
         return num_of_line;
@@ -84,14 +80,14 @@ public class Lib
         File txt=new File(output_file);
         try
         {
-            FileWriter fw = new FileWriter(txt,true);//参数为true代表可以追加写入
-            BufferedWriter out = new BufferedWriter(fw);
+            FileWriter fw = new FileWriter(txt,true);//参数为true代表可以追加写入d
+            BufferedWriter out = new BufferedWriter(fw);//
             out.write(style +":" + num + "\r\n");
             out.close();
         }
         catch(IOException e)
         {
-            System.out.println("指定输出文件不存在");
+            System.out.println("Can't find file");
         }
     }
 
@@ -101,7 +97,10 @@ public class Lib
                 File file = new File(filePath);
                 FileInputStream inputStream = new FileInputStream(file);
                 byte[] buffer = new byte[1024];
+                String s = new String( );
+                s="\t";
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                baos.write(s.getBytes());
                 int cnt = 0;
                 while ((cnt = inputStream.read(buffer)) > -1)
                 {
@@ -111,8 +110,10 @@ public class Lib
                 inputStream.close();
                 baos.close();
                 return baos.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Can't find file");
             }
             return "";
         }
