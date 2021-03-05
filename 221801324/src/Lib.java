@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Lib {
-
-
+public class Lib
+{
     private int CountChar;            //记录字符数
     private int CountWord;            //记录单词数
     private int CountLine;            //记录行数
@@ -18,7 +17,8 @@ public class Lib {
     private HashMap<String, Integer> map = new HashMap<>();       //使用map键值对来保存单词和频率
     private List<Map.Entry<String,Integer>> list;
 
-    Lib (String inputFile,String outputFile) {
+    Lib (String inputFile,String outputFile)
+    {
 
         this.CountChar = 0;
         this.CountWord = 0;
@@ -28,24 +28,23 @@ public class Lib {
         List<Map.Entry<String,Integer>> list = null;
     }
 
-    public void getbr () throws FileNotFoundException
+    public void getbu () throws FileNotFoundException
     {
         in=new InputStreamReader(new FileInputStream(inputFile));
         bu = new BufferedReader(in);
 
     }
 
-    public void getWordsNumuber() throws FileNotFoundException        //读取文件中单词个数
+    public void getWordsNumuber() throws FileNotFoundException        //计算文件中单词个数
     {
-        getbr();
+        getbu();
         String words;
         try {
             while ((words = bu.readLine()) != null) {
                 String[] strs=words.split("[^a-zA-Z0-9]");
                 String zz = "^[a-zA-Z]{4,}.*";              //正则表达式筛选单词
                 for(int i=0;i<strs.length;i++)
-                {
-                    if(strs[i].matches(zz))
+                { if(strs[i].matches(zz))
                     {
                         CountWord++;
                     }
@@ -59,8 +58,9 @@ public class Lib {
 
 
 
-    public void getLines() throws FileNotFoundException {        //读取文件有效行数
-        getbr();
+    public void getLines() throws FileNotFoundException
+    {        //计算文件有效行数
+        getbu();
         try {
             String line;
             while ((line = bu.readLine()) != null) {
@@ -80,4 +80,25 @@ public class Lib {
 
 
 
-}
+    public void getCountChar() throws FileNotFoundException
+    {      //计算文件字符数
+            getbu();
+            try {
+                char ch;
+                while((ch=(char)bu.read())!=(char)-1)
+                { if(ch<=127)           //确保读取的字符为ASCLL码
+                    {
+                        CountChar++;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+    }
+
