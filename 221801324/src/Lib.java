@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Lib
@@ -80,7 +78,7 @@ public class Lib
 
 
 
-    public void getCountChar() throws FileNotFoundException
+    public void getChars() throws FileNotFoundException
     {      //计算文件字符数
             getbu();
             try {
@@ -97,6 +95,39 @@ public class Lib
         }
 
 
+
+    void getWordHighRate() throws IOException
+    {
+        //输出高频次
+        getbu();
+        String words;
+        list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
+        while ((words = bu.readLine()) != null) {
+            String[] strs = words.split("[^a-zA-Z0-9]");  //正则选取单词
+            String zz = "^[a-zA-Z]{4,}.*";
+            for (int i = 0; i < strs.length; i++) {
+                if (strs[i].matches(zz)) {
+                    if (!map.containsKey(strs[i].toLowerCase())) {  //删除重复出现在map中的单词
+                        map.put(strs[i].toLowerCase(), 1);
+                    } else {
+
+                        int num = map.get(strs[i].toLowerCase());   //单词修改小写
+                        map.put(strs[i].toLowerCase(), num + 1);
+                    }
+                }
+            }
+        }
+        list.sort(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
+                if(a.getValue().equals(b.getValue())) {      //若频率一样，这可以使其按字母表排序
+                    return a.getKey().compareTo(b.getKey());
+                }
+                else
+                    return a.getValue().compareTo(b.getValue());     //频率排序
+            }
+        });
+    }
 
 
 
