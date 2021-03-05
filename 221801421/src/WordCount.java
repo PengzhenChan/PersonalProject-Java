@@ -5,6 +5,11 @@ public class WordCount {
     //获得目录
     private static String DIR = System.getProperty("user.dir");
 
+    /**
+     * 根据文件名读取文件
+     * @param filename
+     * @return 文件内容
+     */
     public static String readFromFile(String filename) {
         BufferedReader reader = null;
         StringBuilder stringBuilder = null;
@@ -30,7 +35,7 @@ public class WordCount {
         return stringBuilder.toString();
     }
 
-    public static void writeToFile(String filename, String str){
+    public static void writeToFile(String filename, String str) {
         BufferedWriter writer = null;
 
         try{
@@ -46,10 +51,11 @@ public class WordCount {
         }
     }
 
-    //文件的输入输出到时候就放在wordCount类里,Lib就当做纯粹的一个处理字符串的模块.
     public static void main(String[] args) {
-        String str = readFromFile(args[0]);
+        //String str = readFromFile(args[0]);
+        String str = readFromFile("input.txt");
         Lib lib = new Lib(str);
-        writeToFile(args[1], lib.getResult(10));
+        //writeToFile(args[1], lib.getResult(10));
+        writeToFile("output.txt", lib.getResult(10));
     }
 }

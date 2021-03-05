@@ -25,7 +25,7 @@ public class Lib {
         this.str = str;
     }
 
-    private long charsCount(String str) {
+    public long charsCount(String str) {
         long count = 0L;
 
         //题目中说明了没给汉字,所以其实直接用str.length()也行
@@ -39,7 +39,7 @@ public class Lib {
         return count;
     }
 
-    private long linesCount(String str) {
+    public long linesCount(String str) {
         long count = 0L;
 
         Matcher matcher = Pattern.compile(LINE_REGEX).matcher(str);
@@ -50,7 +50,7 @@ public class Lib {
         return count;
     }
 
-    private long wordsCount(String str) {
+    public long wordsCount(String str) {
         long count = 0L;
 
         //为减少重复, 提高性能, 这里直接就在分割后直接存入map,否则词频统计时又要分割一遍单词.
@@ -73,7 +73,7 @@ public class Lib {
         return count;
     }
 
-    private Map<String, Integer> getTopK(int k) {
+    public Map<String, Integer> getTopK(int k) {
         //可能以后改个需求, 不想要统计单词数, 直接就打算要词频TopK, 会导致hashmap还没填充, 所以需要一个flag
         if(!flag) wordsCount(str);
 
@@ -100,7 +100,7 @@ public class Lib {
     }
 
     //将计算模块的调用统一用一个方法封装作为暴露给外界的api
-    public String getResult(int k){
+    public String getResult(int k) {
         charNum = charsCount(str);
         lineNum = linesCount(str);
         wordNum = wordsCount(str);
