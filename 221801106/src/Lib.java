@@ -10,16 +10,16 @@ import java.io.PrintWriter;
  
 public class Lib
 {
-	public int wordlines;   //ÓÃÀ´¼ÇÂ¼ĞĞÊı
-	public int characters;    //ÓÃÀ´¼ÇÂ¼×Ö·ûÊı
-	public int wordnumbers;    //ÓÃÀ´¼ÇÂ¼µ¥´ÊÊı
-	public String anticle;    //ÓÃÀ´±£´æ´ÓÎÄ¼ş¶ÁÈëµÄÈ«²¿ÄÚÈİ
-	public String inputTxt;    //Ğ´ÈëÎÄÕÂµÄµØÖ·
-	public String outputTxt;    //Ğ´³öÎÄÕÂÍ³¼ÆµÄµØÖ·
-    public List<Map.Entry<String, Integer>> list;    //ÓÃÀ´¼ÇÂ¼Í³¼Æ³öÀ´µÄÆµÂÊÅÅĞĞ
-    public HashMap<String,Integer> hashMap;    //ÓÃÀ´¼ÇÂ¼ËùÓĞµ¥´Ê¼°ÔÚÎÄÕÂÖĞ³öÏÖµÄÆµÂÊ
-    public String result;    //ÓÃÀ´¼ÇÂ¼ÒªÊä³öµÄ½á¹û
-	public Lib(String in,String out) {    //¹¹½¨º¯Êı
+	public int wordlines;   //ç”¨æ¥è®°å½•è¡Œæ•°
+	public int characters;    //ç”¨æ¥è®°å½•å­—ç¬¦æ•°
+	public int wordnumbers;    //ç”¨æ¥è®°å½•å•è¯æ•°
+	public String anticle;    //ç”¨æ¥ä¿å­˜ä»æ–‡ä»¶è¯»å…¥çš„å…¨éƒ¨å†…å®¹
+	public String inputTxt;    //å†™å…¥æ–‡ç« çš„åœ°å€
+	public String outputTxt;    //å†™å‡ºæ–‡ç« ç»Ÿè®¡çš„åœ°å€
+    public List<Map.Entry<String, Integer>> list;    //ç”¨æ¥è®°å½•ç»Ÿè®¡å‡ºæ¥çš„é¢‘ç‡æ’è¡Œ
+    public HashMap<String,Integer> hashMap;    //ç”¨æ¥è®°å½•æ‰€æœ‰å•è¯åŠåœ¨æ–‡ç« ä¸­å‡ºç°çš„é¢‘ç‡
+    public String result;    //ç”¨æ¥è®°å½•è¦è¾“å‡ºçš„ç»“æœ
+	public Lib(String in,String out) {    //æ„å»ºå‡½æ•°
 		wordlines = 0;
 		characters = 0;
 		wordnumbers = 0;
@@ -29,11 +29,11 @@ public class Lib
 		result = "";
 	}
 	
-	public void mapValueSort(HashMap<String, Integer> map) {    //½«hashMap×ª»¯Îªlist£¬Ê¹ÓÃÆä·â×°µÄsortº¯Êı½øĞĞÅÅĞò
+	public void mapValueSort(HashMap<String, Integer> map) {    //å°†hashMapè½¬åŒ–ä¸ºlistï¼Œä½¿ç”¨å…¶å°è£…çš„sortå‡½æ•°è¿›è¡Œæ’åº
         list = new ArrayList<Map.Entry<String, Integer>>(map.entrySet());
         list.sort(new Comparator<Map.Entry<String, Integer>>(){
-            public int compare(Map.Entry<String, Integer> o1,Map.Entry<String, Integer> o2){   //ÖØĞ´compareº¯Êı£¬¸´ÔÓ¶ÈÎªnlog2£¨n£©£¬ÏÈ°´ÕÕvalue´Ó´óµ½Ğ¡£¬
-                if (o1.getValue()<o2.getValue())                                           //valueÏàµÈµÄÇé¿öÏÂ£¬ÔÙ°´ÕÕkey´ÓĞ¡µ½´ó¡£
+            public int compare(Map.Entry<String, Integer> o1,Map.Entry<String, Integer> o2){   //é‡å†™compareå‡½æ•°ï¼Œå¤æ‚åº¦ä¸ºnlog2ï¼ˆnï¼‰ï¼Œå…ˆæŒ‰ç…§valueä»å¤§åˆ°å°ï¼Œ
+                if (o1.getValue()<o2.getValue())                                           //valueç›¸ç­‰çš„æƒ…å†µä¸‹ï¼Œå†æŒ‰ç…§keyä»å°åˆ°å¤§ã€‚
                 	return 1;
                 else if (o1.getValue()>o2.getValue())
                 	return -1;
@@ -44,7 +44,7 @@ public class Lib
         });
     }
 	
-	public int isWord(String word) {    //ÓÃÀ´ÅĞ¶ÏÕâ¸ö×Ö·û´®ÊÇ·ñÎªµ¥´Ê
+	public int isWord(String word) {    //ç”¨æ¥åˆ¤æ–­è¿™ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ä¸ºå•è¯
 		if (word.length()<4)
 			return -1;
 		for (int i=0;i<4;i++){
@@ -55,12 +55,12 @@ public class Lib
 		return 1;
 	}
 	
-	public void calculate() throws FileNotFoundException    //½øĞĞÎÄÕÂÍ³¼Æ¼ÆËã,µÃ³öµ¥´ÊÍ³¼ÆµÄhashMap£¬²¢½øĞĞÅÅĞò
+	public void calculate() throws FileNotFoundException    //è¿›è¡Œæ–‡ç« ç»Ÿè®¡è®¡ç®—,å¾—å‡ºå•è¯ç»Ÿè®¡çš„hashMapï¼Œå¹¶è¿›è¡Œæ’åº
 	{
 		File file=new File(inputTxt);
 		if(!file.exists())
 		{
-			System.out.println("ÎÄ¼ş²»´æÔÚ");
+			System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
 			return;
 		}
 		Scanner scanner = new Scanner(file);
@@ -71,14 +71,14 @@ public class Lib
 			if (!line.matches("\\s*"))
 				wordlines++;
 			characters += line.length();
-			characters ++;  //¶à¼Ó»»ĞĞ·ûÒ»¸ö×Ö·û
+			characters ++;  //å¤šåŠ æ¢è¡Œç¬¦ä¸€ä¸ªå­—ç¬¦
 			anticle += line;
-			//\w+ : Æ¥ÅäËùÓĞµÄµ¥´Ê
-			//\W+ : Æ¥ÅäËùÓĞ·Çµ¥´Ê
-			String[] lineWords=line.split("\\W+");    //ÓÃ·Çµ¥´Ê·ûÀ´×ö·Ö¸î,ÍøÉÏÕÒµÄÖªÊ¶µã	
+			//\w+ : åŒ¹é…æ‰€æœ‰çš„å•è¯
+			//\W+ : åŒ¹é…æ‰€æœ‰éå•è¯
+			String[] lineWords=line.split("\\W+");    //ç”¨éå•è¯ç¬¦æ¥åšåˆ†å‰²,ç½‘ä¸Šæ‰¾çš„çŸ¥è¯†ç‚¹	
 			Set<String> wordSet=hashMap.keySet();
 			
-			for (int i=0;i<lineWords.length;i++) {    //½«²»ÊÇÓ¢ÎÄµÄ×Ö·û´®Ìæ»»³ÉÌØ¶¨×Ö·û´®£¬²¢½«ËùÒÔ×Ö¶Î×ª»¯ÎªĞ¡Ğ´
+			for (int i=0;i<lineWords.length;i++) {    //å°†ä¸æ˜¯è‹±æ–‡çš„å­—ç¬¦ä¸²æ›¿æ¢æˆç‰¹å®šå­—ç¬¦ä¸²ï¼Œå¹¶å°†æ‰€ä»¥å­—æ®µè½¬åŒ–ä¸ºå°å†™
 				lineWords[i] = lineWords[i].toLowerCase();
 				//System.out.println(lineWords[i]);
 				if (isWord(lineWords[i])==-1)
@@ -86,24 +86,24 @@ public class Lib
 			}  
 			
 			for(int i=0;i<lineWords.length;i++){
-				if(wordSet.contains(lineWords[i])){    //Èç¹ûÒÑ¾­ÓĞÕâ¸öµ¥´ÊÁË
+				if(wordSet.contains(lineWords[i])){    //å¦‚æœå·²ç»æœ‰è¿™ä¸ªå•è¯äº†
 					Integer number=hashMap.get(lineWords[i]);
 					number++;
 					hashMap.put(lineWords[i], number);
 				}
-				else{    //Èç¹ûÃ»ÓĞ°üÀ¨Õâ¸öµ¥´Ê
+				else{    //å¦‚æœæ²¡æœ‰åŒ…æ‹¬è¿™ä¸ªå•è¯
 					hashMap.put(lineWords[i], 1);  
 				}
 			}		
 		}
 		
-		hashMap.remove("");    //½«×Ö¶ÎÀïÃæµÄ¿Õ×Ö·û´®È¥µô
-		hashMap.remove("221801106");    //½«²»ÊÇµ¥´ÊµÄ×Ö·û¶ÎÈ¥µô
+		hashMap.remove("");    //å°†å­—æ®µé‡Œé¢çš„ç©ºå­—ç¬¦ä¸²å»æ‰
+		hashMap.remove("221801106");    //å°†ä¸æ˜¯å•è¯çš„å­—ç¬¦æ®µå»æ‰
 		mapValueSort(hashMap);
 		scanner.close();
 	}
 	
-	public void calculateWordsNumber() {    //ÓÃÀ´¼ÆËãµ¥´Ê×ÜÊı
+	public void calculateWordsNumber() {    //ç”¨æ¥è®¡ç®—å•è¯æ€»æ•°
 		Iterator<String> iterator=hashMap.keySet().iterator();
 		while(iterator.hasNext())
 		{
@@ -112,20 +112,20 @@ public class Lib
 		}
 	}
 	
-	public void resultShow() {   //½«½á¹ûÏÔÊ¾ 
+	public void resultShow() {   //å°†ç»“æœæ˜¾ç¤º 
 		result += "characters:"+characters;
 		result += "\nwords:"+wordnumbers;
 		result += "\nlines:"+wordlines;
 	    int i=1;
 	    for (Map.Entry<String, Integer> word : list) {
 	      //      result += "\nword"+i+":"+word.getKey()+"("+word.getValue()+")";
-	    	 result += "\nword"+i+":"+word.getKey();
+	    	 result += "\nword"+i+": "+word.getKey();
 	            if (++i>10)
 	            	break;
 	        }
 	    File file = new File(outputTxt);
 	    if (!file.exists()) {
-	    	System.out.println("Ã»ÓĞÕÒµ½Ïà¹ØÎÄ¼ş");
+	    	System.out.println("æ²¡æœ‰æ‰¾åˆ°ç›¸å…³æ–‡ä»¶");
 	    	return ;
 	    }
 	    try {
@@ -135,22 +135,22 @@ public class Lib
 	    	pw.close();
 	    }
 	    catch (FileNotFoundException a) {
-	    	System.out.println("Ã»ÓĞÕÒµ½Í³¼Æ½á¹ûµÄÊä³öº¯Êı");
+	    	System.out.println("æ²¡æœ‰æ‰¾åˆ°ç»Ÿè®¡ç»“æœçš„è¾“å‡ºå‡½æ•°");
 	    }
 	    finally {
 	    
 	    }
-	   // System.out.println("ÔËĞĞ½áÊø");
+	   // System.out.println("è¿è¡Œç»“æŸ");
 	}
 	
-	public void work() {    //¹¤×÷
+	public void work() {    //å·¥ä½œ
 		try {
 		    calculate();
 		    calculateWordsNumber();
 		    resultShow();
 		}
 		catch (FileNotFoundException file) {
-			System.out.println("ÎÄ¼ş²»´æÔÚ");
+			System.out.println("æ–‡ä»¶ä¸å­˜åœ¨");
 			return ;
 		}
 	}
