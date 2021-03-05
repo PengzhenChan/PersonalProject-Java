@@ -7,10 +7,10 @@ public class Lib {
 
     private String inputFile;
     private String outputFile;
-    private int charNumber;
-    private int wordNumber;
-    private int lineNumber;
-    private Map<String,Integer> wordsMap;
+    private int charNumber;                   //字符计数
+    private int wordNumber;                   //单词计数
+    private int lineNumber;                   //行数计数
+    private Map<String,Integer> wordsMap;     //存取单词名及其个数
     List<Map.Entry<String,Integer>> list;
 
     public Lib() {
@@ -73,6 +73,7 @@ public class Lib {
         this.wordsMap = wordsMap;
     }
 
+    //读取文件数据
     public String readFile() {
         StringBuilder builder = new StringBuilder();
         try {
@@ -83,16 +84,19 @@ public class Lib {
             }
             reader.close();
         } catch (IOException e) {
+            System.out.println("文件打开失败！");
             e.printStackTrace();
         }
         return builder.toString();
     }
 
+    //计算字符数
     public void charNumCount(){
         String str = readFile();
         charNumber = str.length();
     }
 
+    //计算单词数，并存入Map
     public void wordNumCount(){
         String str = readFile();
 
@@ -112,6 +116,8 @@ public class Lib {
         }
 
         list = new ArrayList<Map.Entry<String, Integer>>(wordsMap.entrySet());
+        
+        //对Map的里的单词进行排序
         Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
             @Override
             public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
@@ -123,6 +129,7 @@ public class Lib {
         });
     }
 
+    //计算行数
     public void lineNumCount(){
         String str = readFile();
         String[] lines = str.split("\n");
@@ -136,6 +143,7 @@ public class Lib {
         }
     }
 
+    //输出数据到文件中
     public void writeFile(){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
@@ -158,6 +166,7 @@ public class Lib {
             writer.flush();
             writer.close();
         } catch (IOException e) {
+            System.out.println("文件打开失败！");
             e.printStackTrace();
         }
         System.out.println("输出完毕！");
