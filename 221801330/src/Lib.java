@@ -98,11 +98,32 @@ public class Lib {
             if (s.length() < 4) {
         	return false;
             }
-            else if (! Character.isDigit(s.charAt(0))) {//首位非数字
+            else if (! Character.isDigit(s.charAt(0))) {
                return false;
             }
             else {
         	return true;
             }
+        }
+	
+	static int WordSum(String s) {
+        int wordSum = 0;
+        String word = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i)) || Character.isUpperCase(s.charAt(i))
+                || Character.isLowerCase(s.charAt(i))) {
+                word += s.charAt(i);
+            }
+            else {
+                if (WordJudge(word)) {
+                    wordSum++;
+                }
+                word = "";
+            }
+        }
+        if (WordJudge(word)) {
+            wordSum++;
+        }
+            return wordSum;
         }
 }
