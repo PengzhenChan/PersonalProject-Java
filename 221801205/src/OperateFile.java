@@ -44,15 +44,15 @@ public class OperateFile {
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file),
 					Charset.forName("UTF-8").newEncoder());
-			writer.write("characters:" + cc.getCharCount(words) + "\n");
-			writer.write("words:" + cc.getWordCount(words) + "\n");
-			writer.write("lines:" + cc.getRowCount(words) + "\n");
+			writer.write("characters: " + cc.getCharCount(words) + "\n");
+			writer.write("words: " + cc.getWordCount(words) + "\n");
+			writer.write("lines: " + cc.getRowCount(words) + "\n");
 			LinkedHashMap<String, Integer> list = new CountCore().getMaxWord(words);
 			Set<Map.Entry<String, Integer>> set = list.entrySet();
 			Iterator<Entry<String, Integer>> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, Integer> entry= (Map.Entry<String, Integer>)it.next();
-				writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
+				writer.write(entry.getKey() + ": " + entry.getValue() + "\n");
 				
 			}
 			writer.close();
