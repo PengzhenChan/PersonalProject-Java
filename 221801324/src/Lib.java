@@ -28,14 +28,14 @@ public class Lib {
         List<Map.Entry<String,Integer>> list = null;
     }
 
-    void getbr () throws FileNotFoundException
+    public void getbr () throws FileNotFoundException
     {
         in=new InputStreamReader(new FileInputStream(inputFile));
         bu = new BufferedReader(in);
 
     }
 
-    void getWordsNumuber() throws FileNotFoundException        //读取文件中单词个数
+    public void getWordsNumuber() throws FileNotFoundException        //读取文件中单词个数
     {
         getbr();
         String words;
@@ -56,4 +56,28 @@ public class Lib {
             e.printStackTrace();
         }
     }
+
+
+
+    public void getLines() throws FileNotFoundException {        //读取文件有效行数
+        getbr();
+        try {
+            String line;
+            while ((line = bu.readLine()) != null) {
+                char[] c=line.toCharArray();
+                for (int i=0;i<c.length;i++)
+                { if (c[i]!='\n' && c[i]!='\r' && c[i]!='\t')      //计算行数
+                    {
+                        CountLine++;
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
