@@ -6,8 +6,6 @@ public class WordCount {
     public static void main(String[] args){
         String inFileName = args[0];
         String outFileName = args[1];
-        //String outFileName = "output.txt";
-        //String inFileName = "input.txt";
 
         Lib lib = new Lib();
         File outFile = new File(outFileName);
@@ -30,13 +28,8 @@ public class WordCount {
         FileWriter fileWriter;
 
         charters = lib.CharCount(lib.ReadFile(inFileName));
-        System.out.println(charters);
-
         wordsNum = (int)lib.WordsCount(lib.ReadFile(inFileName));
-        System.out.println(wordsNum);
-
         lines = lib.FileLines(lib.ReadFile(inFileName));
-        System.out.println(lines);
 
         lib.WordsNum(lib.ReadFile(inFileName),wordsNum);
         count = lib.GetCount();
@@ -49,8 +42,10 @@ public class WordCount {
             fileWriter.write("words:"+wordsNum+"\n");
             fileWriter.write("lines:"+lines+"\n");
             for (int i = 0; i<words.length && count[i] != 0; i++)
-                fileWriter.write(words[i] + " " + count[i] + "\n");
+                fileWriter.write(words[i] + ":" + count[i] + "\n");
+
             fileWriter.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

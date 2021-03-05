@@ -1,5 +1,15 @@
 import java.io.*;
 
+/**
+ * 类的描述
+ * @author zzong-coder
+ * Time：2021-03-05
+ * 实现文件字符统计、单词统计、行数统计、单词频数统计四大功能
+ * public long CharCount (BufferedReader bufferedReader)方法实现字符数统计
+ * public long WordsCount(BufferedReader bufferedReader)实现单词数统计
+ * public int FileLines(BufferedReader bufferedReader)统计文件行数
+ * public void WordsNum(BufferedReader bufferedReader,int n)统计单词频数 */
+
 public class Lib {
 
     String fileName;
@@ -8,10 +18,15 @@ public class Lib {
     String[] sortWords = new String[11];
     int[] sortCount = new int[11];
 
-    //读取文件内容
+    /**
+     * 读取文件
+     * @param fileName
+     * @return BufferReader
+     */
     public BufferedReader ReadFile(String fileName) {
         file = new File(fileName);
         BufferedReader reader = null;
+
         try {
             if (!file.exists())
                 file.createNewFile();
@@ -27,9 +42,12 @@ public class Lib {
         }
     }
 
-    //统计文件的字符数
+    /**
+     * 统计文件字符数
+     * @param bufferedReader
+     * @return 字符数
+     */
     public long CharCount (BufferedReader bufferedReader) {
-
         long num = 0L;
         int ch;
 
@@ -46,7 +64,11 @@ public class Lib {
         }
     }
 
-    //统计文件单词总数
+    /**
+     * 统计文件单词总数，返回值为单词总数
+     * @param bufferedReader
+     * @return
+     */
     public long WordsCount(BufferedReader bufferedReader) {
         long num = 0L;
         int one;
@@ -62,7 +84,6 @@ public class Lib {
                 }
                 else {
                     if(str != null && IsWord(str)) {
-
                         num++;
                     }
                     String temp = null;
@@ -80,9 +101,14 @@ public class Lib {
         return num;
     }
 
-    //判断单词是否合法
+    /**
+     * 判断单词是否合法
+     * @param str
+     * @return
+     */
     public boolean IsWord(String str) {
         String temp = new String();
+
         if (str == null)
             return false;
         if (str==temp)
@@ -99,7 +125,11 @@ public class Lib {
         return true;
     }
 
-    //统计文件行数
+    /**
+     * 统计文件行数，返回值为文件行数
+     * @param bufferedReader
+     * @return
+     */
     public int FileLines(BufferedReader bufferedReader) {
         int rows = 0;
         String line = new String();
@@ -119,12 +149,17 @@ public class Lib {
         return rows;
     }
 
-    // 统计单词出现的次数
+    /**
+     * 统计单词频数
+     * @param bufferedReader
+     * @param n
+     */
     public void WordsNum(BufferedReader bufferedReader,int n) {
         int one;
         String str = new String();
         //BufferedReader brTemp = bufferedReader;
         //int n = (int)WordsCount(bufferedReader);
+
         String[] words = new String [n];
         int[] counts = new int [n];
         int j = 0;
@@ -147,7 +182,6 @@ public class Lib {
 
                 }
                 else{
-
                     if (str != "" && IsWord(str)) {
                         String temp = WordChange (str);
 
@@ -176,8 +210,7 @@ public class Lib {
             }
 
             SortWords(words, counts);
-
-            ShowWords(words.length);
+            //ShowWords(words.length);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -202,12 +235,16 @@ public class Lib {
         return false;
     }
 
-    //根据频数排序，字符串数组大小10，将最大10个存入
+    /**
+     * 根据频数排序，字符串数组大小10，将最大10个存入
+     * @param words
+     * @param counts
+     */
     public void SortWords(String[] words , int[] counts) {
 
         for (int i = 0; i < counts.length && words[i] != null; i++) {
-
             for (int j = i+1 ; j<counts.length && words[j] != null; j++){
+
                 if (counts[i]<counts[j]){
                     ChangInt(counts , i , j);
                     ChangS(words , i , j);
@@ -235,6 +272,7 @@ public class Lib {
         tempS = str[j];
         str[j] = str[i];
         str[i] = tempS;
+
         return str;
     }
 
@@ -244,15 +282,16 @@ public class Lib {
         temp = counts[j];
         counts[j] = counts[i];
         counts[i] = temp;
+
         return counts;
     }
 
     //输出单词及其频数
-    public void ShowWords(int n) {
+    /* public void ShowWords(int n) {
         for (int i = 0; i < 10 && i < n && sortCount[i] != 0; i++) {
             System.out.println(sortWords[i] + ":" + sortCount[i]);
         }
-    }
+    }*/
 
     public String[] GetWords() {
         return sortWords;
