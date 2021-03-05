@@ -1,3 +1,0 @@
-characters:100000
-words:0
-lines:1
