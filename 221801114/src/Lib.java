@@ -84,7 +84,7 @@ public class Lib {
             if (++ count > 10){
                 break;
             }
-            writeToFile(mapping.getKey() + ":" + mapping.getValue(), filePath);
+            writeToFile(mapping.getKey() + ": " + mapping.getValue(), filePath);
         }
     }
 
