@@ -124,17 +124,24 @@ public class CountCore {
     }
 
     public int getValidLines() {
-        String s;
+        int ch;
+        int flag=0;
         int cnt = 0;
         try (BufferedReader reader =
                      new BufferedReader(new InputStreamReader(new FileInputStream(inPath)))) {
-            while ((s = reader.readLine()) != null) {
-                if (!"".equals(s.trim())) {
+            while ((ch = reader.read()) != -1) {
+                if(ch!='\n'){
+                    if(ch!='\t'&&ch!='\r'&&ch!=' ')
+                        //非空行
+                        flag=1;
+                }
+                if(ch=='\n'&&flag==1){
                     cnt++;
+                    flag=0;
                 }
             }
-            data.setLines(cnt);
-            return cnt;
+            data.setLines(cnt+1);
+            return cnt+1;
         } catch (Exception ie) {
             System.out.println("file is't exist");
         }
@@ -221,6 +228,7 @@ public class CountCore {
         if(cnt==0){
             cnt=1;
             getAllDatas();
+            getValidLines();
             getPopularWord();
         }
         return data;
