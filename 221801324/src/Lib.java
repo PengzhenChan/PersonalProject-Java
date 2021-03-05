@@ -28,4 +28,11 @@ public class Lib {
         List<Map.Entry<String,Integer>> list = null;
     }
 
+    void getbr () throws FileNotFoundException
+    {
+        in=new InputStreamReader(new FileInputStream(inputFile));
+        br = new BufferedReader(in);
+
+    }
+
 }
