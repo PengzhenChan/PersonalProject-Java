@@ -111,7 +111,10 @@ public class CountCore {
                     }
                 }
             }
-            data.setCharacters(--cnt2);
+            if(cnt2!=0){
+                --cnt2;
+            }
+            data.setCharacters(cnt2);
             data.setLines(cnt1);
             data.setWords(cnt3);
         } catch (Exception ie) {

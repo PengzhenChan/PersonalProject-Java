@@ -17,6 +17,7 @@ public class WordCount {
         System.out.println("words: " + d.getWords());
         System.out.println("lines: " + d.getLines());
         String[] popularWord = d.getStrings();
+        if(popularWord!=null)
         for (int i = 0; i < popularWord.length && i < 10; i++)
             System.out.println(popularWord[i] + ": " + cc.getWordCount(popularWord[i]));
     }
@@ -39,6 +40,7 @@ public class WordCount {
             writer.write("words: " + d.getWords() + '\n');
             writer.write("lines: " + d.getLines() + '\n');
             String[] popularWord = d.getStrings();
+            if(popularWord!=null)
             for (int i = 0; i < popularWord.length && i < 10; i++)
                 writer.write(popularWord[i] + ": " + cc.getWordCount(popularWord[i]) + '\n');
         } catch (IOException ie) {
