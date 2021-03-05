@@ -91,6 +91,18 @@ public class Lib {
             }
             finally {
                 return charSum;
+            }
         }
-    }
+	
+	static boolean WordJudge(String s) {
+            if (s.length() < 4) {
+        	return false;
+            }
+            else if (! Character.isDigit(s.charAt(0))) {//首位非数字
+               return false;
+            }
+            else {
+        	return true;
+            }
+        }
 }
