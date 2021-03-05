@@ -88,17 +88,6 @@ public class Lib {
         return map;
     }
 
-    public void testPrint(String str) {
-        /*for(Map.Entry<String, Integer> entry : hashMap.entrySet()){
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
-        System.out.println("输出完毕");*/
-        Map<String, Integer> map = getTopK(10);
-        for(Map.Entry<String, Integer> entry : map.entrySet()){
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
-    }
-
     //将计算模块的调用统一用一个方法封装作为暴露给外界的api
     public String getResult(int k) {
         charNum = charsCount(str);

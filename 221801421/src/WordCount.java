@@ -6,8 +6,8 @@ public class WordCount {
     private static String DIR = System.getProperty("user.dir");
 
     /**
-     * 根据文件名读取文件
-     * @param filename
+     * 根据文件名读取文件, 要求文件与该文件同一目录
+     * @param filename 读入的文件名，
      * @return 文件内容
      */
     public static String readFromFile(String filename) {
