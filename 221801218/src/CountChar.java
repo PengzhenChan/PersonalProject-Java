@@ -16,7 +16,7 @@ public class CountChar {
         InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         int i;
         while ((i = reader.read()) != -1) {
-            if (i <= 127) {
+            if ((i <= 127 && i > 31) || i == 9 || i == '\n' || i == '\r') {
                 count++;
             }
         }
