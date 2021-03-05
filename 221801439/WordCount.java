@@ -1,24 +1,25 @@
 package test;
 
 import java.io.*;
-import java.util.regex.Matcher; //正则表达式
-import java.util.regex.Pattern;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class tt{
+
+public class WordCount{
 	
-	public static void main(String[] args) throws IOException {
-		int characters=0;  
-		int lines = 0;    
+	public static void main(String[] args) throws IOException {  
+		int lines = 0;  
+		int characters = 0;
 		int word = 0;
-		long startTime=System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();
 		File file = new File("src/test/input.txt");
 		BufferedReader reader = null;
 		try{
@@ -26,18 +27,26 @@ public class tt{
 			reader = new BufferedReader(new FileReader(file));
 			StringBuffer sb = new StringBuffer();
 			String str = null;
-			HashMap<String, Integer> wList = new HashMap<String, Integer>();
-			while((str = reader.readLine())!=null){
-				if(!str.equals(""))
+
+			while((str = reader.readLine()) != null)
+			{
+				if(! str.equals(""))  //判断行数是否有效
 				{
 					lines++;			
 				}	
-				Pattern p = Pattern.compile("[[a-z]{4}[0-9a-z]*]");
-		        Matcher m = p.matcher(str);
-		        if (m.find()){
-		        	sb.append(str);
-		        }
-		        else if (sb.length() != 0) 
+				characters += countCharacters(str);  //对字符统计数累加
+				word += countWords(str);  //对单词统计数累加
+			}	
+			int tchar;
+			HashMap<String, Integer> wList = new HashMap<String, Integer>();
+			while((tchar = read.read()) != -1)
+			{
+				char words = (char) tchar;
+				if ((words >= 'a' && words <= 'z')||(words >= 'A' && words <= 'Z')) 
+				{
+	               sb.append(words);
+	            } 
+				else if (sb.length() != 0) 
 				{
 	                String theword = new String(sb);
 	                if (wList.containsKey(theword)) 
@@ -50,21 +59,19 @@ public class tt{
 	                }
 	                sb.delete(0,sb.length());
 	            }
-		       characters += countCharacters(str);  //对字符统计数累加
-				word += countWords(str);  //对单词统计数累加	
-				} 
+			}
+			
 			List<Map.Entry<String, Integer>> words = new ArrayList<Map.Entry<String, Integer>>(
-		                wList.entrySet());
+			                wList.entrySet());
 
-		        Collections.sort(words, new Comparator<Map.Entry<String, Integer>>() 
-		        {
-		            @Override
-		            public int compare(Entry<String, Integer> o1,Entry<String, Integer> o2)
-		            {
-		                return - (o1.getValue() - o2.getValue());
-		            }
-		        });
-				
+			        Collections.sort(words, new Comparator<Map.Entry<String, Integer>>() 
+			        {
+			            @Override
+			            public int compare(Entry<String, Integer> o1,Entry<String, Integer> o2)
+			            {
+			                return - (o1.getValue() - o2.getValue());
+			            }
+			        });
 			System.out.println(characters);
 			sb.append("characters:" + characters + "\n");
 			System.out.println(lines);
@@ -92,14 +99,15 @@ public class tt{
 			bw.write(sb.toString());
 			bw.close();
 			fw.close();
-		}catch(Exception e){
+			}catch(Exception e){
 			e.printStackTrace();
 		}
-		long endTime=System.currentTimeMillis();
-		long Time=endTime-startTime;
-		System.out.println("耗时:"+Time+"毫秒");
-	}   
-	
+		
+		long endTime = System.currentTimeMillis();
+		long Time = endTime - startTime;
+		System.out.println("耗时:" + Time + "毫秒");
+	}
+
 	/**
 	 * 统计字符数
 	 * @param str
@@ -117,21 +125,21 @@ public class tt{
     }
     
     /**
-  	 * 统计单词数
-  	 * @param str
-  	 * @return count
-  	 */
-      public static int countWords(String str)
-      {
-      	 int count = 0;
-      	 String ss = str.toLowerCase();
-      	 Pattern p = Pattern.compile("[a-z]{4}[0-9a-z]*");    	 
-           Matcher m = p.matcher(ss);
-           while(m.find())
-           {
-               count++;
-           }
-  		return count;
-      }
-	
+	 * 统计单词数
+	 * @param str
+	 * @return count
+	 */
+    public static int countWords(String str)
+    {
+    	 int count = 0;
+    	 String ss = str.toLowerCase();
+    	 Pattern p = Pattern.compile("[a-z]{4}[0-9a-z]*");    	 
+         Matcher m = p.matcher(ss);
+         while(m.find())
+         {
+             count++;
+         }
+		return count;
+    }
+    
 }
