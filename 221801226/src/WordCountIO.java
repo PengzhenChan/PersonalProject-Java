@@ -64,12 +64,12 @@ public class WordCountIO {
             List<Map.Entry<String, Integer>> highFreqList,String filePath) 
             throws IOException {
         StringBuilder str = new StringBuilder("characters: " + charsNum + "\n"
-                + "words:" + wordsNum + "\n"
-                + "lines:" + linesNum + "\n");
+                + "words: " + wordsNum + "\n"
+                + "lines: " + linesNum + "\n");
         for (int i = 0; i < highFreqList.size(); i++) {
             Map.Entry<String, Integer> temp = highFreqList.get(i);
             str.append(temp.getKey());
-            str.append(":");
+            str.append(": ");
             str.append(temp.getValue());
             str.append("\n");
         }
