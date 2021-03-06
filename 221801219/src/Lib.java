@@ -1,133 +1,201 @@
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Lib {
     //统计字符数
-    int charsNumber = 0;
+    private int charsNumber;
     //统计单词数
-    int wordNumber = 0;
+    private int wordNumber;
     //统计有效行
-    int lineNumber = 0;
+    private int lineNumber;
     //统计单词及其频率
-    HashMap<String, Integer> wordsCount;
-    //记录文本内容
-    String content = "";
+    private HashMap<String, Integer> wordsCount;
     //输入文件路径
-    String inputFilePath = "";
+    String inputFilePath;
     //输出文件路径
-    String outputFilePath = "";
+    String outputFilePath;
 
     Lib(String inputPath, String outputPath) {
         inputFilePath = inputPath;
         outputFilePath = outputPath;
     }
 
+    public int getCharsNumber() {
+        return charsNumber;
+    }
+
+    public int getWordNumber() {
+        return wordNumber;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public HashMap<String, Integer> getWordsCount() {
+        return wordsCount;
+    }
+
     /**
-     * 打开文件并统计字符数
+     * 打开文件并统计字符数，单词数，有效行数，并保存单词及其频率
      */
     void readFileByChars() {
-        File file = new File(inputFilePath);
-        if (!file.exists()) {
-            System.out.print("输入文件不存在，程序关闭。。。");
-            System.exit(0);
-        }
-        //存储文件内容
-        StringBuilder fileContent = new StringBuilder();
+        //初始化
         charsNumber = 0;
+        wordNumber = 0;
+        lineNumber = 0;
+        wordsCount = new HashMap<>();
+        //暂时存放单词
+        StringBuilder tempWord;
+        //小写后的单词
+        String word;
+        //读取文件
+        FileReader fr = null;
+        //判断有效行
+        boolean isValued;
         try {
-            Reader reader = new InputStreamReader(new FileInputStream(file));
-            //存储读入字符
-            int temp = -1;
-            while ((temp = reader.read()) != -1) {
-                fileContent.append((char) temp);
-                //不考虑汉字
-                if (temp < 128) {
-                    charsNumber++;
+            //初始化
+            tempWord = new StringBuilder();
+            isValued = false;
+
+            fr = new FileReader(inputFilePath);
+            int ch;
+            while ((ch = fr.read()) != -1) {
+                charsNumber++;
+                //单词判断
+                if (isDigitOrLetterFunc(ch)) {
+                    if (!isDigitFunc(ch)) {
+                        tempWord.append((char) ch);
+                    } else {
+                        if (tempWord.length() < 4) {
+                            tempWord = new StringBuilder();
+                        } else {
+                            tempWord.append((char) ch);
+                        }
+                    }
+                } else {
+                    if (tempWord.length() > 3) {
+                        //若没有则添加，若有则加一
+                        word = tempWord.toString().toLowerCase();
+                        wordsCount.merge(word, 1, Integer::sum);
+                        wordNumber++;
+                    }
+                    tempWord = new StringBuilder();
+                }
+                //有效行判断
+                if (ch == 10) {
+                    if (isValued) {
+                        lineNumber++;
+                    }
+                    isValued = false;
+                } else {
+                    if (!isValued && !isBlankCharFuc(ch)) {
+                        isValued = true;
+                    }
                 }
             }
-            content = fileContent.toString();
-            reader.close();
-        } catch (Exception e) {
-            System.out.print("e.getMessage()");
-            System.out.print("发生错误，程序关闭。。。");
+            //文件末尾处理
+            if (tempWord.length() > 3) {
+                word = tempWord.toString().toLowerCase();
+                wordsCount.merge(word, 1, Integer::sum);
+                wordNumber++;
+            }
+            if (isValued) {
+                lineNumber++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
             System.exit(0);
+        } finally {
+            try {
+                if (fr != null) fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
         }
     }
 
     /**
-     * 统计单词数量并排序
+     * 排序单词
      */
     public void countWords() {
-        //匹配单词
-        String pattern = "(^|[^A-Za-z0-9])([a-zA-Z]{4}[a-zA-Z0-9]*)";
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(content);
-
-        wordNumber = 0;
-        wordsCount = new HashMap<String, Integer>();
-        //存储小写后的单词
-        String temp;
-        while (m.find()) {
-            wordNumber++;
-            //变为小写
-            temp = m.group(2).toLowerCase();
-            //若没有则添加，若有则加一
-            wordsCount.merge(temp, 1, Integer::sum);
-        }
         //先进行按值排序，再按键的大小排序
-        wordsCount = wordsCount.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()
+        wordsCount = getWordsCount()
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry
+                        .<String, Integer>comparingByValue()
+                        .reversed()
                         .thenComparing(Map.Entry.comparingByKey()))
-                .limit(10).collect(Collectors.toMap(Map.Entry::getKey
-                        , Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
-    }
-
-    /**
-     * 统计有效行
-     */
-    public void getValueLines() {
-        lineNumber = 0;
-        //匹配有效行
-        Pattern linePattern = Pattern.compile("(^|\n)\\s*\\S+");
-        Matcher matcher = linePattern.matcher(content);
-        while (matcher.find()) {
-            lineNumber++;
-        }
+                .limit(10)
+                .collect(Collectors
+                        .toMap(Map.Entry::getKey
+                                , Map.Entry::getValue
+                                , (e1, e2) -> e2
+                                , LinkedHashMap::new));
     }
 
     /**
      * 写入文件
      */
     public void writeFile() {
-        //打开文件
-        File file = new File(outputFilePath);
-        if (!file.exists()) {
-            System.out.print("输入文件不存在，程序关闭。。。");
-            System.exit(0);
+        //构建输出字符串
+        StringBuilder outputString = new StringBuilder();
+        outputString.append("characters: ")
+                .append(getCharsNumber())
+                .append('\n')
+                .append("words: ")
+                .append(getWordNumber())
+                .append('\n')
+                .append("lines: ")
+                .append(getLineNumber())
+                .append('\n');
+
+        //这种方法遍历hashmap速度最快
+        for (Map.Entry<String, Integer> entry : wordsCount.entrySet()) {
+            outputString.append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue())
+                    .append('\n');
         }
+
+        FileOutputStream fos;
+        BufferedOutputStream bos = null;
+        //用BufferedOutputStream输出到文件
         try {
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            //输出统计数据
-            bw.write("characters: " + charsNumber + '\n'
-            + "words: " + wordNumber + '\n'
-            + "lines: " + lineNumber + '\n');
-            for (Map.Entry<String, Integer> entry : wordsCount.entrySet()) {
-                bw.write(entry.getKey() + ": " + entry.getValue() + '\n');
-            }
-            bw.close();
+            fos = new FileOutputStream(outputFilePath);
+            bos = new BufferedOutputStream(fos);
+            //设置编码为utf-8
+            byte[] bytes = outputString.toString().getBytes(StandardCharsets.UTF_8);
+            bos.write(bytes, 0, bytes.length);
+            bos.flush();
         } catch (IOException e) {
-            System.out.print(e.getMessage());
-            System.out.print("发生错误，程序关闭。。。");
+            e.printStackTrace();
             System.exit(0);
+        } finally {
+            try {
+                if (bos != null) bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
         }
     }
+
+    public static boolean isDigitOrLetterFunc(int x) {
+        return (x > 47 && x < 58) || (x > 64 && x < 91) || (x > 96 && x < 123);
+    }
+
+    public static boolean isDigitFunc(int x) {
+        return (x > 47 && x < 58);
+    }
+
+    public static boolean isBlankCharFuc(int x) {
+        return (x == 32 || x == 9 || x == 13);
+    }
 }
-
-

@@ -8,9 +8,10 @@ public class WordCount {
         String outputFilePath = args[1];
         //创建工具类执行方法
         Lib wcu = new Lib(inputFilePath, outputFilePath);
+//        Lib wcu = new Lib("C:\\Users\\Admin\\Desktop\\3.txt"
+//                , "C:\\Users\\Admin\\Desktop\\4.txt");
         wcu.readFileByChars();
         wcu.countWords();
-        wcu.getValueLines();
         wcu.writeFile();
     }
 }
