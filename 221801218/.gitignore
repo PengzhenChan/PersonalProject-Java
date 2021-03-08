@@ -1,0 +1,7 @@
+.gitignore
+.idea
+221801218.iml
+out
+src/*.txt
+src/*Test.java
+*.txt
