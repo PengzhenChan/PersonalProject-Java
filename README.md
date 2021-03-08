@@ -1,2 +1,4 @@
 # PersonalProject-Java
 wordcount-Java提交仓库
+
+具体10次以上的commit在branchB1分支里

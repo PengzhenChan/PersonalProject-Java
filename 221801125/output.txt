@@ -1,0 +1,13 @@
+characters: 525
+words: 31
+lines: 20
+java1: 3
+java2: 3
+java3: 3
+java4: 3
+java5: 3
+windows10: 3
+windows1000: 3
+windows2000: 3
+windows98: 3
+apple2: 1
