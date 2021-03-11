@@ -1,0 +1,13 @@
+characters: 50000000
+words: 2000000
+lines: 1000001
+aaaabrrfdixeudurbpuegcop: 1
+aaaacvifsqwiwedphtkhnkjg: 1
+aaaagkguyuwohgukyjghrakc: 1
+aaaamquvkmfjotikjkgxhgyx: 1
+aaaaqhlhjjrtnekvvvhmnecs: 1
+aaaarctkwlbavlynqvnrgars: 1
+aaaasbfebatclrutqfcpjpwc: 1
+aaaaulwidusdyhiihiadqffg: 1
+aaabvkioxrnjjxfcixixbcdq: 1
+aaacffthqddjfcsmpoisvudf: 1
