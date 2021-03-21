@@ -1,0 +1,5 @@
+charters: 371154
+words: 32790
+lines: 6912
+: 1
+LnjTPa: 1
